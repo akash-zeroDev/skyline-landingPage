@@ -1,0 +1,384 @@
+/* ==========================================================================
+   Skyline Digital Media - Work Section Styling
+   ========================================================================== */
+
+.work-section {
+  position: relative;
+  width: 100%;
+  background-color: var(--page-bg, #F3F3F3);
+  scroll-margin-top: 112px; /* scroll-mt-28 offset so floating pill nav never covers content */
+  box-sizing: border-box;
+}
+
+.work-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 96px 24px 120px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   HEADER ROW
+   -------------------------------------------------------------------------- */
+.work-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.work-header-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 680px;
+}
+
+.work-eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--navy-primary, #111A5C);
+  opacity: 0.72;
+}
+
+.work-title {
+  font-size: clamp(32px, 4vw, 46px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--navy-primary, #111A5C);
+  line-height: 1.15;
+}
+
+.work-subtitle {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--navy-muted, #58617d);
+  margin-top: 4px;
+}
+
+/* Header Action Link (Desktop) */
+.view-all-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--navy-primary, #111A5C);
+  text-decoration: none;
+  padding: 8px 0;
+  transition: opacity 180ms ease, transform 180ms ease;
+  white-space: nowrap;
+}
+
+.view-all-link:hover {
+  opacity: 0.75;
+}
+
+.view-all-link:hover .link-arrow {
+  transform: translateX(3px);
+}
+
+.view-all-link:focus-visible {
+  outline: 2px solid var(--navy-primary, #111A5C);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.link-arrow {
+  transition: transform 200ms ease;
+  display: inline-block;
+}
+
+.desktop-action {
+  display: block;
+}
+
+.mobile-action {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   PROJECT GRID
+   -------------------------------------------------------------------------- */
+.work-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+}
+
+/* Entrance animation */
+.project-card-item {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.work-grid.is-visible .project-card-item {
+  animation: cardFadeUp 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cardFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PROJECT CARD
+   -------------------------------------------------------------------------- */
+.project-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+  height: 100%;
+}
+
+.project-card-article {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 350ms ease;
+  border-radius: 28px;
+  background-color: transparent;
+}
+
+/* Desktop Hover Lift */
+@media (hover: hover) {
+  .project-card-link:hover .project-card-article {
+    transform: translateY(-4px);
+  }
+
+  .project-card-link:hover .project-image-wrapper {
+    box-shadow: 0 16px 36px -8px rgba(17, 26, 92, 0.1);
+  }
+
+  .project-card-link:hover .project-image {
+    transform: scale(1.04);
+  }
+
+  .project-card-link:hover .case-study-badge {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.project-card-link:focus-visible .project-card-article {
+  outline: 2px solid var(--navy-primary, #111A5C);
+  outline-offset: 6px;
+  border-radius: 28px;
+}
+
+/* Image Wrapper (4:3 aspect ratio with rounded corners) */
+.project-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 24px;
+  overflow: hidden;
+  background-color: #e5e8ef; /* Soft fallback background preventing layout shift */
+  border: 1px solid rgba(17, 26, 92, 0.08);
+  box-shadow: 0 4px 16px -2px rgba(17, 26, 92, 0.04);
+  transition: box-shadow 350ms ease;
+}
+
+.project-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* "View case study →" Badge */
+.case-study-badge {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--navy-primary, #111A5C);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: 1px solid rgba(17, 26, 92, 0.08);
+  box-shadow: 0 4px 14px rgba(17, 26, 92, 0.08);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 300ms ease, transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.badge-arrow {
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+
+/* Card Content Area */
+.project-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 4px 8px;
+  flex-grow: 1;
+}
+
+.project-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.project-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy-primary, #111A5C);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.project-description {
+  font-size: 14.5px;
+  color: var(--navy-muted, #58617d);
+  line-height: 1.45;
+}
+
+/* Tags List */
+.project-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+}
+
+.project-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  background-color: #ffffff;
+  color: var(--navy-primary, #111A5C);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  border: 1px solid rgba(17, 26, 92, 0.08);
+  box-shadow: 0 1px 3px rgba(17, 26, 92, 0.03);
+  letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE BREAKPOINTS
+   -------------------------------------------------------------------------- */
+
+/* Tablet (640px - 1023px) */
+@media (max-width: 1023px) {
+  .work-container {
+    padding: 80px 20px 100px;
+  }
+
+  .work-grid {
+    gap: 24px;
+  }
+
+  .project-image-wrapper {
+    border-radius: 20px;
+  }
+}
+
+/* Mobile & Touch Devices (< 640px or hover: none) */
+@media (hover: none), (max-width: 639px) {
+  /* Badge is always visible on touch/mobile devices */
+  .case-study-badge {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile (< 640px) */
+@media (max-width: 639px) {
+  .work-container {
+    padding: 64px 16px 80px;
+  }
+
+  .work-header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 36px;
+  }
+
+  .desktop-action {
+    display: none;
+  }
+
+  .mobile-action {
+    display: block;
+    margin-top: 36px;
+    width: 100%;
+  }
+
+  .mobile-btn {
+    width: 100%;
+    justify-content: center;
+    background-color: #ffffff;
+    border: 1px solid rgba(17, 26, 92, 0.08);
+    border-radius: 9999px;
+    padding: 12px 20px;
+    box-shadow: 0 2px 6px rgba(17, 26, 92, 0.04);
+  }
+
+  .work-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .project-title {
+    font-size: 19px;
+  }
+
+  .project-description {
+    font-size: 14px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PREFERS-REDUCED-MOTION
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .work-grid.is-visible .project-card-item {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .project-card-article,
+  .project-image,
+  .case-study-badge,
+  .view-all-link,
+  .link-arrow {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .case-study-badge {
+    opacity: 1 !important;
+  }
+}

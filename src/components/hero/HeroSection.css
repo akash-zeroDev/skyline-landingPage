@@ -1,0 +1,126 @@
+/* ==========================================================================
+   Skyline Digital Media - Hero Section (Digital Wallet Stage)
+   ========================================================================== */
+
+.hero-section {
+  width: 100%;
+  min-height: 80vh;
+  background-color: var(--hero-bg, #F3F3F3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 60px 24px 80px;
+  box-sizing: border-box;
+}
+
+.hero-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Fanned-out wallet stage container - centered origin */
+.hero-wallet-stage {
+  position: relative;
+  width: 100%;
+  height: 640px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+/* Floating 3D decorative accents container */
+.hero-accents-group {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transform-origin: center center;
+  transition: transform 300ms ease;
+}
+
+@media (max-width: 1240px) {
+  .hero-accents-group {
+    transform: scale(0.82);
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-accents-group {
+    transform: scale(0.65);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-accents-group {
+    opacity: 0.4;
+    transform: scale(0.5);
+  }
+}
+
+@media (max-width: 580px) {
+  .hero-accents-group {
+    display: none;
+  }
+}
+
+/* Interactive replay controls */
+.hero-animation-controls {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  z-index: 50;
+}
+
+.hero-replay-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffffff;
+  color: var(--navy-primary, #111A5C);
+  border: 1px solid rgba(17, 26, 92, 0.1);
+  box-shadow: 0 4px 14px rgba(17, 26, 92, 0.06);
+  padding: 9px 20px;
+  border-radius: 9999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.hero-replay-btn:hover {
+  background-color: var(--navy-primary, #111A5C);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(17, 26, 92, 0.16);
+}
+
+.hero-replay-btn:active {
+  transform: translateY(0);
+}
+
+.hero-replay-btn:focus-visible {
+  outline: 2px solid var(--navy-primary, #111A5C);
+  outline-offset: 3px;
+}
+
+.replay-icon {
+  font-size: 15px;
+  transition: transform 250ms ease;
+}
+
+.hero-replay-btn:hover .replay-icon {
+  transform: rotate(-90deg);
+}

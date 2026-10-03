@@ -1,0 +1,35 @@
+/* Skyline Landing Page - Base Layout */
+
+.skyline-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: var(--page-bg, #F3F3F3);
+}
+
+/* Hero Section with #F3F3F3 background */
+.hero-section {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--hero-bg, #F3F3F3);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Content & Anchor sections ensuring navigation functionality */
+.skyline-content {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.skyline-section {
+  min-height: 80vh;
+  padding: 60px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
