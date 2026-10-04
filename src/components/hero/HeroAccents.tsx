@@ -13,11 +13,10 @@ interface HeroAccentsProps {
 
 /**
  * HeroAccents Container
- * Groups the four floating 3D decorative accents on the right side of the hero canvas:
- * 1. Green Toggle Switch (x: 420px, y: -220px, z: 60)
- * 2. Black Lightning Bolt (x: 380px, y: 280px, z: 55)
- * 3. Frosted Fingerprint (x: 450px, y: 340px, z: 54)
- * 4. Blue Padlock (x: 520px, y: 400px, z: 60)
+ * Groups the floating 3D decorative accents icon cluster on the right side of the hero canvas:
+ * 1. Black Lightning Bolt (x: 380px, y: 280px, z: 55)
+ * 2. Frosted Fingerprint (x: 450px, y: 340px, z: 54)
+ * 3. Blue Padlock (x: 520px, y: 400px, z: 60)
  */
 export const HeroAccents: React.FC<HeroAccentsProps> = ({
   className = '',
@@ -30,12 +29,8 @@ export const HeroAccents: React.FC<HeroAccentsProps> = ({
         position: 'absolute',
         inset: 0,
         pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
       }}
     >
-      <ToggleAccent key={`accent-toggle-${animationKey}`} />
       <BoltAccent key={`accent-bolt-${animationKey}`} />
       <FingerprintAccent key={`accent-fingerprint-${animationKey}`} />
       <LockAccent key={`accent-lock-${animationKey}`} />

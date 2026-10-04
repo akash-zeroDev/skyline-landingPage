@@ -271,3 +271,166 @@ export const CURSOR_LAYOUT = {
     delay: 0.4,
   },
 } as const;
+
+/**
+ * Toggle Layout & States Configuration for Skyline Digital Media Hero Section
+ * 
+ * Target Measurements from Reference Image B (ON) and Image C (OFF):
+ * - Image C Canvas: 1536 x 1024 (aspect 3:2)
+ * - Bezel bounds: width ~1293px, height ~543px (aspect ratio ~2.38:1)
+ * - Track bounds: width ~1131px, height ~403px
+ * - Knob diameter: 360px (bounding size in 1536x1024 asset space)
+ * - Knob center ON: (392, 502)
+ * - Knob center OFF: (1135, 502)
+ * - Knob travel distance: 743px (206.38% of knob width, 65.69% of track length)
+ * - Track OFF colors: vertical gradient from #d8dbe0 (top-center) to #c3c7cf (bottom/edges)
+ * - Track ON colors: vivid green gradient
+ * - Spring configuration: stiffness 380, damping 32, mass 0.9 (~400ms settle)
+ */
+export const TOGGLE_LAYOUT = {
+  id: 'toggle',
+  artboardWidth: 1536,
+  artboardHeight: 1024,
+  centerX: 1167.9,
+  centerY: 368.2,
+  width: 311.0,
+  height: 207.33,
+  rotation: 17.82, // +17.82 deg clockwise (left end higher)
+  zIndex: 65, // above tray lip 60, below cursor 100
+  leftPct: (1167.9 / 1536) * 100, // 76.0352%
+  topPct: (368.2 / 1024) * 100,   // 35.9570%
+  widthPct: (311.0 / 1536) * 100, // 20.2474%
+  heightPct: (207.33 / 1024) * 100, // 20.2471%
+  aspectRatio: '1536 / 1024',
+  knobWidthPct: (400.0 / 1536) * 100, // 26.0417%
+  knobHeightPct: (400.0 / 1024) * 100, // 39.0625%
+  knobOnLeftPct: 15.7030,
+  knobOnTopPct: 29.9258,
+  knobTravelDistancePx: 605.0,
+  knobTravelPctOfKnob: (605.0 / 380.0) * 100, // 159.2105%
+  knobTravelPctOfTrack: (605.0 / 1098.0) * 100, // 55.1002%
+  spring: {
+    stiffness: 380,
+    damping: 32,
+    mass: 0.9,
+  },
+  entranceSpring: {
+    stiffness: 80,
+    damping: 12,
+    mass: 1,
+    delay: 1.8,
+  },
+  reducedMotionDuration: 0.12,
+} as const;
+
+export const TOGGLE_STATES = {
+  on: {
+    label: 'ON',
+    trackOpacity: 1,
+    knobX: '0%',
+    ariaChecked: true,
+  },
+  off: {
+    label: 'OFF',
+    trackOpacity: 0,
+    knobX: `${TOGGLE_LAYOUT.knobTravelPctOfKnob.toFixed(2)}%`,
+    ariaChecked: false,
+  },
+} as const;
+
+/**
+ * Icon Cluster Layout Configuration for Skyline Digital Media Hero Section
+ * 
+ * Target Measurements from Reference Image B (staticHero.png, 1536x1024):
+ * - Black Bolt Tile: Center (1104.0, 675.5), 145.3x145.2px, Rotation +10.1 deg
+ * - Frosted Fingerprint Tile: Center (1200.0, 734.5), 153.2x151.3px, Rotation +7.4 deg
+ * - Blue Lock Tile: Center (1315.7, 791.9), 153.0x153.0px, Rotation -5.9 deg
+ * - Silver Padlock: Center (1347.0, 785.0), 102.0x144.0px, Rotation +21.4 deg
+ * - Stacking: Black (z:55) -> Frosted (z:60) -> Blue (z:65) -> Padlock (z:70)
+ */
+export const ICON_CLUSTER_LAYOUT = {
+  artboardWidth: 1536,
+  artboardHeight: 1024,
+  bolt: {
+    id: 'bolt',
+    centerX: 1084.1,
+    centerY: 676.4,
+    width: 212.6, // Asset has transparent padding (857px tile inside 1254px canvas -> 145.3px tile)
+    height: 212.6,
+    rotation: 10.1, // +10.1 deg clockwise
+    borderRadiusPct: 22,
+    zIndex: 55,
+    leftPct: (1084.1 / 1536) * 100, // 70.5794%
+    topPct: (676.4 / 1024) * 100,   // 66.0547%
+    widthPct: (212.6 / 1536) * 100, // 13.8411%
+    heightPct: (212.6 / 1024) * 100,// 20.7617%
+    spring: {
+      stiffness: 80,
+      damping: 12,
+      mass: 1,
+      delay: 2.0,
+    },
+  },
+  fingerprint: {
+    id: 'fingerprint',
+    centerX: 1206.4,
+    centerY: 733.4,
+    width: 153.2,
+    height: 151.3,
+    rotation: 7.4, // +7.4 deg clockwise
+    borderRadiusPct: 22,
+    zIndex: 60,
+    leftPct: (1206.4 / 1536) * 100, // 78.5417%
+    topPct: (733.4 / 1024) * 100,   // 71.6211%
+    widthPct: (153.2 / 1536) * 100, // 9.9740%
+    heightPct: (151.3 / 1024) * 100,// 14.7754%
+    blurPx: 16,
+    spring: {
+      stiffness: 80,
+      damping: 12,
+      mass: 1,
+      delay: 2.1,
+    },
+  },
+  blue: {
+    id: 'blue',
+    centerX: 1320.7,
+    centerY: 796.9,
+    width: 153.0,
+    height: 153.0,
+    rotation: -5.9, // -5.9 deg counter-clockwise
+    borderRadiusPct: 22,
+    zIndex: 65,
+    leftPct: (1320.7 / 1536) * 100, // 85.9831%
+    topPct: (796.9 / 1024) * 100,   // 77.8223%
+    widthPct: (153.0 / 1536) * 100, // 9.9609%
+    heightPct: (153.0 / 1024) * 100,// 14.9414%
+    spring: {
+      stiffness: 80,
+      damping: 12,
+      mass: 1,
+      delay: 2.2,
+    },
+  },
+  padlock: {
+    id: 'padlock',
+    centerX: 1346.1,
+    centerY: 747.6,
+    width: 123.8, // 550px body inside 667px asset -> 102.0px body
+    height: 144.8,
+    rotation: 21.4, // +21.4 deg clockwise
+    zIndex: 70,
+    leftPct: (1346.1 / 1536) * 100, // 87.6367%
+    topPct: (747.6 / 1024) * 100,   // 73.0078%
+    widthPct: (123.8 / 1536) * 100, // 8.0599%
+    heightPct: (144.8 / 1024) * 100,// 14.1406%
+    spring: {
+      stiffness: 80,
+      damping: 12,
+      mass: 1,
+      delay: 2.25,
+    },
+  },
+} as const;
+
+

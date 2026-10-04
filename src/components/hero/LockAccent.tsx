@@ -1,34 +1,55 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, type Variants } from 'framer-motion';
-import lockImage from '../../assets/lockIcon.png';
+import padlockImage from '../../assets/padlock.png';
+import { ICON_CLUSTER_LAYOUT } from './cardLayout';
 
-/**
- * Blue Padlock Square Accent
- * - Final Target: x: 520px, y: 400px, scale: 0.9, zIndex: 60 (front-most of group)
- * - Initial: opacity: 0, scale: 0.5, y: 450px (final + 50px), filter: blur(8px)
- * - Entrance: Spring (stiffness: 80, damping: 12, mass: 1), delay: 2.2s
- * - Idle Float: y: [0, -8, 0], rotateZ: [0, 1, 0, -1, 0], duration: 5.5s
- */
-export const lockEntranceVariants: Variants = {
+const blueConfig = ICON_CLUSTER_LAYOUT.blue;
+const padlockConfig = ICON_CLUSTER_LAYOUT.padlock;
+
+export const blueEntranceVariants: Variants = {
   hidden: {
-    x: 520,
-    y: 450, // 400 + 50px
-    scale: 0.5,
+    y: 50,
+    rotateZ: blueConfig.rotation,
+    scale: 0.7,
     opacity: 0,
     filter: 'blur(8px)',
   },
   visible: {
-    x: 520,
-    y: 400,
-    scale: 0.9,
+    y: 0,
+    rotateZ: blueConfig.rotation,
+    scale: 1,
     opacity: 1,
     filter: 'blur(0px)',
     transition: {
       type: 'spring',
-      stiffness: 80,
-      damping: 12,
-      mass: 1,
-      delay: 2.2,
+      stiffness: blueConfig.spring.stiffness,
+      damping: blueConfig.spring.damping,
+      mass: blueConfig.spring.mass,
+      delay: blueConfig.spring.delay,
+    },
+  },
+};
+
+export const padlockEntranceVariants: Variants = {
+  hidden: {
+    y: 50,
+    rotateZ: padlockConfig.rotation,
+    scale: 0.7,
+    opacity: 0,
+    filter: 'blur(8px)',
+  },
+  visible: {
+    y: 0,
+    rotateZ: padlockConfig.rotation,
+    scale: 1,
+    opacity: 1,
+    filter: 'blur(0px)',
+    transition: {
+      type: 'spring',
+      stiffness: padlockConfig.spring.stiffness,
+      damping: padlockConfig.spring.damping,
+      mass: padlockConfig.spring.mass,
+      delay: padlockConfig.spring.delay,
     },
   },
 };
@@ -38,56 +59,142 @@ interface LockAccentProps {
 }
 
 export const LockAccent: React.FC<LockAccentProps> = ({ className = '' }) => {
-  const [isEntered, setIsEntered] = useState(false);
+  const isInstant =
+    typeof window !== 'undefined' &&
+    (window.location.search.includes('instant') || window.location.search.includes('debug'));
 
   return (
-    <motion.div
-      className={`hero-accent-lock ${className}`}
-      variants={lockEntranceVariants}
-      initial="hidden"
-      animate="visible"
-      onAnimationComplete={() => setIsEntered(true)}
-      style={{
-        position: 'absolute',
-        transformOrigin: 'center center',
-        zIndex: 60, // Front-most of the bottom right cluster
-        width: '135px',
-        maxWidth: '28vw',
-        pointerEvents: 'none',
-        userSelect: 'none',
-        willChange: 'transform, opacity, filter',
-      }}
-    >
-      <motion.div
-        animate={
-          isEntered
-            ? {
-                y: [0, -8, 0],
-                rotateZ: [0, 1, 0, -1, 0],
-              }
-            : { y: 0, rotateZ: 0 }
-        }
-        transition={{
-          duration: 5.5,
-          repeat: Infinity,
-          ease: 'easeInOut',
+    <>
+      {/* 1. VIVID BLUE TILE (z-index: 65) */}
+      <div
+        className={`hero-accent-blue-tile-positioner ${className}`}
+        style={{
+          position: 'absolute',
+          left: `${blueConfig.leftPct}%`,
+          top: `${blueConfig.topPct}%`,
+          width: `${blueConfig.widthPct}%`,
+          aspectRatio: '1 / 1',
+          transform: 'translate(-50%, -50%)',
+          transformOrigin: '50% 50%',
+          zIndex: blueConfig.zIndex, // 65: in front of Frosted tile (60)
+          pointerEvents: 'none',
+          userSelect: 'none',
         }}
-        style={{ width: '100%', height: 'auto', transformOrigin: 'center center' }}
       >
-        <img
-          src={lockImage}
-          alt="3D Blue Padlock Square Accent"
+        <motion.div
+          className="hero-accent-blue-tile-motion"
+          variants={blueEntranceVariants}
+          initial={isInstant ? 'visible' : 'hidden'}
+          animate="visible"
           style={{
             width: '100%',
-            height: 'auto',
-            objectFit: 'contain',
-            display: 'block',
-            filter: 'drop-shadow(0 16px 26px rgba(0, 0, 0, 0.22))',
+            height: '100%',
+            transformOrigin: '50% 50%',
+            position: 'relative',
+            willChange: 'transform, opacity, filter',
           }}
-          draggable={false}
-        />
-      </motion.div>
-    </motion.div>
+          {...(isInstant
+            ? {
+                initial: {
+                  y: 0,
+                  rotateZ: blueConfig.rotation,
+                  scale: 1,
+                  opacity: 1,
+                  filter: 'blur(0px)',
+                },
+                animate: {
+                  y: 0,
+                  rotateZ: blueConfig.rotation,
+                  scale: 1,
+                  opacity: 1,
+                  filter: 'blur(0px)',
+                },
+                transition: { duration: 0, delay: 0 },
+              }
+            : {})}
+        >
+          {/* 3D Glossy Blue Clay Tile Surface */}
+          <div
+            className="blue-clay-tile-surface"
+            style={{
+              width: '100%',
+              height: '100%',
+              borderRadius: '22%',
+              background:
+                'linear-gradient(135deg, #428eff 0%, #1f59e6 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.4)',
+              boxShadow:
+                'inset 0 2px 4px rgba(255, 255, 255, 0.55), inset 0 -2px 4px rgba(0, 0, 0, 0.22), 0 16px 28px rgba(31, 89, 230, 0.22)',
+              position: 'relative',
+            }}
+          />
+        </motion.div>
+      </div>
+
+      {/* 2. SILVER PADLOCK (z-index: 70, sticks past blue tile edges) */}
+      <div
+        className="hero-accent-padlock-positioner"
+        style={{
+          position: 'absolute',
+          left: `${padlockConfig.leftPct}%`,
+          top: `${padlockConfig.topPct}%`,
+          width: `${padlockConfig.widthPct}%`,
+          aspectRatio: '667 / 780',
+          transform: 'translate(-50%, -50%)',
+          transformOrigin: '50% 50%',
+          zIndex: padlockConfig.zIndex, // 70: front-most of the entire cluster
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
+      >
+        <motion.div
+          className="hero-accent-padlock-motion"
+          variants={padlockEntranceVariants}
+          initial={isInstant ? 'visible' : 'hidden'}
+          animate="visible"
+          style={{
+            width: '100%',
+            height: '100%',
+            transformOrigin: '50% 50%',
+            position: 'relative',
+            willChange: 'transform, opacity, filter',
+          }}
+          {...(isInstant
+            ? {
+                initial: {
+                  y: 0,
+                  rotateZ: padlockConfig.rotation,
+                  scale: 1,
+                  opacity: 1,
+                  filter: 'blur(0px)',
+                },
+                animate: {
+                  y: 0,
+                  rotateZ: padlockConfig.rotation,
+                  scale: 1,
+                  opacity: 1,
+                  filter: 'blur(0px)',
+                },
+                transition: { duration: 0, delay: 0 },
+              }
+            : {})}
+        >
+          <img
+            src={padlockImage}
+            alt="3D Silver Padlock"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              display: 'block',
+              filter:
+                'drop-shadow(0 14px 22px rgba(0, 0, 0, 0.28)) drop-shadow(-2px -2px 6px rgba(0, 0, 0, 0.08))',
+            }}
+            draggable={false}
+          />
+        </motion.div>
+      </div>
+    </>
   );
 };
 

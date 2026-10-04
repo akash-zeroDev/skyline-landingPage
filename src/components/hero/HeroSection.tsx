@@ -7,6 +7,7 @@ import AppCard from './AppCard';
 import WebCard from './WebCard';
 import SocialMediaCard from './SocialMediaCard';
 import FloatingCursor from './FloatingCursor';
+import ToggleAccent from './ToggleAccent';
 import HeroAccents from './HeroAccents';
 import { TRAY_CLIP_LINE_PCT } from './cardLayout';
 import './HeroSection.css';
@@ -54,7 +55,10 @@ export const HeroSection: React.FC = () => {
           {/* L3: Floating 3D Cursor (z-index: 100, above all cards & front lip) */}
           <FloatingCursor key={`cursor-${animationKey}`} />
 
-          {/* Floating 3D Accents (Toggle, Bolt, Fingerprint, Lock) */}
+          {/* L4: Floating 3D Green Toggle Switch (z-index: 65) */}
+          <ToggleAccent key={`toggle-${animationKey}`} />
+
+          {/* Floating 3D Accents Icon Cluster (Bolt, Fingerprint, Lock) */}
           <HeroAccents animationKey={animationKey} />
         </div>
 

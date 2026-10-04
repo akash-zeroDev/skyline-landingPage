@@ -1,34 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, type Variants } from 'framer-motion';
 import boltImage from '../../assets/bolt.png';
+import { ICON_CLUSTER_LAYOUT } from './cardLayout';
 
-/**
- * Black Lightning Bolt Square Accent
- * - Final Target: x: 380px, y: 280px, scale: 0.85, zIndex: 55
- * - Initial: opacity: 0, scale: 0.5, y: 330px (final + 50px), filter: blur(8px)
- * - Entrance: Spring (stiffness: 80, damping: 12, mass: 1), delay: 2.0s
- * - Idle Float: y: [0, -8, 0], rotateZ: [0, 1, 0, -1, 0], duration: 5.2s
- */
+const config = ICON_CLUSTER_LAYOUT.bolt;
+
 export const boltEntranceVariants: Variants = {
   hidden: {
-    x: 380,
-    y: 330, // 280 + 50px
-    scale: 0.5,
+    y: 50,
+    rotateZ: config.rotation,
+    scale: 0.7,
     opacity: 0,
     filter: 'blur(8px)',
   },
   visible: {
-    x: 380,
-    y: 280,
-    scale: 0.85,
+    y: 0,
+    rotateZ: config.rotation,
+    scale: 1,
     opacity: 1,
     filter: 'blur(0px)',
     transition: {
       type: 'spring',
-      stiffness: 80,
-      damping: 12,
-      mass: 1,
-      delay: 2.0,
+      stiffness: config.spring.stiffness,
+      damping: config.spring.damping,
+      mass: config.spring.mass,
+      delay: config.spring.delay,
     },
   },
 };
@@ -38,56 +34,74 @@ interface BoltAccentProps {
 }
 
 export const BoltAccent: React.FC<BoltAccentProps> = ({ className = '' }) => {
-  const [isEntered, setIsEntered] = useState(false);
+  const isInstant =
+    typeof window !== 'undefined' &&
+    (window.location.search.includes('instant') || window.location.search.includes('debug'));
 
   return (
-    <motion.div
-      className={`hero-accent-bolt ${className}`}
-      variants={boltEntranceVariants}
-      initial="hidden"
-      animate="visible"
-      onAnimationComplete={() => setIsEntered(true)}
+    <div
+      className={`hero-accent-bolt-positioner ${className}`}
       style={{
         position: 'absolute',
-        transformOrigin: 'center center',
-        zIndex: 55, // In bottom cluster: in front of Fingerprint (54), behind Lock (60)
-        width: '135px',
-        maxWidth: '28vw',
+        left: `${config.leftPct}%`,
+        top: `${config.topPct}%`,
+        width: `${config.widthPct}%`,
+        aspectRatio: '1 / 1',
+        transform: 'translate(-50%, -50%)',
+        transformOrigin: '50% 50%',
+        zIndex: config.zIndex, // 55: back-most of the cluster
         pointerEvents: 'none',
         userSelect: 'none',
-        willChange: 'transform, opacity, filter',
       }}
     >
       <motion.div
-        animate={
-          isEntered
-            ? {
-                y: [0, -8, 0],
-                rotateZ: [0, 1, 0, -1, 0],
-              }
-            : { y: 0, rotateZ: 0 }
-        }
-        transition={{
-          duration: 5.2,
-          repeat: Infinity,
-          ease: 'easeInOut',
+        className="hero-accent-bolt-motion"
+        variants={boltEntranceVariants}
+        initial={isInstant ? 'visible' : 'hidden'}
+        animate="visible"
+        style={{
+          width: '100%',
+          height: '100%',
+          transformOrigin: '50% 50%',
+          position: 'relative',
+          willChange: 'transform, opacity, filter',
         }}
-        style={{ width: '100%', height: 'auto', transformOrigin: 'center center' }}
+        {...(isInstant
+          ? {
+              initial: {
+                y: 0,
+                rotateZ: config.rotation,
+                scale: 1,
+                opacity: 1,
+                filter: 'blur(0px)',
+              },
+              animate: {
+                y: 0,
+                rotateZ: config.rotation,
+                scale: 1,
+                opacity: 1,
+                filter: 'blur(0px)',
+              },
+              transition: { duration: 0, delay: 0 },
+            }
+          : {})}
       >
-        <img
-          src={boltImage}
-          alt="3D Lightning Bolt Square Accent"
-          style={{
-            width: '100%',
-            height: 'auto',
-            objectFit: 'contain',
-            display: 'block',
-            filter: 'drop-shadow(0 14px 24px rgba(0, 0, 0, 0.22))',
-          }}
-          draggable={false}
-        />
+        <div style={{ width: '100%', height: '100%', transformOrigin: '50% 50%' }}>
+          <img
+            src={boltImage}
+            alt="3D Lightning Bolt Square Accent"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              display: 'block',
+              filter: 'drop-shadow(0 14px 22px rgba(0, 0, 0, 0.22))',
+            }}
+            draggable={false}
+          />
+        </div>
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 
