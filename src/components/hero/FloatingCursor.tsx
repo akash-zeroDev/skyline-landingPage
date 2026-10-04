@@ -1,34 +1,29 @@
 import React from 'react';
 import { motion, type Variants } from 'framer-motion';
-import cursorImage from '../../assets/cursor.png';
+import { CURSOR_LAYOUT } from './cardLayout';
 
-/**
- * Framer Motion Animation Variants for the Entrance of the Floating Cursor
- *
- * Trajectory:
- *  Initial: x: -220px, y: 400px, opacity: 0, scale: 0.8, rotateZ: -10deg
- *  Final:   x: -220px, y: 250px, opacity: 1, scale: 0.8, rotateZ: 0deg
- *  Easing:  spring { stiffness: 70, damping: 12, delay: 0.4 }
- */
+const config = CURSOR_LAYOUT;
+
 export const cursorEntranceVariants: Variants = {
   hidden: {
     x: -220,
     y: 400,
     opacity: 0,
     scale: 0.8,
-    rotateZ: -10,
+    rotateZ: -30,
   },
   visible: {
-    x: -220,
-    y: 250,
+    x: 0,
+    y: 0,
     opacity: 1,
-    scale: 0.8,
-    rotateZ: 0,
+    scale: 1,
+    rotateZ: config.rotation,
     transition: {
       type: 'spring',
-      stiffness: 70,
-      damping: 12,
-      delay: 0.4,
+      stiffness: config.spring.stiffness,
+      damping: config.spring.damping,
+      mass: config.spring.mass,
+      delay: config.spring.delay,
     },
   },
 };
@@ -40,55 +35,62 @@ interface FloatingCursorProps {
 export const FloatingCursor: React.FC<FloatingCursorProps> = ({
   className = '',
 }) => {
+  const isInstant =
+    typeof window !== 'undefined' &&
+    (window.location.search.includes('instant') || window.location.search.includes('debug'));
+
   return (
-    /* Outer container controls entrance animation */
-    <motion.div
-      className={`floating-cursor-wrapper ${className}`}
-      variants={cursorEntranceVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+    <div
+      className={`floating-cursor-positioner ${className}`}
       style={{
         position: 'absolute',
-        transformOrigin: 'center center',
-        zIndex: 100, // Highest z-index (floats above slot and all cards)
-        width: '110px',
-        maxWidth: '25vw',
-        willChange: 'transform, opacity, filter',
+        left: `${config.leftPct}%`,
+        top: `${config.topPct}%`,
+        width: `${config.widthPct}%`,
+        height: `${config.heightPct}%`,
+        transformOrigin: '8% 5.381%', // Pivot exactly at the tip (6px, 6px)
+        zIndex: config.zIndex,
         pointerEvents: 'none',
-        userSelect: 'none',
       }}
     >
-      {/* Inner container executes the continuous floating hover loop with pulsing drop-shadow */}
       <motion.div
-        animate={{
-          y: [0, -10, 0],
-          filter: [
-            'drop-shadow(0 10px 14px rgba(0, 0, 0, 0.22))',
-            'drop-shadow(0 18px 22px rgba(0, 0, 0, 0.32))',
-            'drop-shadow(0 10px 14px rgba(0, 0, 0, 0.22))',
-          ],
+        className="floating-cursor-motion"
+        variants={cursorEntranceVariants}
+        initial="hidden"
+        animate="visible"
+        style={{
+          width: '100%',
+          height: '100%',
+          transformOrigin: '8% 5.381%',
+          position: 'relative',
+          willChange: 'transform, opacity',
         }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-        style={{ width: '100%', height: 'auto' }}
+        {...(isInstant
+          ? {
+              initial: { x: 0, y: 0, opacity: 1, scale: 1, rotateZ: config.rotation },
+              animate: { x: 0, y: 0, opacity: 1, scale: 1, rotateZ: config.rotation },
+              transition: { duration: 0, delay: 0 },
+            }
+          : {})}
       >
-        <img
-          src={cursorImage}
-          alt="3D Floating Cursor"
-          style={{
-            width: '100%',
-            height: 'auto',
-            objectFit: 'contain',
-            display: 'block',
-          }}
-          draggable={false}
-        />
+        <svg viewBox="0 0 75 111.5" width="100%" height="100%" style={{ overflow: 'visible' }}>
+          <defs>
+            <filter id="cursor-shadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="6" dy="10" stdDeviation="6" floodColor="rgba(0,0,0,0.20)" />
+            </filter>
+          </defs>
+          <path
+            d="M 6.0 6.0 L 6.0 75.3 L 22.6 59.6 L 37.3 97.5 L 50.3 92.0 L 35.6 54.0 L 61.4 54.0 Z"
+            fill="#111113"
+            stroke="white"
+            strokeWidth="18"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            style={{ paintOrder: 'stroke fill', filter: 'url(#cursor-shadow)' }}
+          />
+        </svg>
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 

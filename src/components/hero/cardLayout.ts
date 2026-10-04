@@ -241,3 +241,33 @@ export const TRAY_LAYOUT = {
 } as const;
 
 export default CARD_LAYOUT;
+
+/**
+ * Cursor Layout Configuration for Skyline Digital Media Hero Section
+ * 
+ * Target Measurements from Reference Image B:
+ * - Tip Position: (473.0, 548.0) on 1536x1024
+ * - Unrotated container size: 90x133.8
+ * - Rotation: -15.0 deg
+ */
+export const CURSOR_LAYOUT = {
+  id: 'cursor',
+  artboardWidth: 1536,
+  artboardHeight: 1024,
+  tipX: 473.0,
+  tipY: 548.0,
+  width: 90.0,
+  height: 133.8,
+  rotation: -15.0,
+  zIndex: 100, // Above L2 tray lip (z:60)
+  leftPct: ((473.0 - 7.2) / 1536) * 100,
+  topPct: ((548.0 - 7.2) / 1024) * 100,
+  widthPct: (90.0 / 1536) * 100,
+  heightPct: (133.8 / 1024) * 100,
+  spring: {
+    stiffness: 70,
+    damping: 12,
+    mass: 1,
+    delay: 0.4,
+  },
+} as const;
