@@ -1,72 +1,67 @@
 import React from 'react';
 import { motion, type Variants } from 'framer-motion';
-import brandingImage from '../../assets/branding.png';
+import brandingCardImage from '../../assets/brandingCardCropped.png';
+import { CARD_LAYOUT } from './cardLayout';
+
+const config = CARD_LAYOUT.branding;
 
 /**
  * Framer Motion Animation Variants for the Glossy Black "Branding" Service Card
- *
- * Sequence Breakdown:
- *  0%   (Slot/Hidden):   y: 500px, x: 0px, rotateZ: 0deg, scale: 1, opacity: 0, blur(10px)
- *  40%  (Peak Overshoot): y: -50px, x: -25px, rotateZ: -6deg, scale: 1, opacity: 1, blur(2px)
- *  100% (Final Settle):   y: -10px, x: -60px, rotateZ: -12deg, scale: 0.95, opacity: 1, blur(0px)
+ * 
+ * - Positioned on master 1536x1024 artboard via responsive percentage center
+ * - Unrotated size: 208.3px x 281.0px (aspect ratio 0.741)
+ * - Final rotation: -19.1 degrees (Counter-Clockwise)
+ * - Resting center: (463.2px, 439.8px) -> 30.1563% left, 42.9492% top
+ * - Overlap: Sits above White SEO card (z:20) and below upcoming Green card (z:40)
  */
 export const brandingCardVariants: Variants = {
   hidden: {
-    x: 0,
-    y: 500,
+    y: 400,
     rotateZ: 0,
-    scale: 1,
+    scale: 0.9,
     opacity: 0,
     filter: 'blur(10px) drop-shadow(0 10px 15px rgba(0,0,0,0.08))',
   },
   visible: {
-    // Tighter bezier arc than Card 1 & Card 2 to prevent collision during flight, settling at spread position
-    x: [0, -25, -70],
-    y: [500, -50, 5],
-    rotateZ: [0, -5, -10],
-    scale: [1, 0.98, 0.95],
+    // Curves upward into final resting angle and position
+    y: [400, -20, 0],
+    rotateZ: [0, -8, config.rotation],
+    scale: [0.9, 1.02, 1],
     opacity: [0, 1, 1],
-    // Glossy black dynamic specular depth & shadow
     filter: [
-      'blur(10px) drop-shadow(0 15px 15px rgba(0,0,0,0.10))',
-      'blur(2px) drop-shadow(0 35px 32px rgba(0,0,0,0.30))',
-      'blur(0px) drop-shadow(0 18px 24px rgba(0,0,0,0.18))',
+      'blur(10px) drop-shadow(0 10px 15px rgba(0,0,0,0.08))',
+      'blur(2px) drop-shadow(0 32px 30px rgba(0,0,0,0.35))',
+      'blur(0px) drop-shadow(0 18px 24px rgba(0,0,0,0.28))',
     ],
     transition: {
       duration: 1.4,
       times: [0, 0.4, 1],
       ease: ['easeOut', [0.16, 1, 0.3, 1]],
-      delay: 0.5, // 0.15s stagger after Card 2 (delay 0.35s)
+      delay: config.spring.delay,
     },
   },
 };
 
-/**
- * Alternative variant using direct spring physics for final settle:
- * transition: { type: "spring", stiffness: 60, damping: 14, mass: 1, delay: 0.5 }
- */
 export const brandingCardSpringVariants: Variants = {
   hidden: {
-    x: 0,
-    y: 500,
+    y: 400,
     rotateZ: 0,
-    scale: 1,
+    scale: 0.9,
     opacity: 0,
     filter: 'blur(10px) drop-shadow(0 10px 15px rgba(0,0,0,0.08))',
   },
   visible: {
-    x: -70,
-    y: 5,
-    rotateZ: -10,
-    scale: 0.95,
+    y: 0,
+    rotateZ: config.rotation,
+    scale: 1,
     opacity: 1,
-    filter: 'blur(0px) drop-shadow(0 18px 24px rgba(0,0,0,0.18))',
+    filter: 'blur(0px) drop-shadow(0 18px 24px rgba(0,0,0,0.28))',
     transition: {
       type: 'spring',
-      stiffness: 60,
-      damping: 14,
-      mass: 1,
-      delay: 0.5,
+      stiffness: config.spring.stiffness,
+      damping: config.spring.damping,
+      mass: config.spring.mass,
+      delay: config.spring.delay,
     },
   },
 };
@@ -80,43 +75,87 @@ export const BrandingCard: React.FC<BrandingCardProps> = ({
   className = '',
   useSpringDirect = false,
 }) => {
+  // Support instant resting-pose query param for automated verification screenshotting
+  const isInstant =
+    typeof window !== 'undefined' &&
+    (window.location.search.includes('instant') || window.location.search.includes('debug'));
+
   return (
-    <motion.div
-      className={`branding-service-card ${className}`}
-      variants={useSpringDirect ? brandingCardSpringVariants : brandingCardVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+    <div
+      className={`branding-card-positioner ${className}`}
       style={{
         position: 'absolute',
-        transformOrigin: 'center center',
-        zIndex: 30, // Layered above White SEO card (z:20) and below upcoming Green card (z:40)
-        width: '320px',
-        maxWidth: '90vw',
-        background: 'transparent',
-        border: 'none',
-        overflow: 'visible',
-        willChange: 'transform, opacity, filter',
-        cursor: 'pointer',
+        left: `${config.leftPct}%`,
+        top: `${config.topPct}%`,
+        width: `${config.widthPct}%`,
+        height: `${config.heightPct}%`,
+        transform: 'translate(-50%, -50%)',
+        transformOrigin: '50% 50%',
+        zIndex: config.zIndex, // 30: above White (20) & Yellow (10), below Green (40)
+        pointerEvents: 'auto',
       }}
     >
-      <img
-        src={brandingImage}
-        alt="Branding Glossy Black Service Card"
+      <motion.div
+        className="branding-card-motion"
+        variants={useSpringDirect ? brandingCardSpringVariants : brandingCardVariants}
+        initial="hidden"
+        animate="visible"
         style={{
           width: '100%',
-          height: 'auto',
-          objectFit: 'contain',
-          display: 'block',
-          userSelect: 'none',
-          pointerEvents: 'none',
-          background: 'transparent',
-          border: 'none',
-          outline: 'none',
+          height: '100%',
+          transformOrigin: '50% 50%',
+          position: 'relative',
+          cursor: 'pointer',
+          willChange: 'transform, filter, opacity',
         }}
-        draggable={false}
-      />
-    </motion.div>
+        {...(isInstant
+          ? {
+              initial: {
+                y: 0,
+                rotateZ: config.rotation,
+                scale: 1,
+                opacity: 1,
+                filter: 'blur(0px) drop-shadow(0 18px 24px rgba(0,0,0,0.28))',
+              },
+              animate: {
+                y: 0,
+                rotateZ: config.rotation,
+                scale: 1,
+                opacity: 1,
+                filter: 'blur(0px) drop-shadow(0 18px 24px rgba(0,0,0,0.28))',
+              },
+              transition: { duration: 0, delay: 0 },
+            }
+          : {})}
+      >
+        {/* Glossy Black 3D Card Surface */}
+        <div
+          className="branding-card-surface"
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: '7.5%', // Corresponds to ~16px corner radius at 214.5px width
+            overflow: 'hidden',
+            position: 'relative',
+            boxShadow: 'inset 0 1px 1.5px rgba(255, 255, 255, 0.35)',
+          }}
+        >
+          <img
+            src={brandingCardImage}
+            alt="Branding Glossy Black Service Card"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              display: 'block',
+              userSelect: 'none',
+              pointerEvents: 'none',
+            }}
+            draggable={false}
+          />
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
