@@ -1,33 +1,33 @@
 import React from 'react';
 import { motion, type Variants } from 'framer-motion';
-import socialMediaImage from '../../assets/socialMedia.png';
+import socialMediaImage from '../../assets/socialMediaCropped.png';
+import { CARD_LAYOUT } from './cardLayout';
+
+const config = CARD_LAYOUT.social;
 
 /**
- * Framer Motion Animation Variants for the Orange "Social Media" Service Card (Far-Right)
- *
- * Sequence Breakdown:
- *  0%   (Slot/Hidden):   y: 500px, x: 0px, rotateZ: 0deg, scale: 1, opacity: 0, blur(10px)
- *  40%  (Peak Overshoot): y: -50px, x: 75px, rotateZ: 10deg, scale: 1, opacity: 1, blur(2px)
- *  100% (Final Settle):   y: 30px, x: 180px, rotateZ: 22deg, scale: 0.95, opacity: 1, blur(0px)
+ * Framer Motion Animation Variants for the Orange "Social Media" Service Card (Discover Style)
+ * 
+ * - Positioned on master 1536x1024 artboard via responsive percentage center
+ * - Unrotated size: 176.8px x 230.5px (aspect ratio 0.767)
+ * - Final rotation: 25.5 degrees, skewX: 0 degrees
+ * - Overlap: Sits above Green App Dev card (z:40) and below Blue Web card (z:50)
+ * - Keeping orange gradient and styling (KEEP_ORANGE mode)
  */
 export const socialMediaCardVariants: Variants = {
   hidden: {
-    x: 0,
-    y: 500,
+    y: 400,
     rotateZ: 0,
-    scale: 1,
+    scale: 0.9,
     opacity: 0,
     filter: 'blur(10px) drop-shadow(0 10px 15px rgba(0,0,0,0.08))',
   },
   visible: {
-    // Sharp rightward curve, sweeping outward to complete the right side of the fan
-    x: [0, 75, 180],
-    y: [500, -50, 30],
-    rotateZ: [0, 10, 22],
-    scale: [1, 1, 0.95],
+    // Curves upward into final resting angle and position
+    y: [400, -20, 0],
+    rotateZ: [0, 10, config.rotation],
+    scale: [0.9, 1.02, 1],
     opacity: [0, 1, 1],
-
-    // Glossy orange dynamic specular depth & alpha drop-shadow
     filter: [
       'blur(10px) drop-shadow(0 15px 15px rgba(0,0,0,0.08))',
       'blur(2px) drop-shadow(0 35px 32px rgba(180,60,10,0.32))',
@@ -37,37 +37,31 @@ export const socialMediaCardVariants: Variants = {
       duration: 1.4,
       times: [0, 0.4, 1],
       ease: ['easeOut', [0.16, 1, 0.3, 1]],
-      delay: 0.95, // 0.15s stagger after Card 5 (delay 0.80s)
+      delay: config.spring.delay,
     },
   },
 };
 
-/**
- * Alternative variant using direct spring physics for final settle:
- * transition: { type: "spring", stiffness: 60, damping: 14, mass: 1, delay: 0.95 }
- */
 export const socialMediaCardSpringVariants: Variants = {
   hidden: {
-    x: 0,
-    y: 500,
+    y: 400,
     rotateZ: 0,
-    scale: 1,
+    scale: 0.9,
     opacity: 0,
-    filter: 'blur(10px)',
+    filter: 'blur(10px) drop-shadow(0 10px 15px rgba(0,0,0,0.08))',
   },
   visible: {
-    x: 180,
-    y: 30,
-    rotateZ: 22,
-    scale: 0.95,
+    y: 0,
+    rotateZ: config.rotation,
+    scale: 1,
     opacity: 1,
     filter: 'blur(0px) drop-shadow(0 20px 26px rgba(180,60,10,0.20))',
     transition: {
       type: 'spring',
-      stiffness: 60,
-      damping: 14,
-      mass: 1,
-      delay: 0.95,
+      stiffness: config.spring.stiffness,
+      damping: config.spring.damping,
+      mass: config.spring.mass,
+      delay: config.spring.delay,
     },
   },
 };
@@ -81,43 +75,87 @@ export const SocialMediaCard: React.FC<SocialMediaCardProps> = ({
   className = '',
   useSpringDirect = false,
 }) => {
+  // Support instant resting-pose query param for automated verification screenshotting
+  const isInstant =
+    typeof window !== 'undefined' &&
+    (window.location.search.includes('instant') || window.location.search.includes('debug'));
+
   return (
-    <motion.div
-      className={`social-media-service-card ${className}`}
-      variants={useSpringDirect ? socialMediaCardSpringVariants : socialMediaCardVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+    <div
+      className={`social-media-service-card-positioner ${className}`}
       style={{
         position: 'absolute',
-        transformOrigin: 'center center',
-        zIndex: 45, // Layered behind the front-most Blue card (z:50) and above Green card (z:40)
-        width: '320px',
-        maxWidth: '90vw',
-        background: 'transparent',
-        border: 'none',
-        overflow: 'visible',
-        willChange: 'transform, opacity, filter',
-        cursor: 'pointer',
+        left: `${config.leftPct}%`,
+        top: `${config.topPct}%`,
+        width: `${config.widthPct}%`,
+        height: `${config.heightPct}%`,
+        transform: 'translate(-50%, -50%)',
+        transformOrigin: '50% 50%',
+        zIndex: config.zIndex, // 45: above Green (40) and below Blue (50)
+        pointerEvents: 'auto',
       }}
     >
-      <img
-        src={socialMediaImage}
-        alt="Social Media Vivid Orange Service Card"
+      <motion.div
+        className="social-media-service-card-motion"
+        variants={useSpringDirect ? socialMediaCardSpringVariants : socialMediaCardVariants}
+        initial="hidden"
+        animate="visible"
         style={{
           width: '100%',
-          height: 'auto',
-          objectFit: 'contain',
-          display: 'block',
-          userSelect: 'none',
-          pointerEvents: 'none',
-          background: 'transparent',
-          border: 'none',
-          outline: 'none',
+          height: '100%',
+          transformOrigin: '50% 50%',
+          position: 'relative',
+          cursor: 'pointer',
+          willChange: 'transform, filter, opacity',
         }}
-        draggable={false}
-      />
-    </motion.div>
+        {...(isInstant
+          ? {
+              initial: {
+                y: 0,
+                rotateZ: config.rotation,
+                scale: 1,
+                opacity: 1,
+                filter: 'blur(0px) drop-shadow(0 20px 26px rgba(180,60,10,0.20))',
+              },
+              animate: {
+                y: 0,
+                rotateZ: config.rotation,
+                scale: 1,
+                opacity: 1,
+                filter: 'blur(0px) drop-shadow(0 20px 26px rgba(180,60,10,0.20))',
+              },
+              transition: { duration: 0, delay: 0 },
+            }
+          : {})}
+      >
+        {/* Glossy Orange 3D Card Surface */}
+        <div
+          className="social-media-service-card-surface"
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: '9%', // Corresponds to ~16px corner radius at 176.8px width
+            overflow: 'hidden',
+            position: 'relative',
+            boxShadow: 'inset 0 1.5px 2px rgba(255, 255, 255, 0.45)',
+          }}
+        >
+          <img
+            src={socialMediaImage}
+            alt="Social Media Vivid Orange Service Card"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              display: 'block',
+              userSelect: 'none',
+              pointerEvents: 'none',
+            }}
+            draggable={false}
+          />
+        </div>
+      </motion.div>
+    </div>
   );
 };
 

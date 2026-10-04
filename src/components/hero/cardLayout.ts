@@ -164,6 +164,31 @@ export const CARD_LAYOUT = {
       delay: 0.8,
     },
   },
+  social: {
+    id: 'social',
+    name: 'Social Media',
+    watermark: 'Social',
+    artboardWidth: 1536,
+    artboardHeight: 1024,
+    centerX: 777.6,
+    centerY: 527.0,
+    width: 176.8,
+    height: 230.5,
+    rotation: 25.5,
+    borderRadius: 16,
+    zIndex: 45,
+    // Calibrated percentage coordinates for sub-pixel 1536x1024 alignment
+    leftPct: (777.6 / 1536) * 100, // 50.625%
+    topPct: (527.0 / 1024) * 100,  // 51.4648%
+    widthPct: (176.8 / 1536) * 100, // 11.5104%
+    heightPct: (230.5 / 1024) * 100, // 22.5098%
+    spring: {
+      stiffness: 60,
+      damping: 14,
+      mass: 1,
+      delay: 0.95,
+    },
+  },
 } as const;
 
 /**
