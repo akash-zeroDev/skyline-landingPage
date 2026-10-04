@@ -20,17 +20,17 @@ export const seoCardVariants: Variants = {
     filter: 'blur(10px) drop-shadow(0 10px 15px rgba(0,0,0,0.05))',
   },
   visible: {
-    // Tighter bezier arc than Card 1 to prevent collision during flight
-    x: [0, -50, -180],
-    y: [500, -50, 20],
-    rotateZ: [0, -8, -15],
-    scale: [1, 1, 0.92],
+    // Tighter bezier arc than Card 1 to prevent collision during flight, settling at spread position
+    x: [0, -60, -220],
+    y: [500, -50, 15],
+    rotateZ: [0, -10, -20],
+    scale: [1, 0.98, 0.90],
     opacity: [0, 1, 1],
     // Frosted glass dynamic shadow & blur reduction
     filter: [
       'blur(10px) drop-shadow(0 15px 15px rgba(0,0,0,0.06))',
       'blur(2px) drop-shadow(0 34px 30px rgba(17,26,92,0.22))',
-      'blur(0px) drop-shadow(0 16px 22px rgba(17,26,92,0.13))',
+      'blur(0px) drop-shadow(0 16px 20px rgba(17,26,92,0.12))',
     ],
     transition: {
       duration: 1.4,
@@ -51,15 +51,15 @@ export const seoCardSpringVariants: Variants = {
     rotateZ: 0,
     scale: 1,
     opacity: 0,
-    filter: 'blur(10px)',
+    filter: 'blur(10px) drop-shadow(0 10px 15px rgba(0,0,0,0.05))',
   },
   visible: {
-    x: -180,
-    y: 20,
-    rotateZ: -15,
-    scale: 0.92,
+    x: -220,
+    y: 15,
+    rotateZ: -20,
+    scale: 0.90,
     opacity: 1,
-    filter: 'blur(0px) drop-shadow(0 16px 22px rgba(17,26,92,0.13))',
+    filter: 'blur(0px) drop-shadow(0 16px 20px rgba(17,26,92,0.12))',
     transition: {
       type: 'spring',
       stiffness: 60,
@@ -79,13 +79,37 @@ export const SeoCard: React.FC<SeoCardProps> = ({
   className = '',
   useSpringDirect = false,
 }) => {
+  const isInstant =
+    typeof window !== 'undefined' &&
+    (window.location.search.includes('instant') || window.location.search.includes('debug'));
+
   return (
     <motion.div
       className={`seo-service-card ${className}`}
       variants={useSpringDirect ? seoCardSpringVariants : seoCardVariants}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      animate="visible"
+      {...(isInstant
+        ? {
+            initial: {
+              x: -220,
+              y: 15,
+              rotateZ: -20,
+              scale: 0.9,
+              opacity: 1,
+              filter: 'blur(0px) drop-shadow(0 16px 20px rgba(17,26,92,0.12))',
+            },
+            animate: {
+              x: -220,
+              y: 15,
+              rotateZ: -20,
+              scale: 0.9,
+              opacity: 1,
+              filter: 'blur(0px) drop-shadow(0 16px 20px rgba(17,26,92,0.12))',
+            },
+            transition: { duration: 0, delay: 0 },
+          }
+        : {})}
       style={{
         position: 'absolute',
         transformOrigin: 'center center',

@@ -12,13 +12,13 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 60px 24px 80px;
+  padding: 0;
   box-sizing: border-box;
 }
 
 .hero-container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1536px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -27,11 +27,12 @@
   position: relative;
 }
 
-/* Fanned-out wallet stage container - centered origin */
+/* Fanned-out wallet stage container - 1536x1024 responsive artboard */
 .hero-wallet-stage {
   position: relative;
   width: 100%;
-  height: 640px;
+  max-width: 1536px;
+  aspect-ratio: 1536 / 1024;
   display: flex;
   align-items: center;
   justify-content: center;

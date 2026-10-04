@@ -20,17 +20,17 @@ export const brandingCardVariants: Variants = {
     filter: 'blur(10px) drop-shadow(0 10px 15px rgba(0,0,0,0.08))',
   },
   visible: {
-    // Tighter bezier arc than Card 1 & Card 2 to prevent collision during flight
-    x: [0, -25, -60],
-    y: [500, -50, -10],
-    rotateZ: [0, -6, -12],
-    scale: [1, 1, 0.95],
+    // Tighter bezier arc than Card 1 & Card 2 to prevent collision during flight, settling at spread position
+    x: [0, -25, -70],
+    y: [500, -50, 5],
+    rotateZ: [0, -5, -10],
+    scale: [1, 0.98, 0.95],
     opacity: [0, 1, 1],
     // Glossy black dynamic specular depth & shadow
     filter: [
       'blur(10px) drop-shadow(0 15px 15px rgba(0,0,0,0.10))',
       'blur(2px) drop-shadow(0 35px 32px rgba(0,0,0,0.30))',
-      'blur(0px) drop-shadow(0 18px 24px rgba(0,0,0,0.20))',
+      'blur(0px) drop-shadow(0 18px 24px rgba(0,0,0,0.18))',
     ],
     transition: {
       duration: 1.4,
@@ -52,15 +52,15 @@ export const brandingCardSpringVariants: Variants = {
     rotateZ: 0,
     scale: 1,
     opacity: 0,
-    filter: 'blur(10px)',
+    filter: 'blur(10px) drop-shadow(0 10px 15px rgba(0,0,0,0.08))',
   },
   visible: {
-    x: -60,
-    y: -10,
-    rotateZ: -12,
+    x: -70,
+    y: 5,
+    rotateZ: -10,
     scale: 0.95,
     opacity: 1,
-    filter: 'blur(0px) drop-shadow(0 18px 24px rgba(0,0,0,0.20))',
+    filter: 'blur(0px) drop-shadow(0 18px 24px rgba(0,0,0,0.18))',
     transition: {
       type: 'spring',
       stiffness: 60,

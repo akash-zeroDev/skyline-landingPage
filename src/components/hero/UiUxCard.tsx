@@ -1,66 +1,66 @@
 import React from 'react';
 import { motion, type Variants } from 'framer-motion';
-import uiUxImage from '../../assets/uiUx.png';
+import uiUxCardImage from '../../assets/uiUxCardCropped.png';
+import { CARD_LAYOUT } from './cardLayout';
+
+const config = CARD_LAYOUT.uiUx;
 
 /**
- * Framer Motion Animation Variants for the UI/UX 3D Service Card
+ * Framer Motion Animation Variants for the UI/UX Design (Yellow) Card
  * 
- * Note: We do NOT apply rectangular CSS `box-shadow` or `border-radius` to the container div.
- * The 3D card asset already features photorealistic 3D bevels, depth, and transparent edges.
- * Using container `box-shadow` creates an artificial rectangular border around the card.
+ * - Positioned on master 1536x1024 artboard via responsive percentage center
+ * - Unrotated size: 143px x 196px (aspect ratio 0.73)
+ * - Final rotation: -24.4 degrees
+ * - Resting center: (177.5px, 291.5px) -> 11.556% left, 28.467% top
  */
 export const uiUxCardVariants: Variants = {
   hidden: {
-    x: 0,
-    y: 500,
+    y: 350,
     rotateZ: 0,
-    scale: 1,
+    scale: 0.9,
     opacity: 0,
-    filter: 'blur(10px)',
+    filter: 'blur(10px) drop-shadow(0 8px 10px rgba(0,0,0,0.04))',
   },
   visible: {
-    // Curved bezier path: shoots straight up, then arcs leftward to -280px / 40px
-    x: [0, -75, -280],
-    y: [500, -50, 40],
-    rotateZ: [0, -15, -25],
-    scale: [1, 1, 0.90],
+    // Curves upward into final resting angle and position
+    y: [350, -25, 0],
+    rotateZ: [0, -10, config.rotation],
+    scale: [0.9, 1.02, 1],
     opacity: [0, 1, 1],
     filter: [
-      'blur(10px) drop-shadow(0 15px 15px rgba(0,0,0,0.06))',
-      'blur(2px) drop-shadow(0 30px 25px rgba(17,26,92,0.18))',
-      'blur(0px) drop-shadow(0 16px 20px rgba(17,26,92,0.12))',
+      'blur(10px) drop-shadow(0 8px 10px rgba(0,0,0,0.04))',
+      'blur(2px) drop-shadow(0 28px 24px rgba(17,26,92,0.22))',
+      'blur(0px) drop-shadow(0 14px 20px rgba(17,26,92,0.12))',
     ],
     transition: {
       duration: 1.4,
       times: [0, 0.4, 1],
       ease: ['easeOut', [0.16, 1, 0.3, 1]],
-      delay: 0.2,
+      delay: config.spring.delay,
     },
   },
 };
 
 export const uiUxCardSpringVariants: Variants = {
   hidden: {
-    x: 0,
-    y: 500,
+    y: 350,
     rotateZ: 0,
-    scale: 1,
+    scale: 0.9,
     opacity: 0,
-    filter: 'blur(10px)',
+    filter: 'blur(10px) drop-shadow(0 8px 10px rgba(0,0,0,0.04))',
   },
   visible: {
-    x: -280,
-    y: 40,
-    rotateZ: -25,
-    scale: 0.90,
+    y: 0,
+    rotateZ: config.rotation,
+    scale: 1,
     opacity: 1,
-    filter: 'blur(0px) drop-shadow(0 16px 20px rgba(17,26,92,0.12))',
+    filter: 'blur(0px) drop-shadow(0 14px 20px rgba(17,26,92,0.12))',
     transition: {
       type: 'spring',
-      stiffness: 60,
-      damping: 14,
-      mass: 1,
-      delay: 0.2,
+      stiffness: config.spring.stiffness,
+      damping: config.spring.damping,
+      mass: config.spring.mass,
+      delay: config.spring.delay,
     },
   },
 };
@@ -74,43 +74,87 @@ export const UiUxCard: React.FC<UiUxCardProps> = ({
   className = '',
   useSpringDirect = false,
 }) => {
+  // Support instant resting-pose query param for automated verification screenshotting
+  const isInstant =
+    typeof window !== 'undefined' &&
+    (window.location.search.includes('instant') || window.location.search.includes('debug'));
+
   return (
-    <motion.div
-      className={`ui-ux-service-card ${className}`}
-      variants={useSpringDirect ? uiUxCardSpringVariants : uiUxCardVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+    <div
+      className={`ui-ux-card-positioner ${className}`}
       style={{
         position: 'absolute',
-        transformOrigin: 'center center',
-        zIndex: 10, // Lowest in stack (back-most, left-most card)
-        width: '320px',
-        maxWidth: '90vw',
-        background: 'transparent', // Pure transparent container
-        border: 'none',
-        borderRadius: 0,
-        overflow: 'visible',
-        willChange: 'transform, opacity, filter',
-        cursor: 'pointer',
+        left: `${config.leftPct}%`,
+        top: `${config.topPct}%`,
+        width: `${config.widthPct}%`,
+        height: `${config.heightPct}%`,
+        transform: 'translate(-50%, -50%)',
+        transformOrigin: '50% 50%',
+        zIndex: config.zIndex,
+        pointerEvents: 'auto',
       }}
     >
-      <img
-        src={uiUxImage}
-        alt="UI/UX Design 3D Service Card"
+      <motion.div
+        className="ui-ux-card-motion"
+        variants={useSpringDirect ? uiUxCardSpringVariants : uiUxCardVariants}
+        initial="hidden"
+        animate="visible"
         style={{
           width: '100%',
-          height: 'auto',
-          display: 'block',
-          userSelect: 'none',
-          pointerEvents: 'none',
-          background: 'transparent',
-          border: 'none',
-          outline: 'none',
+          height: '100%',
+          transformOrigin: '50% 50%',
+          position: 'relative',
+          cursor: 'pointer',
+          willChange: 'transform, opacity, filter',
         }}
-        draggable={false}
-      />
-    </motion.div>
+        {...(isInstant
+          ? {
+              initial: {
+                y: 0,
+                rotateZ: config.rotation,
+                scale: 1,
+                opacity: 1,
+                filter: 'blur(0px) drop-shadow(0 14px 20px rgba(17,26,92,0.12))',
+              },
+              animate: {
+                y: 0,
+                rotateZ: config.rotation,
+                scale: 1,
+                opacity: 1,
+                filter: 'blur(0px) drop-shadow(0 14px 20px rgba(17,26,92,0.12))',
+              },
+              transition: { duration: 0, delay: 0 },
+            }
+          : {})}
+      >
+        {/* Yellow Card 3D Surface */}
+        <div
+          className="ui-ux-card-surface"
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: '11.2%', // Corresponds to 16px corner radius at 143px width
+            overflow: 'hidden',
+            position: 'relative',
+            boxShadow: 'inset 0 1px 1.5px rgba(255, 255, 255, 0.45)',
+          }}
+        >
+          <img
+            src={uiUxCardImage}
+            alt="UI/UX Design 3D Service Card"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+              userSelect: 'none',
+              pointerEvents: 'none',
+            }}
+            draggable={false}
+          />
+        </div>
+      </motion.div>
+    </div>
   );
 };
 

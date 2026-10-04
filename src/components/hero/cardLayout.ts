@@ -1,0 +1,67 @@
+/**
+ * Central Card Layout Configuration for Skyline Digital Media Hero Section
+ * 
+ * Master Artboard: 1536 x 1024 (aspect ratio 3:2)
+ * 
+ * Target Measurements from Reference Image:
+ * - Center: (177.5, 291.5)
+ * - Width: 143.0, Height: 196.0
+ * - Rotation: -24.4 deg
+ * - Corner Radius: 16px
+ * - Z-Index: 10
+ */
+
+export interface CardConfig {
+  id: string;
+  name: string;
+  watermark: string;
+  artboardWidth: number;
+  artboardHeight: number;
+  centerX: number;
+  centerY: number;
+  width: number;
+  height: number;
+  rotation: number;
+  borderRadius: number;
+  zIndex: number;
+  leftPct: number;
+  topPct: number;
+  widthPct: number;
+  heightPct: number;
+  spring: {
+    stiffness: number;
+    damping: number;
+    mass: number;
+    delay: number;
+  };
+}
+
+export const CARD_LAYOUT = {
+  uiUx: {
+    id: 'uiUx',
+    name: 'UI/UX Design',
+    watermark: 'Design',
+    artboardWidth: 1536,
+    artboardHeight: 1024,
+    centerX: 177.5,
+    centerY: 291.5,
+    width: 144.2,
+    height: 199.0,
+    rotation: -24.4,
+    borderRadius: 16,
+    zIndex: 10,
+    // Calibrated percentage coordinates for sub-pixel 1536x1024 alignment
+    leftPct: (178.8 / 1536) * 100, // 11.641%
+    topPct: (294.8 / 1024) * 100,  // 28.789%
+    widthPct: (144.2 / 1536) * 100, // 9.388%
+    heightPct: (199.0 / 1024) * 100, // 19.434%
+    spring: {
+      stiffness: 60,
+      damping: 14,
+      mass: 1,
+      delay: 0.2,
+    },
+  },
+} as const;
+
+export default CARD_LAYOUT;
