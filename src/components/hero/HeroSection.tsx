@@ -8,6 +8,7 @@ import WebCard from './WebCard';
 import SocialMediaCard from './SocialMediaCard';
 import FloatingCursor from './FloatingCursor';
 import HeroAccents from './HeroAccents';
+import { TRAY_CLIP_LINE_PCT } from './cardLayout';
 import './HeroSection.css';
 
 export const HeroSection: React.FC = () => {
@@ -22,18 +23,35 @@ export const HeroSection: React.FC = () => {
       <div className="hero-container">
         {/* Wallet Container where the service cards fan out from inside the slot */}
         <div className="hero-wallet-stage">
-          {/* Central Wallet Slot Frame (z-index: 5, behind all cards) */}
-          <WalletSlot key={`slot-${animationKey}`} />
+          {/* L0: Tray Drop Shadow (z-index: 2, unclipped, below cards) */}
+          <WalletSlot key={`slot-shadow-${animationKey}`} variant="shadow" />
 
-          {/* Fanned-out Service Cards */}
-          <UiUxCard key={`uiux-${animationKey}`} />
-          <SeoCard key={`seo-${animationKey}`} />
-          <BrandingCard key={`branding-${animationKey}`} />
-          <AppCard key={`app-${animationKey}`} />
-          <WebCard key={`web-${animationKey}`} />
-          <SocialMediaCard key={`social-${animationKey}`} />
+          {/* L1: Cards Layer Wrapper with clip-path at front lip middle */}
+          <div
+            className="hero-cards-layer"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              pointerEvents: 'none',
+              clipPath: `inset(0 0 calc(100% - ${TRAY_CLIP_LINE_PCT}%) 0)`,
+            }}
+          >
+            {/* Back Tray Frame (z-index: 5, behind all cards) */}
+            <WalletSlot key={`slot-back-${animationKey}`} variant="back" />
 
-          {/* Floating 3D Cursor (z-index: 100, above all cards) */}
+            {/* Fanned-out Service Cards */}
+            <UiUxCard key={`uiux-${animationKey}`} />
+            <SeoCard key={`seo-${animationKey}`} />
+            <BrandingCard key={`branding-${animationKey}`} />
+            <AppCard key={`app-${animationKey}`} />
+            <WebCard key={`web-${animationKey}`} />
+            <SocialMediaCard key={`social-${animationKey}`} />
+          </div>
+
+          {/* L2: Front Lip (z-index: 60, in front of cards layer) */}
+          <WalletSlot key={`slot-front-${animationKey}`} variant="front" />
+
+          {/* L3: Floating 3D Cursor (z-index: 100, above all cards & front lip) */}
           <FloatingCursor key={`cursor-${animationKey}`} />
 
           {/* Floating 3D Accents (Toggle, Bolt, Fingerprint, Lock) */}
