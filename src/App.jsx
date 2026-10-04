@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar';
 import HeroSection from './components/hero/HeroSection';
+import WhatWeDo from './components/whatWeDo/WhatWeDo';
 import WorkSection from './components/sections/WorkSection';
 import './App.css';
 
@@ -10,6 +11,9 @@ function App() {
 
       {/* Animated Hero Section with Fanned-Out Wallet Stage */}
       <HeroSection />
+
+      {/* What We Do Bento Grid Section (Chunk 1 of 7) */}
+      <WhatWeDo />
 
       {/* Target sections for anchor navigation */}
       <main className="skyline-content">
