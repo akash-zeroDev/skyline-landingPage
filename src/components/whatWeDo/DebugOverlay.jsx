@@ -1,5 +1,5 @@
 import React from 'react';
-import { GEOMETRY, DEBUG_GUIDES, REVENUE } from './config';
+import { GEOMETRY, DEBUG_GUIDES, REVENUE, STAT, FILE } from './config';
 
 /**
  * Dev-only debug guide overlay.
@@ -213,6 +213,99 @@ export default function DebugOverlay({ enabled = false }) {
             </span>
           </div>
         ))}
+      </div>
+
+      {/* Chunk 3: Stat Card A Guides */}
+      <div
+        className="wwd-debug-stat-a"
+        style={{
+          position: 'absolute',
+          left: `calc(var(--r) * ${cards.statA.x})`,
+          top: `calc(var(--r) * ${cards.statA.y})`,
+          width: `calc(var(--r) * ${cards.statA.w})`,
+          height: `calc(var(--r) * ${cards.statA.h})`,
+          pointerEvents: 'none',
+          overflow: 'visible',
+        }}
+      >
+        {/* Value Box */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 10.5)', top: 'calc(var(--r) * 10.5)', width: 'calc(var(--r) * 47.5)', height: 'calc(var(--r) * 18)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '7px', height: '7px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+        {/* Delta Box */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 61)', top: 'calc(var(--r) * 9)', width: 'calc(var(--r) * 19)', height: 'calc(var(--r) * 10)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '5px', height: '5px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+        {/* Icon Tile Box */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 10)', top: 'calc(var(--r) * 32)', width: 'calc(var(--r) * 22.75)', height: 'calc(var(--r) * 22.75)', borderRadius: 'calc(var(--r) * 5)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '7px', height: '7px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+        {/* Label Box */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 39.5)', top: 'calc(var(--r) * 37.5)', width: 'calc(var(--r) * 56)', height: 'calc(var(--r) * 14)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '7px', height: '7px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+      </div>
+
+      {/* Chunk 3: Stat Card B Guides */}
+      <div
+        className="wwd-debug-stat-b"
+        style={{
+          position: 'absolute',
+          left: `calc(var(--r) * ${cards.statB.x})`,
+          top: `calc(var(--r) * ${cards.statB.y})`,
+          width: `calc(var(--r) * ${cards.statB.w})`,
+          height: `calc(var(--r) * ${cards.statB.h})`,
+          pointerEvents: 'none',
+          overflow: 'visible',
+        }}
+      >
+        {/* Value Box */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 10.5)', top: 'calc(var(--r) * 10.5)', width: 'calc(var(--r) * 42)', height: 'calc(var(--r) * 18)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '7px', height: '7px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+        {/* Delta Box */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 55.5)', top: 'calc(var(--r) * 9)', width: 'calc(var(--r) * 16.5)', height: 'calc(var(--r) * 10)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '5px', height: '5px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+        {/* Icon Tile Box */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 10)', top: 'calc(var(--r) * 32)', width: 'calc(var(--r) * 22.75)', height: 'calc(var(--r) * 22.75)', borderRadius: 'calc(var(--r) * 5)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '7px', height: '7px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+        {/* Label Box */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 39.5)', top: 'calc(var(--r) * 37.5)', width: 'calc(var(--r) * 47.5)', height: 'calc(var(--r) * 14)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '7px', height: '7px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+      </div>
+
+      {/* Chunk 3: File Card Guides */}
+      <div
+        className="wwd-debug-file"
+        style={{
+          position: 'absolute',
+          left: `calc(var(--r) * ${cards.file.x})`,
+          top: `calc(var(--r) * ${cards.file.y})`,
+          width: `calc(var(--r) * ${cards.file.w})`,
+          height: `calc(var(--r) * ${cards.file.h})`,
+          pointerEvents: 'none',
+          overflow: 'visible',
+        }}
+      >
+        {/* Icon Tile Box */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 11.5)', top: 'calc(var(--r) * 15)', width: 'calc(var(--r) * 36)', height: 'calc(var(--r) * 36)', borderRadius: 'calc(var(--r) * 9)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '9px', height: '9px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+        {/* File Name Box */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 54.5)', top: 'calc(var(--r) * 19.5)', width: 'calc(var(--r) * 108)', height: 'calc(var(--r) * 14)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '7px', height: '7px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+        {/* File Meta Box */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 54.5)', top: 'calc(var(--r) * 35)', width: 'calc(var(--r) * 21.5)', height: 'calc(var(--r) * 11)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '5px', height: '5px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+        {/* Button Box */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 175)', top: 'calc(var(--r) * 20)', width: 'calc(var(--r) * 62)', height: 'calc(var(--r) * 25.5)', borderRadius: 'calc(var(--r) * 13)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '7px', height: '7px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
       </div>
     </div>
   );

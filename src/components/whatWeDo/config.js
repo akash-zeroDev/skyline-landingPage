@@ -39,7 +39,18 @@ export const TYPE = {
   cardTitle: 16,
   cardDescription: 10.5,
   cardDescriptionLineHeight: 13.5, // verified line pitch from ref_4 (y: 140.5, 155.0, 168.5)
-  statValue: 15,
+  statValue: 14.5, // measured from 10.0 ref-px cap height in ref_3 (3.3% update from chunk-1's 15)
+  statValueLineHeight: 18,
+  statDelta: 8, // raised superscript (+18%, +9%)
+  statDeltaLineHeight: 10,
+  statLabel: 10.5, // secondary platform label (Google Ads, Instagram)
+  statLabelLineHeight: 14,
+  fileName: 11, // file card document name
+  fileNameLineHeight: 14,
+  fileMeta: 8, // file card size text (7.1mb)
+  fileMetaLineHeight: 11,
+  button: 9.5, // pill button label (Preview)
+  buttonLineHeight: 12,
   smallLabel: 9,
 };
 
@@ -55,7 +66,7 @@ export const CONTENT = {
   },
   stats: [
     { value: '$15,230', delta: '+18%', label: 'Google Ads' },
-    { value: '$3,405', delta: '9%', label: 'Instagram' },
+    { value: '$3,405', delta: '+9%', label: 'Instagram' }, // updated from '9%' to '+9%' as specified
   ],
   content: {
     title: 'Next-Level Content',
@@ -256,4 +267,75 @@ export const REVENUE = {
 export const BREAKPOINTS = {
   desktop: 900,
   tablet: 560,
+};
+
+// 7. CHUNK 3: STAT CARDS CONFIGURATION
+export const STAT = {
+  COLORS: {
+    value: '#111A5C', // brand navy indigo (> 15:1 contrast on white)
+    delta: '#58617d', // secondary navy-muted token (6.07:1 contrast on white, >= 4.5:1 WCAG AA)
+    label: '#5c5c70', // secondary cool gray (6.21:1 contrast on white)
+    tileBorder: 'rgba(26, 15, 92, 0.10)',
+    tileShadow: '0 1px 2px rgba(26, 15, 92, 0.08)',
+  },
+  GEOMETRY: {
+    cardWidth: 119.17,
+    cardHeight: 65,
+    row1: {
+      top: 10.0,
+      left: 10.5,
+      valueCenterY: 19.5,
+      deltaCenterY: 14.25, // 5.25 ref-px above value center
+      gap: 3.0, // gap after value right edge
+    },
+    row2: {
+      top: 32.0,
+      left: 10.0,
+      iconSize: 22.75,
+      iconRadius: 5.0,
+      iconCenterY: 43.5,
+      labelCenterY: 44.75,
+      gap: 6.75, // label starts at 10.0 + 22.75 + 6.75 = 39.5
+    },
+  },
+};
+
+// 8. CHUNK 3: FILE CARD CONFIGURATION
+export const FILE = {
+  COLORS: {
+    name: '#111A5C', // brand navy indigo (15.9:1 contrast on white)
+    meta: '#5c5c70', // secondary gray (6.21:1 contrast on white)
+    buttonText: '#111A5C',
+    buttonBorder: 'rgba(26, 15, 92, 0.18)',
+    buttonHoverBg: 'rgba(26, 15, 92, 0.04)',
+    buttonFocusRing: 'rgba(17, 26, 92, 0.60)',
+    iconGradientStart: '#ff822e',
+    iconGradientEnd: '#df5300',
+  },
+  GEOMETRY: {
+    cardWidth: 248.33,
+    cardHeight: 65,
+    paddingLeft: 11.5,
+    paddingRight: 11.33,
+    icon: {
+      size: 36.0,
+      radius: 9.0,
+      centerY: 33.0,
+      gap: 7.0, // text column starts at 11.5 + 36.0 + 7.0 = 54.5
+    },
+    text: {
+      left: 54.5,
+      nameCenterY: 26.5,
+      metaCenterY: 40.5,
+    },
+    button: {
+      left: 175.0,
+      width: 62.0,
+      height: 25.5,
+      radius: 13.0,
+      centerY: 32.75,
+      top: 20.0,
+      labelWidth: 33.5,
+    },
+  },
 };

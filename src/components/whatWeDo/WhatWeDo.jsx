@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 import { SECTION_ID, TOKENS, CONTENT, GEOMETRY } from './config';
 import BentoCard from './BentoCard';
 import RevenueCard from './RevenueCard';
+import StatCard from './StatCard';
+import FileCard from './FileCard';
 import DebugOverlay from './DebugOverlay';
 
 /**
@@ -73,6 +75,16 @@ export default function WhatWeDo() {
           .wwd-container:not(.is-ref-mode) .wwd-card {
             --r: 1.25px;
           }
+          .wwd-container:not(.is-ref-mode) [data-part="stat-delta"],
+          .wwd-container:not(.is-ref-mode) [data-part="file-meta"] {
+            font-size: max(calc(var(--r) * 8), 11px) !important;
+          }
+          .wwd-container:not(.is-ref-mode) [data-part="stat-value"],
+          .wwd-container:not(.is-ref-mode) [data-part="stat-label"],
+          .wwd-container:not(.is-ref-mode) [data-part="file-name"],
+          .wwd-container:not(.is-ref-mode) [data-part="file-button"] {
+            font-size: max(calc(var(--r) * 12), 12px) !important;
+          }
         }
 
         /* Reference Mode Override */
@@ -87,7 +99,7 @@ export default function WhatWeDo() {
         @container (min-width: 900px) {
           .wwd-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             column-gap: calc(var(--r) * 13);
             height: calc(var(--r) * 269);
             width: 100%;
@@ -155,7 +167,7 @@ export default function WhatWeDo() {
         /* Reference Mode 3-column enforcement */
         .wwd-container.is-ref-mode .wwd-grid {
           display: grid !important;
-          grid-template-columns: repeat(3, 1fr) !important;
+          grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
           column-gap: calc(var(--r) * 13) !important;
           height: calc(var(--r) * 269) !important;
           width: 100% !important;
@@ -470,16 +482,8 @@ export default function WhatWeDo() {
             <div className="wwd-group-1">
               <RevenueCard />
               <div className="wwd-stat-row">
-                <BentoCard
-                  slot="stat-a"
-                  title={CONTENT.stats[0].label}
-                  className="wwd-card-stat"
-                />
-                <BentoCard
-                  slot="stat-b"
-                  title={CONTENT.stats[1].label}
-                  className="wwd-card-stat"
-                />
+                <StatCard slot="stat-a" stat={CONTENT.stats[0]} />
+                <StatCard slot="stat-b" stat={CONTENT.stats[1]} />
               </div>
             </div>
 
@@ -494,11 +498,7 @@ export default function WhatWeDo() {
 
             {/* Column 3: File Card + AI Card */}
             <div className="wwd-group-3">
-              <BentoCard
-                slot="file"
-                title={CONTENT.file.name}
-                className="wwd-card-file"
-              />
+              <FileCard />
               <BentoCard
                 slot="ai"
                 title={CONTENT.ai.title}
