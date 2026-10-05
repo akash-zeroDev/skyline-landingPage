@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { CONTENT, REVENUE } from './config';
 import RevenueChart from './RevenueChart';
 
@@ -7,20 +7,30 @@ import RevenueChart from './RevenueChart';
  * Implements dual poses (tilted default, flat override) with back plate,
  * pixel-accurate typography, and the vectorized SVG revenue chart.
  */
-export default function RevenueCard({ className = '', style = {}, ...rest }) {
-  // Read pose override from URL query param in dev mode: ?pose=flat or ?pose=tilted
-  const activePoseKey = useMemo(() => {
-    if (typeof window !== 'undefined' && import.meta.env.DEV) {
-      const sp = new URLSearchParams(window.location.search);
-      const urlPose = sp.get('pose');
-      if (urlPose === 'flat' || urlPose === 'tilted') {
-        return urlPose;
-      }
+export default function RevenueCard({ className = '', style = {}, isSettled = false, ...rest }) {
+  const flags = useMemo(() => {
+    if (typeof window === 'undefined') {
+      return { isAnimOff: true, urlPose: null };
     }
-    return REVENUE.POSE.default || 'tilted';
+    const sp = new URLSearchParams(window.location.search);
+    const prefersReduced =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isAnimOff = sp.get('anim') === 'off' || prefersReduced;
+    const urlPose = sp.get('pose');
+    return { isAnimOff, urlPose };
   }, []);
 
-  const isTilted = activePoseKey === 'tilted';
+  // Read pose override from URL query param in dev mode: ?pose=flat or ?pose=tilted
+  const activePoseKey = useMemo(() => {
+    if (flags.urlPose === 'flat' || flags.urlPose === 'tilted') {
+      return flags.urlPose;
+    }
+    return REVENUE.POSE.default || 'tilted';
+  }, [flags.urlPose]);
+
+  // When animation is active, it starts in flat pose until tilted; if anim=off or isSettled, it rests in activePoseKey
+  const isTilted = flags.urlPose === 'flat' ? false : flags.isAnimOff || isSettled ? activePoseKey === 'tilted' : false;
   const pose = isTilted ? REVENUE.POSE.tilted : REVENUE.POSE.flat;
 
   const numTop = REVENUE.TYPE.number.centerY - REVENUE.TYPE.number.lineHeight / 2;

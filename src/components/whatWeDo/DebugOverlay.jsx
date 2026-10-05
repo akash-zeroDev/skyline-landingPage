@@ -1,5 +1,4 @@
-import React from 'react';
-import { GEOMETRY, DEBUG_GUIDES, REVENUE, STAT, FILE } from './config';
+import { GEOMETRY, DEBUG_GUIDES, REVENUE } from './config';
 
 /**
  * Dev-only debug guide overlay.
@@ -306,6 +305,195 @@ export default function DebugOverlay({ enabled = false }) {
         <div style={{ position: 'absolute', left: 'calc(var(--r) * 175)', top: 'calc(var(--r) * 20)', width: 'calc(var(--r) * 62)', height: 'calc(var(--r) * 25.5)', borderRadius: 'calc(var(--r) * 13)', border: '1px dashed #ff00ff', boxSizing: 'border-box' }}>
           <div style={{ position: 'absolute', left: '50%', top: '50%', width: '7px', height: '7px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
         </div>
+      </div>
+
+      {/* Chunk 4: Content Card Guides & Probes */}
+      <div
+        className="wwd-debug-content"
+        style={{
+          position: 'absolute',
+          left: `calc(var(--r) * ${cards.content.x})`,
+          top: `calc(var(--r) * ${cards.content.y})`,
+          width: `calc(var(--r) * ${cards.content.w})`,
+          height: `calc(var(--r) * ${cards.content.h})`,
+          pointerEvents: 'none',
+          overflow: 'visible',
+        }}
+      >
+        {/* Row 1 Reference Tile Boxes (including partials) */}
+        {[
+          { x: -23.25, name: 'Webflow (p)' },
+          { x: 37.75, name: 'Figma' },
+          { x: 98.75, name: 'Photoshop' },
+          { x: 159.75, name: 'Webflow' },
+          { x: 220.75, name: 'Figma (p)' },
+        ].map((t, idx) => (
+          <div
+            key={`r1-tile-${idx}`}
+            style={{
+              position: 'absolute',
+              left: `calc(var(--r) * ${t.x})`,
+              top: 'calc(var(--r) * 25)',
+              width: 'calc(var(--r) * 51)',
+              height: 'calc(var(--r) * 51)',
+              borderRadius: 'calc(var(--r) * 12)',
+              border: '1px dashed #ff00ff',
+              boxSizing: 'border-box',
+            }}
+          >
+            <div style={{ position: 'absolute', left: '50%', top: '50%', width: '9px', height: '9px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+          </div>
+        ))}
+
+        {/* Row 2 Reference Tile Boxes (including partials) */}
+        {[
+          { x: -23.25, name: 'PowerPoint (p)' },
+          { x: 37.75, name: 'TikTok' },
+          { x: 98.75, name: 'Instagram' },
+          { x: 159.75, name: 'PowerPoint' },
+          { x: 220.75, name: 'TikTok (p)' },
+        ].map((t, idx) => (
+          <div
+            key={`r2-tile-${idx}`}
+            style={{
+              position: 'absolute',
+              left: `calc(var(--r) * ${t.x})`,
+              top: 'calc(var(--r) * 86)',
+              width: 'calc(var(--r) * 51)',
+              height: 'calc(var(--r) * 51)',
+              borderRadius: 'calc(var(--r) * 12)',
+              border: '1px dashed #ff00ff',
+              boxSizing: 'border-box',
+            }}
+          >
+            <div style={{ position: 'absolute', left: '50%', top: '50%', width: '9px', height: '9px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+          </div>
+        ))}
+
+        {/* Vertical Mask Ramp Markers (0%, 50%, 100%) */}
+        {/* Left Mask */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 3)', top: 0, height: 'calc(var(--r) * 137)', borderLeft: '1px dotted rgba(255, 0, 255, 0.7)' }} title="Mask 0% L" />
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 10.5)', top: 0, height: 'calc(var(--r) * 137)', borderLeft: '1px dashed rgba(255, 0, 255, 0.9)' }} title="Mask 50% L" />
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 18)', top: 0, height: 'calc(var(--r) * 137)', borderLeft: '1px solid #ff00ff' }} title="Mask 100% L" />
+
+        {/* Right Mask */}
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 230.33)', top: 0, height: 'calc(var(--r) * 137)', borderLeft: '1px solid #ff00ff' }} title="Mask 100% R" />
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 237.83)', top: 0, height: 'calc(var(--r) * 137)', borderLeft: '1px dashed rgba(255, 0, 255, 0.9)' }} title="Mask 50% R" />
+        <div style={{ position: 'absolute', left: 'calc(var(--r) * 245.33)', top: 0, height: 'calc(var(--r) * 137)', borderLeft: '1px dotted rgba(255, 0, 255, 0.7)' }} title="Mask 0% R" />
+
+        {/* Title Horizontal Line */}
+        <div style={{ position: 'absolute', top: 'calc(var(--r) * 175.25)', left: '10%', right: '10%', borderTop: '1px dashed #ff00ff' }} />
+
+        {/* Description 4 Lines Horizontal Guides */}
+        <div style={{ position: 'absolute', top: 'calc(var(--r) * 201.75)', left: '5%', right: '5%', borderTop: '1px dotted #ff00ff' }} />
+        <div style={{ position: 'absolute', top: 'calc(var(--r) * 215.55)', left: '5%', right: '5%', borderTop: '1px dotted #ff00ff' }} />
+        <div style={{ position: 'absolute', top: 'calc(var(--r) * 229.35)', left: '5%', right: '5%', borderTop: '1px dotted #ff00ff' }} />
+        <div style={{ position: 'absolute', top: 'calc(var(--r) * 243.15)', left: '10%', right: '10%', borderTop: '1px dotted #ff00ff' }} />
+      </div>
+
+      {/* Chunk 5: AI Card Guides & Probes */}
+      <div
+        className="wwd-debug-ai"
+        style={{
+          position: 'absolute',
+          left: `calc(var(--r) * ${cards.ai.x})`,
+          top: `calc(var(--r) * ${cards.ai.y})`,
+          width: `calc(var(--r) * ${cards.ai.w})`,
+          height: `calc(var(--r) * ${cards.ai.h})`,
+          pointerEvents: 'none',
+          overflow: 'visible',
+        }}
+      >
+        {/* Glow Panel Box */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 'calc(var(--r) * 14.5)',
+            top: 'calc(var(--r) * 14.25)',
+            width: 'calc(var(--r) * 219.33)',
+            height: 'calc(var(--r) * 60)',
+            borderRadius: 'calc(var(--r) * 11)',
+            border: '1px dashed #ff00ff',
+            boxSizing: 'border-box',
+          }}
+        />
+
+        {/* Input Pill Box */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 'calc(var(--r) * 24.5)',
+            top: 'calc(var(--r) * 25.5)',
+            width: 'calc(var(--r) * 199.33)',
+            height: 'calc(var(--r) * 37.25)',
+            borderRadius: 'calc(var(--r) * 10)',
+            border: '1px dashed #ff00ff',
+            boxSizing: 'border-box',
+          }}
+        />
+
+        {/* Sparkle Tile Box */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 'calc(var(--r) * 32.0)',
+            top: 'calc(var(--r) * 32.25)',
+            width: 'calc(var(--r) * 23)',
+            height: 'calc(var(--r) * 23)',
+            borderRadius: 'calc(var(--r) * 6)',
+            border: '1px dashed #ff00ff',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '7px', height: '7px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+
+        {/* Caret Box */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 'calc(var(--r) * 60.25)',
+            top: 'calc(var(--r) * 38.5)',
+            width: 'calc(var(--r) * 1.25)',
+            height: 'calc(var(--r) * 11.75)',
+            border: '1px solid #ff00ff',
+            boxSizing: 'border-box',
+          }}
+        />
+
+        {/* Placeholder Box */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 'calc(var(--r) * 62.5)',
+            top: 'calc(var(--r) * 37.75)',
+            width: 'calc(var(--r) * 64)',
+            height: 'calc(var(--r) * 14)',
+            border: '1px dashed #ff00ff',
+            boxSizing: 'border-box',
+          }}
+        />
+
+        {/* Title Box & Center */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 'calc(var(--r) * 45.79)',
+            top: 'calc(var(--r) * 90.25)',
+            width: 'calc(var(--r) * 156.75)',
+            height: 'calc(var(--r) * 20)',
+            border: '1px dashed #ff00ff',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div style={{ position: 'absolute', left: '50%', top: '50%', width: '9px', height: '9px', transform: 'translate(-50%, -50%)', borderTop: '1px solid #ff00ff', borderLeft: '1px solid #ff00ff' }} />
+        </div>
+
+        {/* Description 4 Lines Horizontal Guides */}
+        <div style={{ position: 'absolute', top: 'calc(var(--r) * 126.5)', left: '5%', right: '5%', borderTop: '1px dotted #ff00ff' }} />
+        <div style={{ position: 'absolute', top: 'calc(var(--r) * 140.25)', left: '5%', right: '5%', borderTop: '1px dotted #ff00ff' }} />
+        <div style={{ position: 'absolute', top: 'calc(var(--r) * 154.0)', left: '5%', right: '5%', borderTop: '1px dotted #ff00ff' }} />
+        <div style={{ position: 'absolute', top: 'calc(var(--r) * 167.5)', left: '15%', right: '15%', borderTop: '1px dotted #ff00ff' }} />
       </div>
     </div>
   );

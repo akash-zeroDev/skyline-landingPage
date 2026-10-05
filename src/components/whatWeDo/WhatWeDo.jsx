@@ -1,25 +1,37 @@
-import React, { useMemo } from 'react';
+import { useMemo, useRef, Fragment } from 'react';
 import { SECTION_ID, TOKENS, CONTENT, GEOMETRY } from './config';
-import BentoCard from './BentoCard';
 import RevenueCard from './RevenueCard';
 import StatCard from './StatCard';
 import FileCard from './FileCard';
+import ContentCard from './ContentCard';
+import AICard from './AICard';
 import DebugOverlay from './DebugOverlay';
+import useReveal from './useReveal';
 
 /**
- * WhatWeDo Section (Chunk 1 of 7)
- * Implements the responsive container, static header, and exact 7-card bento grid shells.
+ * WhatWeDo Section (Chunk 6 of 7)
+ * Implements the responsive container, animated header, bento grid entrance stagger,
+ * and revenue card tilt motion sequence.
  */
 export default function WhatWeDo() {
+  const sectionRef = useRef(null);
+  const { revealState, isSettled } = useReveal(sectionRef);
+
   const isRefMode = useMemo(() => {
     if (typeof window === 'undefined') return false;
     const sp = new URLSearchParams(window.location.search);
     return sp.get('ref') === '1';
   }, []);
 
+  const headlineWords = useMemo(() => {
+    return CONTENT.headline.split(' ');
+  }, []);
+
   return (
     <section
       id={SECTION_ID}
+      ref={sectionRef}
+      data-reveal-state={revealState}
       aria-labelledby="wwd-headline"
       className="wwd-section"
       style={{
@@ -82,8 +94,17 @@ export default function WhatWeDo() {
           .wwd-container:not(.is-ref-mode) [data-part="stat-value"],
           .wwd-container:not(.is-ref-mode) [data-part="stat-label"],
           .wwd-container:not(.is-ref-mode) [data-part="file-name"],
-          .wwd-container:not(.is-ref-mode) [data-part="file-button"] {
-            font-size: max(calc(var(--r) * 12), 12px) !important;
+          .wwd-container:not(.is-ref-mode) [data-part="file-button"],
+          .wwd-container:not(.is-ref-mode) [data-slot="content"] [data-part="description"],
+          .wwd-container:not(.is-ref-mode) [data-slot="ai"] [data-part="description"],
+          .wwd-container:not(.is-ref-mode) [data-slot="ai"] [data-part="placeholder"] {
+            font-size: max(calc(var(--r) * 10.5), 12px) !important;
+          }
+          .wwd-container:not(.is-ref-mode) [data-slot="content"] [data-part="description"] {
+            line-height: max(calc(var(--r) * 13.8), 15px) !important;
+          }
+          .wwd-container:not(.is-ref-mode) [data-slot="ai"] [data-part="description"] {
+            line-height: max(calc(var(--r) * 13.75), 15px) !important;
           }
         }
 
@@ -294,11 +315,13 @@ export default function WhatWeDo() {
             overflow: visible;
           }
           .wwd-container:not(.is-ref-mode) .wwd-card-file {
-            height: calc(var(--r) * 65);
+            height: calc(var(--r) * 65) !important;
+            flex-shrink: 0 !important;
             width: 100%;
           }
           .wwd-container:not(.is-ref-mode) .wwd-card-ai {
-            height: calc(var(--r) * 194);
+            height: calc(var(--r) * 194) !important;
+            flex-shrink: 0 !important;
             width: 100%;
           }
         }
@@ -413,12 +436,28 @@ export default function WhatWeDo() {
           color: var(--text-1);
           line-height: calc(var(--r) * 34);
           height: calc(var(--r) * 34);
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          display: block;
+          text-align: center;
           margin: 0 0 calc(var(--r) * 10) 0;
           padding: 0;
           white-space: nowrap;
+        }
+
+        /* Initial frame 0 state while section reveal is pending */
+        .wwd-section[data-reveal-state="pending"] [data-slot="eyebrow"],
+        .wwd-section[data-reveal-state="pending"] .wwd-word,
+        .wwd-section[data-reveal-state="pending"] [data-slot="subtext"] {
+          opacity: 0;
+        }
+
+        .wwd-section[data-reveal-state="pending"] [data-slot="revenue"],
+        .wwd-section[data-reveal-state="pending"] [data-slot="stat-a"],
+        .wwd-section[data-reveal-state="pending"] [data-slot="stat-b"],
+        .wwd-section[data-reveal-state="pending"] [data-slot="content"],
+        .wwd-section[data-reveal-state="pending"] [data-slot="file"],
+        .wwd-section[data-reveal-state="pending"] [data-slot="ai"] {
+          opacity: 0;
+          transform: translateY(calc(var(--r) * 10));
         }
 
         .wwd-subtext {
@@ -467,7 +506,14 @@ export default function WhatWeDo() {
           </p>
 
           <h2 id="wwd-headline" data-slot="headline" className="wwd-headline">
-            {CONTENT.headline}
+            {headlineWords.map((word, i) => (
+              <Fragment key={i}>
+                <span className="wwd-word" style={{ display: 'inline-block' }}>
+                  {word}
+                </span>
+                {i < headlineWords.length - 1 ? ' ' : null}
+              </Fragment>
+            ))}
           </h2>
 
           <p data-slot="subtext" className="wwd-subtext">
@@ -480,7 +526,7 @@ export default function WhatWeDo() {
           <div className="wwd-grid">
             {/* Column 1: Revenue Card + Stat Cards */}
             <div className="wwd-group-1">
-              <RevenueCard />
+              <RevenueCard isSettled={isSettled} />
               <div className="wwd-stat-row">
                 <StatCard slot="stat-a" stat={CONTENT.stats[0]} />
                 <StatCard slot="stat-b" stat={CONTENT.stats[1]} />
@@ -489,21 +535,13 @@ export default function WhatWeDo() {
 
             {/* Column 2: Content Card */}
             <div className="wwd-group-2">
-              <BentoCard
-                slot="content"
-                title={CONTENT.content.title}
-                className="wwd-card-content"
-              />
+              <ContentCard />
             </div>
 
             {/* Column 3: File Card + AI Card */}
             <div className="wwd-group-3">
               <FileCard />
-              <BentoCard
-                slot="ai"
-                title={CONTENT.ai.title}
-                className="wwd-card-ai"
-              />
+              <AICard />
             </div>
           </div>
 

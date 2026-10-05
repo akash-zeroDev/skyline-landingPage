@@ -80,7 +80,8 @@ export const CONTENT = {
   ai: {
     placeholder: 'Name project',
     title: 'Stay Ahead with AI',
-    description: 'With advanced AI insights, we optimize every touchpoint, from ad performance to detailed customer behavior analytics. Stay ahead of the curve.',
+    description: 'With advanced AI insights, we optimize every touchpoint, from ad performance to detailed customer behavior analytics.',
+    tagline: 'Stay ahead of the curve.',
   },
 };
 
@@ -339,3 +340,227 @@ export const FILE = {
     },
   },
 };
+
+// 9. CHUNK 4: CONTENT CARD CONFIGURATION
+export const CONTENT_CARD = {
+  COLORS: {
+    title: '#111A5C', // brand navy indigo (15.9:1 contrast against white)
+    description: '#5c5c70', // secondary text token (6.21:1 contrast against white)
+    tileBg: '#f5f5fa', // quiet cool gray tile surface against white card
+    tileBorder: 'rgba(26, 15, 92, 0.06)',
+    tileHighlight: 'inset 0 1px 0 rgba(255, 255, 255, 0.90)',
+    tileShadow: '0 1px 2px rgba(26, 15, 92, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.90)',
+    probeTileBg: '#000000',
+  },
+  GEOMETRY: {
+    cardWidth: 248.33,
+    cardHeight: 269.0,
+    iconRowsHeight: 137.0, // rows end at y 137
+    tile: {
+      width: 51.0,
+      height: 51.0,
+      radius: 12.0,
+      pitchX: 61.0,
+      pitchY: 61.0,
+      gapX: 10.0,
+      gapY: 10.0,
+    },
+    track: {
+      tileCount: 7,
+      width: 417.0, // 7 * 51 + 6 * 10 = 417 ref-px
+      halfTrack: 208.5, // 417 / 2 = 208.5 ref-px (exact center anchor)
+    },
+    rows: [
+      {
+        id: '1',
+        top: 24.0, // calibrated: 24r + 1px card border = 25.0 ref-px from outer card box
+        height: 51.0,
+        // Repeating cycle: [Figma, Photoshop, Webflow]
+        // Centers: 2.2 (Webflow), 63.2 (Figma), 124.2 (Photoshop), 185.2 (Webflow), 246.2 (Figma)
+        icons: ['photoshop', 'webflow', 'figma', 'photoshop', 'webflow', 'figma', 'photoshop'],
+      },
+      {
+        id: '2',
+        top: 85.0, // calibrated: 85r + 1px card border = 86.0 ref-px from outer card box
+        height: 51.0,
+        // Repeating cycle: [TikTok, Instagram, PowerPoint]
+        // Centers: 2.2 (PowerPoint), 63.2 (TikTok), 124.2 (Instagram), 185.2 (PowerPoint), 246.2 (TikTok)
+        icons: ['instagram', 'powerpoint', 'tiktok', 'instagram', 'powerpoint', 'tiktok', 'instagram'],
+      },
+    ],
+    mask: {
+      leftTransparent: 3.0,
+      leftOpaque: 18.0,
+      rightOpaque: 18.0,
+      rightTransparent: 3.0,
+    },
+    title: {
+      centerY: 175.25,
+      fontSize: 16,
+      lineHeight: 20,
+      top: 164.75, // calibrated: 164.75r + 1px border = 165.75 - 10/2 => center y 175.25
+      fontWeight: 500,
+      letterSpacing: '0.005em',
+      width: 161.25,
+    },
+    description: {
+      firstLineCenterY: 201.75,
+      linePitch: 13.8, // measured mathematical pitch between line centers: 201.75, 215.55, 229.35, 243.15
+      fontSize: 10.5,
+      lineHeight: 13.8,
+      top: 193.85, // calibrated: 193.85r + 1px border + 13.8/2 => center y 201.75
+      blockWidth: 216.0,
+      fontWeight: 400,
+      letterSpacing: '-0.01em',
+    },
+  },
+};
+
+/**
+ * 7. AI Card Configuration (Chunk 5)
+ * Calibrated against reference frames ref_3_final_tilted.png and ref_4_flat_pose_full_opacity.png
+ * AI card origin in frame: (571.0, 297.25), box: 248.33 x 194.0 ref-px
+ */
+export const AI_CARD = {
+  slot: 'ai',
+  width: 248.33,
+  height: 194.0,
+  cardBorderRadius: 14.0,
+  colors: {
+    darkTeal: '#072a44',     // deep blue-teal top-left
+    midAqua: '#0e6f7e',      // mid aqua
+    brightMint: '#36d399',   // bright mint bottom glow
+    heroBlue: '#2b7ffb',     // hero blue
+    heroGreen: '#19b954',    // hero green
+    pillBg: 'rgba(255, 255, 255, 0.20)',
+    pillBorder: 'rgba(255, 255, 255, 0.35)',
+    sparkleTileBg: 'rgba(255, 255, 255, 0.28)',
+    sparkleTileBorder: 'rgba(255, 255, 255, 0.40)',
+    caret: 'rgba(255, 255, 255, 0.90)',
+    placeholder: 'rgba(255, 255, 255, 0.85)',
+    shadow: '0 calc(var(--r) * 6) calc(var(--r) * 14) calc(var(--r) * -6) rgba(26, 15, 92, 0.18)',
+  },
+  panel: {
+    left: 14.5, // 14.5 ref-px from outer card left (13.5r + 1px border)
+    top: 14.25, // 14.25 ref-px from outer card top (13.25r + 1px border)
+    width: 219.33,
+    height: 60.0,
+    radius: 11.0,
+    cardLeft: 13.5,
+    cardTop: 13.25,
+  },
+  pill: {
+    panelLeft: 10.0, // 24.5 - 14.5 = 10.0 ref-px
+    panelTop: 11.25, // 25.5 - 14.25 = 11.25 ref-px
+    width: 199.33,
+    height: 37.25,
+    radius: 10.0,
+  },
+  sparkleTile: {
+    pillLeft: 6.5, // calibrated for 1px pill border: 24.5 + 1.0 + 6.5 = 32.0 ref-px
+    pillTop: 5.75, // calibrated for 1px pill border: 25.5 + 1.0 + 5.75 = 32.25 ref-px
+    size: 23.0,
+    radius: 6.0,
+  },
+  sparkleGlyph: {
+    size: 14.0,
+    stroke: 1.1,
+  },
+  caret: {
+    pillLeft: 34.75, // calibrated for 1px pill border: 24.5 + 1.0 + 34.75 = 60.25 ref-px
+    pillTop: 12.0,   // calibrated for 1px pill border: 25.5 + 1.0 + 12.0 = 38.5 ref-px
+    width: 1.25,
+    height: 11.75,
+  },
+  placeholder: {
+    pillLeft: 37.0,  // calibrated for 1px pill border: 24.5 + 1.0 + 37.0 = 62.5 ref-px
+    centerY: 18.25,  // 44.75 - 25.5 - 1.0 = 18.25 ref-px
+    fontSize: 11.0,
+    lineHeight: 14.0,
+    top: 11.25,      // 18.25 - 7.0 = 11.25 ref-px (center y = 44.75 ref-px)
+    width: 64.0,
+    fontWeight: 400,
+    letterSpacing: '-0.015em',
+  },
+  title: {
+    centerX: 124.15,
+    centerY: 100.25,
+    fontSize: 16.0,
+    lineHeight: 20.0,
+    top: 89.25, // calibrated: 89.25r + 1px border + 10.0 = 100.25r center
+    fontWeight: 500,
+    letterSpacing: '0.005em',
+    width: 156.75,
+  },
+  description: {
+    firstLineCenterY: 126.5,
+    linePitch: 13.75, // measured mathematical pitch between line centers: 126.5, 140.25, 154.0, 167.5
+    fontSize: 10.5,
+    lineHeight: 13.75,
+    top: 118.625, // calibrated: 118.625r + 1px border + 13.75/2 = 126.5r center
+    blockWidth: 217.5,
+    fontWeight: 400,
+    letterSpacing: '-0.01em',
+  },
+};
+
+// 10. CHUNK 6: MOTION CONFIGURATION
+export const MOTION = {
+  // Global feature flags for optional extras (default false)
+  EXTRAS: {
+    hoverLift: false,
+    chartDraw: false,
+    countUp: false,
+  },
+
+  // Header word-by-word and elements timing
+  header: {
+    eyebrow: {
+      duration: 0.4,
+      delay: 0.0,
+    },
+    words: {
+      duration: 0.4,
+      baseDelay: 0.08,
+      stagger: 0.09,
+    },
+    subtext: {
+      duration: 0.4,
+      delay: 0.55,
+    },
+  },
+
+  // 7 Bento Cards entrance stagger
+  cards: {
+    yOffset: 10, // ref-px (+10r)
+    duration: 0.85, // seconds
+    // ease-out cubic for y: cubic-bezier(0.33, 1, 0.68, 1)
+    cubicBezier: [0.33, 1, 0.68, 1],
+    delays: {
+      revenue: 0.38,
+      content: 0.63,
+      'stat-a': 0.75,
+      file: 0.75,
+      'stat-b': 0.95,
+      ai: 1.05,
+    },
+  },
+
+  // Revenue card tilt sequence
+  tilt: {
+    delay: 2.10, // seconds from section trigger
+    spring: {
+      stiffness: 220,
+      damping: 19,
+      mass: 1,
+    },
+    target: {
+      rotate: -4.5, // deg CCW (matches REVENUE.POSE.tilted.rotate)
+      x: 13.5,      // ref-px translation (matches REVENUE.POSE.tilted.x)
+      y: -7.0,      // ref-px translation (matches REVENUE.POSE.tilted.y)
+    },
+    plateFadeDuration: 0.35, // seconds for yellow plate opacity 0 -> 1
+  },
+};
+
+
