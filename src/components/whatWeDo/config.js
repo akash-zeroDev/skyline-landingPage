@@ -1,3 +1,16 @@
+import {
+  EASE,
+  SPRING,
+  DUR,
+  STAGGER,
+  DIST,
+  CARD_ENTRANCE,
+  CARD_DELAYS,
+  REPLAY,
+  createCubicBezierSolver,
+  createSpringSolver,
+} from '../../motion/tokens.js';
+
 /**
  * Configuration and design tokens for the "What We Do" section.
  * Measurements calibrated against reference frames (862x566 px, 771 ref-px container).
@@ -350,7 +363,7 @@ export const CONTENT_CARD = {
     tileBorder: 'rgba(26, 15, 92, 0.06)',
     tileHighlight: 'inset 0 1px 0 rgba(255, 255, 255, 0.90)',
     tileShadow: '0 1px 2px rgba(26, 15, 92, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.90)',
-    probeTileBg: '#000000',
+    calibTileBg: '#000000',
   },
   GEOMETRY: {
     cardWidth: 248.33,
@@ -504,63 +517,247 @@ export const AI_CARD = {
   },
 };
 
-// 10. CHUNK 6: MOTION CONFIGURATION
+// 10. CHUNK 6/7: MOTION TOKENS & CHOREOGRAPHY CONFIGURATION
 export const MOTION = {
-  // Global feature flags for optional extras (default false)
+  EASE,
+  SPRING,
+  DUR,
+  STAGGER,
+  DIST,
+  CARD_ENTRANCE,
+  CARD_DELAYS,
+  REPLAY,
+  cardDelay: CARD_DELAYS.multiColumn,
+
+  // Global feature flags
   EXTRAS: {
     hoverLift: false,
-    chartDraw: false,
-    countUp: false,
+    chartDraw: true,
+    countUp: true,
   },
 
   // Header word-by-word and elements timing
   header: {
+    amount: 0.6,
     eyebrow: {
-      duration: 0.4,
+      dotSpring: SPRING.pop,
+      labelDuration: DUR.base, // 0.5s
+      labelDelay: 0.1,
+      labelX: -6, // ref-px
+      duration: DUR.base,
       delay: 0.0,
     },
     words: {
-      duration: 0.4,
-      baseDelay: 0.08,
-      stagger: 0.09,
+      duration: 0.7,
+      baseDelay: 0.15,
+      stagger: STAGGER.word, // 0.08s
+      yOffset: Math.round(DIST.rise * 0.8), // 22 ref-px
+      ease: EASE.out,
     },
     subtext: {
-      duration: 0.4,
+      duration: DUR.base, // 0.5s
       delay: 0.55,
+      yOffset: 10,
     },
+  },
+
+  // Grid trigger config
+  grid: {
+    amount: 0.35,
+    minHeightFraction: 0.6, // >= 60% vh for tall elements
+    singleCardMargin: '0px 0px -8% 0px',
+    singleCardAmount: 0.35,
+    settleSpeedLimit: 600, // px/s
+    settleTimeout: 600,    // ms
+    debounce: 120,         // ms
+    outDelay: 400,         // ms
   },
 
   // 7 Bento Cards entrance stagger
   cards: {
-    yOffset: 10, // ref-px (+10r)
-    duration: 0.85, // seconds
-    // ease-out cubic for y: cubic-bezier(0.33, 1, 0.68, 1)
-    cubicBezier: [0.33, 1, 0.68, 1],
-    delays: {
-      revenue: 0.38,
-      content: 0.63,
-      'stat-a': 0.75,
-      file: 0.75,
-      'stat-b': 0.95,
-      ai: 1.05,
+    yOffset: CARD_ENTRANCE.offsets.revenue.y, // 28 ref-px
+    duration: CARD_ENTRANCE.opacityDuration,  // 0.85s linear opacity
+    posDuration: CARD_ENTRANCE.posDuration,   // 0.85s EASE.out
+    scaleDuration: CARD_ENTRANCE.scaleDuration, // 0.90s EASE.out
+    scaleFrom: CARD_ENTRANCE.scaleFrom,       // 0.96
+    cubicBezier: EASE.out,
+    delays: CARD_DELAYS.multiColumn,
+    offsets: CARD_ENTRANCE.offsets,
+  },
+
+  // Revenue card choreography
+  revenue: {
+    ghostLine: {
+      delay: 0.35,
+      duration: DUR.base, // 0.5s
+    },
+    chartDraw: {
+      delay: 0.35,
+      duration: 1.2,
+      ease: EASE.inOut,
+    },
+    counter: {
+      from: 0.0,
+      to: 5.8,
+      delay: 0.35,
+      duration: 1.2,
+      ease: EASE.out,
+    },
+    title: {
+      delay: 0.50,
+      duration: DUR.base, // 0.5s
+      yOffset: 8,
+    },
+    description: {
+      delay: 0.65,
+      duration: DUR.base, // 0.5s
+      yOffset: 8,
+    },
+    marker: {
+      delay: 1.45,
+      spring: SPRING.pop,
+    },
+    tilt: {
+      minDelay: 1.35, // LATER of (T 1.35) and (revenue slot >= 70% visible)
+      spring: SPRING.bouncy,
+      target: {
+        rotate: -4.5, // deg CCW (matches REVENUE.POSE.tilted.rotate)
+        x: 13.5,      // ref-px translation (matches REVENUE.POSE.tilted.x)
+        y: -7.0,      // ref-px translation (matches REVENUE.POSE.tilted.y)
+      },
+      plateFadeDuration: 0.25, // seconds for yellow plate opacity 0 -> 1 (with 0.25s ease-in)
     },
   },
 
-  // Revenue card tilt sequence
-  tilt: {
-    delay: 2.10, // seconds from section trigger
-    spring: {
-      stiffness: 220,
-      damping: 19,
-      mass: 1,
+  // Stat cards choreography
+  stats: {
+    counter: {
+      delay: 0.25,
+      duration: 1.0,
+      ease: EASE.out,
     },
-    target: {
-      rotate: -4.5, // deg CCW (matches REVENUE.POSE.tilted.rotate)
-      x: 13.5,      // ref-px translation (matches REVENUE.POSE.tilted.x)
-      y: -7.0,      // ref-px translation (matches REVENUE.POSE.tilted.y)
+    badge: {
+      delay: 1.25, // when count ends (0.25 + 1.0)
+      spring: SPRING.pop,
+      scaleFrom: 0.5,
     },
-    plateFadeDuration: 0.35, // seconds for yellow plate opacity 0 -> 1
+    iconTile: {
+      delay: 0.15,
+      spring: SPRING.pop,
+      scaleFrom: 0.6,
+      rotateFrom: -10,
+    },
   },
+
+  // File card choreography
+  file: {
+    iconTile: {
+      delay: 0.20,
+      spring: SPRING.pop,
+      scaleFrom: 0.6,
+      rotateFrom: -8,
+    },
+    text: {
+      delay: 0.30,
+      stagger: STAGGER.line, // 0.06s
+      duration: DUR.base,
+      yOffset: 6,
+    },
+    button: {
+      delay: 0.50,
+      spring: SPRING.pop,
+      scaleFrom: 0.9,
+    },
+  },
+
+  // Content card choreography
+  content: {
+    tiles: {
+      spring: SPRING.pop,
+      scaleFrom: 0.6,
+      yOffset: 10,
+      stagger: STAGGER.tile, // 0.045s
+      row2Offset: 0.12,
+    },
+    title: {
+      delay: 0.70,
+      duration: DUR.base,
+      yOffset: 8,
+    },
+    description: {
+      delay: 0.85,
+      duration: DUR.base,
+      yOffset: 8,
+    },
+  },
+
+  // AI card choreography
+  ai: {
+    glowPanel: {
+      delay: 0.15,
+      spring: SPRING.soft,
+      scaleFrom: 0.94,
+    },
+    pill: {
+      delay: 0.40,
+      duration: DUR.base,
+      yOffset: 10,
+    },
+    sparkleTile: {
+      delay: 0.50,
+      spring: SPRING.pop,
+      scaleFrom: 0.6,
+      rotateFrom: -20,
+    },
+    inputElements: {
+      delay: 0.70,
+      duration: DUR.fast,
+    },
+    title: {
+      delay: 0.80,
+      duration: DUR.base,
+      yOffset: 8,
+    },
+    description: {
+      delay: 0.95,
+      duration: DUR.base,
+      yOffset: 8,
+    },
+  },
+
+  // Backward compatibility alias for tilt
+  tilt: {
+    delay: 1.35,
+    spring: SPRING.bouncy,
+    target: {
+      rotate: -4.5,
+      x: 13.5,
+      y: -7.0,
+    },
+    plateFadeDuration: 0.25,
+  },
+
+  // IntersectionObserver trigger config
+  observer: {
+    threshold: 0.35,
+    rootMargin: '0px',
+  },
+};
+
+export { createCubicBezierSolver, createSpringSolver };
+
+// 11. COPY LIMITS (WCAG / layout maximum safe character counts)
+export const COPY_LIMITS = {
+  headline: 36, // max characters (current: 28)
+  eyebrow: 20, // max characters (current: 10)
+  subtext: 110, // max characters (current: 84)
+  cardTitle: 24, // max characters (current: 18)
+  cardDescription: 145, // max characters (current: 86-122)
+  statLabel: 16, // max characters (current: 10-12)
+  statValue: 12, // max characters (current: 7-9)
+  statDelta: 6, // max characters (current: 4)
+  fileName: 32, // max characters (current: 25)
+  fileMeta: 8, // max characters (current: 5)
 };
 
 

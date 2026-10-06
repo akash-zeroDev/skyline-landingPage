@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import { useId } from 'react';
 import { REVENUE } from './config';
 
 /**
@@ -66,6 +66,7 @@ function buildSmoothCurve(points) {
  */
 export default function RevenueChart() {
   const gradientId = useId();
+  const clipId = useId();
   const { CHART, COLORS } = REVENUE;
 
   const mainLinePath = buildRoundedPolyline(CHART.vertices, CHART.joinRadius);
@@ -105,6 +106,17 @@ export default function RevenueChart() {
           <stop offset="0%" stopColor={COLORS.chartAreaStart} />
           <stop offset="100%" stopColor={COLORS.chartAreaEnd} />
         </linearGradient>
+
+        {/* Clip path for synchronous left-to-right area reveal */}
+        <clipPath id={clipId}>
+          <rect
+            data-part="chart-area-clip"
+            x="0"
+            y="0"
+            width="248.33"
+            height="194"
+          />
+        </clipPath>
       </defs>
 
       {/* 1. Ghost secondary dashed line */}
@@ -119,11 +131,12 @@ export default function RevenueChart() {
         aria-hidden="true"
       />
 
-      {/* 2. Main chart area fill with vertical gradient */}
+      {/* 2. Main chart area fill with vertical gradient and left-to-right clipPath */}
       <path
         data-part="chart-area"
         d={areaPath}
         fill={`url(#${gradientId})`}
+        clipPath={`url(#${clipId})`}
         stroke="none"
         aria-hidden="true"
       />

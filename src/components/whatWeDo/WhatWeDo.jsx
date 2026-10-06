@@ -19,8 +19,11 @@ export default function WhatWeDo() {
 
   const isRefMode = useMemo(() => {
     if (typeof window === 'undefined') return false;
-    const sp = new URLSearchParams(window.location.search);
-    return sp.get('ref') === '1';
+    if (import.meta.env.DEV) {
+      const sp = new URLSearchParams(window.location.search);
+      return sp.get('ref') === '1';
+    }
+    return false;
   }, []);
 
   const headlineWords = useMemo(() => {
@@ -28,7 +31,8 @@ export default function WhatWeDo() {
   }, []);
 
   return (
-    <section
+    <>
+      <section
       id={SECTION_ID}
       ref={sectionRef}
       data-reveal-state={revealState}
@@ -38,7 +42,7 @@ export default function WhatWeDo() {
         '--card-bg': TOKENS.cardBg,
         '--card-border': TOKENS.cardBorder,
         '--card-shadow': TOKENS.cardShadow,
-        '--card-radius': `${TOKENS.cardRadius}px`,
+        '--card-radius': TOKENS.cardRadius,
         '--text-1': TOKENS.text1,
         '--text-2': TOKENS.text2,
         '--eyebrow-text': TOKENS.eyebrowText,
@@ -53,9 +57,44 @@ export default function WhatWeDo() {
           overflow-y: visible;
           background-color: transparent;
           box-sizing: border-box;
+          --r: calc(100cqw / 771);
+          scroll-margin-top: calc(var(--r) * 10 + 102px);
           padding-top: calc(var(--r) * ${GEOMETRY.paddingTop});
           padding-bottom: calc(var(--r) * ${GEOMETRY.paddingBottom});
           color: var(--text-1);
+        }
+
+        @media (max-width: 939.98px) {
+          .wwd-section:not(.is-ref-mode) {
+            --r: 1.25px;
+          }
+        }
+
+        @media (forced-colors: active) {
+          .wwd-card {
+            border: 1px solid CanvasText !important;
+          }
+          .wwd-file-preview-btn {
+            border: 1px solid ButtonText !important;
+          }
+          .wwd-icon-tile {
+            border: 1px solid CanvasText !important;
+          }
+        }
+
+        @media print {
+          .wwd-section {
+            padding-top: 20px !important;
+            padding-bottom: 20px !important;
+          }
+          .wwd-card {
+            opacity: 1 !important;
+            transform: none !important;
+            break-inside: avoid;
+          }
+          .wwd-word, [data-slot="eyebrow"], [data-slot="subtext"] {
+            opacity: 1 !important;
+          }
         }
 
         .wwd-container {
@@ -77,6 +116,14 @@ export default function WhatWeDo() {
           .wwd-container:not(.is-ref-mode) {
             --r: 1.25px;
           }
+        }
+
+        /* Micro text WCAG minimum floor (>= 11px) across all non-ref viewports */
+        .wwd-container:not(.is-ref-mode) [data-part="stat-delta"],
+        .wwd-container:not(.is-ref-mode) [data-part="file-meta"],
+        .wwd-container:not(.is-ref-mode) .wwd-eyebrow,
+        .wwd-container:not(.is-ref-mode) .wwd-eyebrow-text {
+          font-size: max(calc(var(--r) * 8), 11px) !important;
         }
 
         @container (max-width: 899.98px) {
@@ -116,7 +163,7 @@ export default function WhatWeDo() {
           --r: 1px !important;
         }
 
-        /* 3-Column Layout: Desktop (>= 900px) OR in Reference Mode (?ref=1) */
+        /* 3-Column Layout: Desktop (>= 900px) OR in Reference Mode */
         @container (min-width: 900px) {
           .wwd-grid {
             display: grid;
@@ -428,14 +475,24 @@ export default function WhatWeDo() {
           flex-shrink: 0;
         }
 
+        @font-face {
+          font-family: 'wwd-headline-fallback';
+          src: local('Arial'), local('Helvetica Neue'), local('sans-serif');
+          size-adjust: 109.11%;
+          ascent-override: 95%;
+          descent-override: 25%;
+          line-gap-override: 0%;
+        }
+
         .wwd-headline {
-          font-family: var(--font-primary);
+          font-family: 'Plus Jakarta Sans', 'wwd-headline-fallback', sans-serif;
           font-size: calc(var(--r) * ${GEOMETRY.header.headline.fontSize});
           font-weight: ${GEOMETRY.header.headline.fontWeight};
           letter-spacing: ${GEOMETRY.header.headline.letterSpacing};
           color: var(--text-1);
-          line-height: calc(var(--r) * 34);
-          height: calc(var(--r) * 34);
+          line-height: calc(var(--r) * 36);
+          min-height: calc(var(--r) * 34);
+          height: auto;
           display: block;
           text-align: center;
           margin: 0 0 calc(var(--r) * 10) 0;
@@ -443,21 +500,50 @@ export default function WhatWeDo() {
           white-space: nowrap;
         }
 
+        .wwd-word {
+          line-height: inherit;
+          vertical-align: top;
+        }
+
+        /* Suppress the in-flow hero replay button so it never overlaps the section */
+        .hero-animation-controls {
+          display: none !important;
+        }
+
         /* Initial frame 0 state while section reveal is pending */
-        .wwd-section[data-reveal-state="pending"] [data-slot="eyebrow"],
-        .wwd-section[data-reveal-state="pending"] .wwd-word,
+        .wwd-section[data-reveal-state="pending"] .wwd-eyebrow-dot {
+          transform: scale(0);
+        }
+        .wwd-section[data-reveal-state="pending"] .wwd-eyebrow-text {
+          opacity: 0;
+          transform: translateX(calc(var(--r) * -6));
+        }
+        .wwd-section[data-reveal-state="pending"] .wwd-word {
+          opacity: 0;
+          transform: translateY(calc(var(--r) * 22));
+        }
         .wwd-section[data-reveal-state="pending"] [data-slot="subtext"] {
           opacity: 0;
+          transform: translateY(calc(var(--r) * 10));
         }
 
         .wwd-section[data-reveal-state="pending"] [data-slot="revenue"],
-        .wwd-section[data-reveal-state="pending"] [data-slot="stat-a"],
-        .wwd-section[data-reveal-state="pending"] [data-slot="stat-b"],
         .wwd-section[data-reveal-state="pending"] [data-slot="content"],
-        .wwd-section[data-reveal-state="pending"] [data-slot="file"],
         .wwd-section[data-reveal-state="pending"] [data-slot="ai"] {
           opacity: 0;
-          transform: translateY(calc(var(--r) * 10));
+          transform: translateY(calc(var(--r) * 28)) scale(0.96);
+        }
+        .wwd-section[data-reveal-state="pending"] [data-slot="stat-a"] {
+          opacity: 0;
+          transform: translate(calc(var(--r) * -16), calc(var(--r) * 20)) scale(0.96);
+        }
+        .wwd-section[data-reveal-state="pending"] [data-slot="stat-b"] {
+          opacity: 0;
+          transform: translate(calc(var(--r) * 16), calc(var(--r) * 20)) scale(0.96);
+        }
+        .wwd-section[data-reveal-state="pending"] [data-slot="file"] {
+          opacity: 0;
+          transform: translateX(calc(var(--r) * 24)) scale(0.96);
         }
 
         .wwd-subtext {
@@ -546,9 +632,42 @@ export default function WhatWeDo() {
           </div>
 
           {/* Dev-only debug guide overlay */}
-          <DebugOverlay />
+          {import.meta.env.DEV && <DebugOverlay />}
         </div>
       </div>
     </section>
+
+    {/* Dev-only floating replay control (fixed at bottom-right, 12px margin, z-index 9999) */}
+    {import.meta.env.DEV && (
+      <button
+        type="button"
+        className="wwd-dev-replay-btn"
+        onClick={() => window.__wwdReplay?.()}
+        style={{
+          position: 'fixed',
+          bottom: '12px',
+          right: '12px',
+          zIndex: 9999,
+          margin: '12px',
+          backgroundColor: '#111A5C',
+          color: '#ffffff',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          borderRadius: '9999px',
+          padding: '8px 16px',
+          fontSize: '12px',
+          fontWeight: 600,
+          cursor: 'pointer',
+          boxShadow: '0 4px 14px rgba(17, 26, 92, 0.24)',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '6px',
+          outline: 'none',
+        }}
+        aria-label="Replay animation"
+      >
+        Replay Animation ↺
+      </button>
+    )}
+  </>
   );
 }

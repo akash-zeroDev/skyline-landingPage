@@ -1,4 +1,3 @@
-import React from 'react';
 import { AI_CARD, CONTENT, TOKENS } from './config';
 import { SparkleIcon } from './icons';
 
@@ -164,7 +163,7 @@ export default function AICard({ className = '', style = {}, ...rest }) {
 
         {/* 2. Frosted Input Mock Pill */}
         <div
-          data-part="input-mock"
+          data-part="input-mock input-pill"
           style={{
             position: 'absolute',
             left: `calc(var(--r) * ${pill.panelLeft})`,
@@ -270,7 +269,8 @@ export default function AICard({ className = '', style = {}, ...rest }) {
           left: '50%',
           top: `calc(var(--r) * ${description.top})`,
           transform: 'translateX(-50%)',
-          width: `calc(var(--r) * ${description.blockWidth})`,
+          width: 'max-content',
+          maxWidth: 'calc(var(--r) * 235)',
           margin: 0,
           padding: 0,
           fontSize: `calc(var(--r) * ${description.fontSize})`,

@@ -1,4 +1,3 @@
-import React from 'react';
 import { CONTENT_CARD } from './config';
 import { ToolIcon } from './icons';
 
@@ -7,7 +6,7 @@ import { ToolIcon } from './icons';
  * Renders a viewport with symmetric edge fade masks, holding an un-transformed track
  * centered on the card with 7 cyclic tool icon tiles.
  */
-export default function IconRow({ row, probeMode = false }) {
+export default function IconRow({ row, calibMode = false }) {
   const { mask, track } = CONTENT_CARD.GEOMETRY;
 
   // Mask gradient: transparent at 3r, ramping linearly to opaque at 18r; opaque across middle;
@@ -45,15 +44,16 @@ export default function IconRow({ row, probeMode = false }) {
         {row.icons.map((iconId, idx) => (
           <div
             key={`${row.id}-${idx}-${iconId}`}
-            data-part="icon-tile"
+            className="wwd-icon-tile"
+            data-part="icon-tile tile"
             data-icon={iconId}
             style={{
               width: 'calc(var(--r) * 51)',
               height: 'calc(var(--r) * 51)',
               borderRadius: 'calc(var(--r) * 12)',
-              backgroundColor: probeMode ? CONTENT_CARD.COLORS.probeTileBg : CONTENT_CARD.COLORS.tileBg,
-              border: probeMode ? 'none' : `1px solid ${CONTENT_CARD.COLORS.tileBorder}`,
-              boxShadow: probeMode ? 'none' : CONTENT_CARD.COLORS.tileShadow,
+              backgroundColor: calibMode ? CONTENT_CARD.COLORS.calibTileBg : CONTENT_CARD.COLORS.tileBg,
+              border: calibMode ? 'none' : `1px solid ${CONTENT_CARD.COLORS.tileBorder}`,
+              boxShadow: calibMode ? 'none' : CONTENT_CARD.COLORS.tileShadow,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -61,10 +61,11 @@ export default function IconRow({ row, probeMode = false }) {
               flexShrink: 0,
             }}
           >
-            {!probeMode && <ToolIcon name={iconId} />}
+            {!calibMode && <ToolIcon name={iconId} />}
           </div>
         ))}
       </div>
     </div>
   );
 }
+

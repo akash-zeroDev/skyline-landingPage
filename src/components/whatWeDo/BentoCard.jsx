@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * BentoCard: Base shell surface for the 7 bento grid cards.
  * Provides the shared background gradient, subtle border, shadow, and corner radius.

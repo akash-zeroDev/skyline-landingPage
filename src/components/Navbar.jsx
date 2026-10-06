@@ -6,20 +6,25 @@ const DEFAULT_NAV_ITEMS = [
   { label: 'About', href: '#about' },
   { label: 'Services', href: '#services' },
   { label: 'Work', href: '#work' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar({
   items = DEFAULT_NAV_ITEMS,
   ctaText = "Let's Talk",
-  ctaHref = "#contact"
+  ctaHref = "/contact",
+  currentRoute = '/',
+  onNavigateHome,
+  onNavigateContact,
+  onNavigateSection,
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navContainerRef = useRef(null);
 
   // Track active section using IntersectionObserver hook
   const sectionIds = items.map((item) => item.href.replace(/^#/, ''));
-  const activeSection = useActiveSection(sectionIds);
+  const detectedActive = useActiveSection(sectionIds);
+  const activeSection = currentRoute === '/contact' ? 'contact' : detectedActive;
 
   // Close mobile menu on Escape key press
   useEffect(() => {
@@ -66,15 +71,38 @@ export default function Navbar({
     setMobileMenuOpen(false);
   };
 
+  const handleItemClick = (e, item) => {
+    handleLinkClick();
+    if (item.href === '#contact' || item.href === '/contact') {
+      e.preventDefault();
+      if (onNavigateContact) onNavigateContact();
+    } else if (currentRoute === '/contact') {
+      e.preventDefault();
+      if (onNavigateSection) onNavigateSection(item.href);
+    }
+  };
+
+  const handleCtaClick = (e) => {
+    e.preventDefault();
+    handleLinkClick();
+    if (onNavigateContact) onNavigateContact();
+  };
+
+  const handleBrandClick = (e) => {
+    e.preventDefault();
+    handleLinkClick();
+    if (onNavigateHome) onNavigateHome();
+  };
+
   return (
     <header className="skyline-header" ref={navContainerRef}>
       {/* BRAND (Outside, Top-Left) */}
       <div className="skyline-brand-external">
         <a
-          href="#"
+          href="/"
           className="skyline-brand-link"
           aria-label="Skyline Digital Media Home"
-          onClick={handleLinkClick}
+          onClick={handleBrandClick}
         >
           <span className="skyline-brand-primary">Skyline</span>
           <span className="skyline-brand-sub">Digital Media</span>
@@ -97,7 +125,7 @@ export default function Navbar({
                   href={item.href}
                   className={`skyline-nav-link ${isActive ? 'is-active' : ''}`}
                   aria-current={isActive ? 'true' : undefined}
-                  onClick={handleLinkClick}
+                  onClick={(e) => handleItemClick(e, item)}
                 >
                   {item.label}
                 </a>
@@ -109,7 +137,7 @@ export default function Navbar({
         <a
           href={ctaHref}
           className="skyline-cta-button"
-          onClick={handleLinkClick}
+          onClick={handleCtaClick}
         >
           {ctaText}
         </a>
@@ -151,7 +179,7 @@ export default function Navbar({
                     href={item.href}
                     className={`skyline-mobile-link ${isActive ? 'is-active' : ''}`}
                     aria-current={isActive ? 'true' : undefined}
-                    onClick={handleLinkClick}
+                    onClick={(e) => handleItemClick(e, item)}
                     tabIndex={mobileMenuOpen ? 0 : -1}
                   >
                     {item.label}
@@ -164,7 +192,7 @@ export default function Navbar({
             <a
               href={ctaHref}
               className="skyline-cta-button mobile-cta"
-              onClick={handleLinkClick}
+              onClick={handleCtaClick}
               tabIndex={mobileMenuOpen ? 0 : -1}
             >
               {ctaText}

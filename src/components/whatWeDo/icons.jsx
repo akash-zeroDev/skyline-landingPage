@@ -1,5 +1,3 @@
-import React, { useId } from 'react';
-
 /**
  * Inline SVG icons for WhatWeDo Chunk 3:
  * - GoogleAdsIcon: White tile with subtle border & shadow, simplified Google Ads geometric "A" mark.
@@ -63,8 +61,6 @@ export function GoogleAdsIcon({ size = 22.75, className = '', style = {} }) {
 }
 
 export function InstagramIcon({ size = 22.75, className = '', style = {} }) {
-  const gradientId = useId();
-
   return (
     <div
       style={{
@@ -111,8 +107,6 @@ export function InstagramIcon({ size = 22.75, className = '', style = {} }) {
 }
 
 export function PdfFileIcon({ size = 36, className = '', style = {} }) {
-  const gradientId = useId();
-
   return (
     <div
       style={{

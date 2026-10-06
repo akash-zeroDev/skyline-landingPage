@@ -1,4 +1,3 @@
-import React from 'react';
 import { CONTENT, FILE, TYPE } from './config';
 import { PdfFileIcon } from './icons';
 
@@ -32,6 +31,9 @@ export default function FileCard({ className = '', style = {}, ...rest }) {
       {...rest}
     >
       <style>{`
+        .wwd-file-preview-btn {
+          position: relative;
+        }
         .wwd-file-preview-btn:focus-visible {
           outline: 2px solid rgba(17, 26, 92, 0.60);
           outline-offset: 2px;
@@ -39,7 +41,21 @@ export default function FileCard({ className = '', style = {}, ...rest }) {
         .wwd-file-preview-btn:hover {
           background-color: rgba(26, 15, 92, 0.04);
         }
+        @media (pointer: coarse) {
+          .wwd-file-preview-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 44px;
+            min-height: 44px;
+            width: 100%;
+            height: 100%;
+          }
+        }
       `}</style>
+
 
       {/* Document Icon Tile */}
       <div data-part="file-icon" aria-hidden="true" style={{ display: 'flex', flexShrink: 0, marginRight: 'calc(var(--r) * 7)' }}>

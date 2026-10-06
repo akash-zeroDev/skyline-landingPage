@@ -41,9 +41,10 @@ export default function RevenueCard({ className = '', style = {}, isSettled = fa
     <article
       data-slot="revenue"
       aria-labelledby="wwd-revenue-title"
-      className={`wwd-card-revenue ${className}`}
+      className={`wwd-card wwd-card-revenue ${className}`}
       style={{
         position: 'relative',
+        borderRadius: 'calc(var(--r) * var(--card-radius))',
         overflow: 'visible',
         boxSizing: 'border-box',
         ...style,

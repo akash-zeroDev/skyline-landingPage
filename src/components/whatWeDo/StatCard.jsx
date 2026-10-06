@@ -1,4 +1,3 @@
-import React from 'react';
 import { STAT, TYPE } from './config';
 import { GoogleAdsIcon, InstagramIcon } from './icons';
 

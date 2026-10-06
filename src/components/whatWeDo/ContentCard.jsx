@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { CONTENT, CONTENT_CARD, TYPE } from './config';
 import IconRow from './IconRow';
 
@@ -8,7 +8,7 @@ import IconRow from './IconRow';
  */
 export default function ContentCard({ className = '', style = {}, ...rest }) {
   const isProbe = useMemo(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && import.meta.env.DEV) {
       const sp = new URLSearchParams(window.location.search);
       return sp.get('probe') === '1';
     }
@@ -63,8 +63,8 @@ export default function ContentCard({ className = '', style = {}, ...rest }) {
           overflow: 'hidden',
         }}
       >
-        <IconRow row={rows[0]} probeMode={isProbe} />
-        <IconRow row={rows[1]} probeMode={isProbe} />
+        <IconRow row={rows[0]} calibMode={isProbe} />
+        <IconRow row={rows[1]} calibMode={isProbe} />
       </div>
 
       {/* 2. Title */}
@@ -98,7 +98,8 @@ export default function ContentCard({ className = '', style = {}, ...rest }) {
           left: '50%',
           transform: 'translateX(-50%)',
           top: `calc(var(--r) * ${descGeo.top})`,
-          width: `calc(var(--r) * ${descGeo.blockWidth})`,
+          width: 'max-content',
+          maxWidth: 'calc(var(--r) * 235)',
           margin: 0,
           padding: 0,
           fontSize: `calc(var(--r) * ${TYPE.cardDescription})`,
