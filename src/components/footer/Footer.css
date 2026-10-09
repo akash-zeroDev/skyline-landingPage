@@ -1,0 +1,244 @@
+/* Skyline Digital Media — Studio Footer */
+
+.skyline-footer {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(17, 26, 92, 0.08);
+  background-color: var(--page-bg, #F3F3F3);
+  padding-top: 80px;
+  width: 100%;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 2;
+}
+
+/* 2-Column Grid Layout */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+}
+
+/* Brand Card (Left) */
+.footer-brand-card {
+  position: relative;
+  min-height: 16rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #111A5C 0%, #0C1344 100%);
+  padding: 32px 28px;
+  color: #FFFFFF;
+  box-shadow: 0 20px 40px -15px rgba(17, 26, 92, 0.25);
+}
+
+.footer-brand-card-glow {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(25, 185, 84, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.footer-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-logo-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #FFFFFF;
+}
+
+.footer-brand-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.footer-brand-tagline {
+  margin-top: 40px;
+  max-width: 280px;
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 600;
+  color: #FFFFFF;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-brand-subtagline {
+  display: block;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 4px;
+}
+
+/* Links Panel (Right) */
+.footer-links-panel {
+  border-radius: 24px;
+  border: 1px solid rgba(17, 26, 92, 0.08);
+  background-color: #FFFFFF;
+  padding: 32px 28px;
+  box-shadow: 0 15px 35px -10px rgba(17, 26, 92, 0.04);
+}
+
+@media (min-width: 640px) {
+  .footer-links-panel {
+    padding: 36px;
+  }
+}
+
+.footer-columns-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+}
+
+@media (min-width: 640px) {
+  .footer-columns-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+}
+
+.footer-col-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #6b6b80;
+  margin: 0 0 20px 0;
+}
+
+.footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111A5C;
+  text-decoration: none;
+  transition: color 0.15s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  text-align: left;
+}
+
+.footer-link-item:hover {
+  color: #19b954;
+}
+
+.footer-link-arrow {
+  width: 14px;
+  height: 14px;
+  color: #111A5C;
+  opacity: 0.6;
+  transition: transform 0.2s ease, opacity 0.15s ease, color 0.15s ease;
+}
+
+.footer-link-item:hover .footer-link-arrow {
+  color: #19b954;
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+/* Bottom Copyright Bar */
+.footer-bottom-bar {
+  margin-top: 40px;
+  border-top: 1px solid rgba(17, 26, 92, 0.08);
+  padding: 28px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .footer-bottom-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.footer-copyright {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #6b6b80;
+  margin: 0;
+}
+
+/* Giant Outlined Skyline Watermark */
+.footer-giant-wordmark-wrap {
+  position: relative;
+  margin-top: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
+  padding: 0 16px;
+  display: flex;
+  justify-content: center;
+  transform: translateY(22%);
+  pointer-events: none;
+}
+
+.footer-giant-wordmark {
+  font-size: clamp(6rem, 23vw, 24rem);
+  line-height: 0.75;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(17, 26, 92, 0.08);
+  white-space: nowrap;
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}

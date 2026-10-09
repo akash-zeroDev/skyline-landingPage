@@ -4,6 +4,7 @@ import HeroSection from './components/hero/HeroSection';
 import WhatWeDo from './components/whatWeDo/WhatWeDo';
 import WorkSection from './components/sections/WorkSection';
 import ContactPage from './components/contact/ContactPage';
+import Footer from './components/footer/Footer';
 import './App.css';
 
 function App() {
@@ -91,6 +92,12 @@ function App() {
           </main>
         </>
       )}
+
+      {/* Skyline Studio Footer */}
+      <Footer
+        onNavigateContact={() => navigateTo('/contact')}
+        onNavigateSection={(hash) => navigateTo('/', hash)}
+      />
     </div>
   );
 }
