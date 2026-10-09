@@ -185,10 +185,7 @@ export default function ContactPage({ onNavigateHome, isInline = false }) {
             </ul>
 
             <div className="contact-availability-badge">
-              <div className="availability-header">
-                <span className="availability-status-dot" aria-hidden="true" />
-                <p className="availability-title">CURRENTLY TAKING NEW WORK</p>
-              </div>
+              <p className="availability-title">CURRENTLY TAKING NEW WORK</p>
               <p className="availability-sub">Two project slots left for Q4</p>
             </div>
           </div>
