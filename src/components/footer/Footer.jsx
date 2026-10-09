@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import FluidWaveCanvas from './FluidWaveCanvas';
 import './Footer.css';
 
 const columns = [
@@ -51,8 +52,9 @@ export function Footer({ onNavigateContact, onNavigateSection }) {
     <footer className="skyline-footer">
       <div className="footer-container">
         <div className="footer-panels">
-          {/* Brand Panel */}
+          {/* Brand Panel with Interactive Mint Fluid Wave */}
           <div className="footer-panel footer-brand">
+            <FluidWaveCanvas />
             <div className="footer-brand-head">
               <span className="footer-icon-box" aria-hidden="true">
                 <svg

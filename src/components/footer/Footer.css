@@ -71,6 +71,8 @@
 
 /* Brand Card */
 .skyline-footer .footer-brand {
+  position: relative;
+  overflow: hidden;
   background: var(--footer-surface);
   display: flex;
   flex-direction: column;
@@ -86,6 +88,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  position: relative;
+  z-index: 2;
 }
 
 .skyline-footer .footer-icon-box {
@@ -112,7 +116,9 @@
   max-width: 16rem;
   font-size: 18px;
   line-height: 1.6;
-  color: rgba(21, 27, 92, 0.8);
+  color: rgba(21, 27, 92, 0.85);
+  position: relative;
+  z-index: 2;
 }
 
 .skyline-footer .footer-tagline {
@@ -121,7 +127,11 @@
   font-family: var(--footer-display);
   font-size: 14px;
   font-style: italic;
-  color: var(--footer-text-2);
+  font-weight: 600;
+  color: var(--footer-navy);
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
 }
 
 /* Nav Panel */
