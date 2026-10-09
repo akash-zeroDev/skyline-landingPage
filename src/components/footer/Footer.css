@@ -1,246 +1,304 @@
-/* Skyline Digital Media — Studio Footer */
+/* Skyline Digital Media — Design & Engineering Studio Footer */
 
 .skyline-footer {
-  position: relative;
+  --footer-bg: #F4F4F2;
+  --footer-navy: #151B5C;
+  --footer-navy-outline: #202A91;
+  --footer-text-2: #62677A;
+  --footer-border: #E4E5EC;
+  --footer-divider: #E0E2E8;
+  --footer-surface: #FBFBFA;
+  --footer-card: #FFFFFF;
+  --footer-surface-muted: #F0F0F5;
+  --footer-shadow: 0 1px 2px rgba(21, 27, 92, 0.04), 0 8px 24px -12px rgba(21, 27, 92, 0.08);
+  --footer-radius: 24px;
+  --footer-display: "Sora", var(--font-primary, "Plus Jakarta Sans"), ui-sans-serif, sans-serif;
+  --footer-sans: "Manrope", var(--font-primary, "Plus Jakarta Sans"), ui-sans-serif, sans-serif;
+
   overflow: hidden;
-  border-top: 1px solid rgba(17, 26, 92, 0.08);
-  background-color: var(--page-bg, #F3F3F3);
   padding-top: 80px;
+  background-color: var(--footer-bg);
+  color: var(--footer-navy);
+  font-family: var(--footer-sans);
+  border-top: 1px solid var(--footer-border);
   width: 100%;
 }
 
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-  position: relative;
-  z-index: 2;
-}
-
-/* 2-Column Grid Layout */
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
-
-@media (min-width: 1024px) {
-  .footer-grid {
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
-    gap: 24px;
-    align-items: stretch;
+@media (min-width: 768px) {
+  .skyline-footer {
+    padding-top: 112px;
   }
 }
 
-/* Brand Card (Left) */
-.footer-brand-card {
-  position: relative;
-  min-height: 16rem;
+.skyline-footer .footer-container {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@media (min-width: 768px) {
+  .skyline-footer .footer-container {
+    padding: 0 32px;
+  }
+}
+
+.skyline-footer .footer-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--footer-text-2);
+}
+
+.skyline-footer .footer-panels {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .skyline-footer .footer-panels {
+    grid-template-columns: 38fr 62fr;
+    gap: 24px;
+  }
+}
+
+.skyline-footer .footer-panel {
+  border: 1px solid var(--footer-border);
+  border-radius: var(--footer-radius);
+  box-shadow: var(--footer-shadow);
+  padding: 28px;
+}
+
+/* Brand Card */
+.skyline-footer .footer-brand {
+  background: var(--footer-surface);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-  border-radius: 24px;
-  background: #60D49A;
-  background: linear-gradient(145deg, #6EE7B7 0%, #4ADE80 100%);
-  padding: 32px 28px;
-  color: #111A5C;
-  box-shadow: 0 20px 40px -15px rgba(74, 222, 128, 0.35);
-  border: 1px solid rgba(17, 26, 92, 0.06);
 }
 
-.footer-brand-card-glow {
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, transparent 70%);
-  pointer-events: none;
+@media (min-width: 768px) {
+  .skyline-footer .footer-brand {
+    padding: 32px;
+  }
 }
 
-.footer-brand-header {
+.skyline-footer .footer-brand-head {
   display: flex;
   align-items: center;
   gap: 12px;
-  position: relative;
-  z-index: 1;
 }
 
-.footer-logo-badge {
-  width: 38px;
-  height: 38px;
+.skyline-footer .footer-icon-box {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
   border-radius: 12px;
-  background: rgba(17, 26, 92, 0.1);
-  border: 1px solid rgba(17, 26, 92, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: #111A5C;
+  border: 1px solid var(--footer-border);
+  background: var(--footer-surface-muted);
+  color: var(--footer-navy);
 }
 
-.footer-brand-title {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: #111A5C;
+.skyline-footer .footer-wordmark {
+  font-family: var(--footer-display);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--footer-navy);
 }
 
-.footer-brand-tagline {
-  margin-top: 40px;
-  max-width: 280px;
-  font-size: 14px;
-  line-height: 1.6;
-  font-weight: 600;
-  color: #111A5C;
-  position: relative;
-  z-index: 1;
-}
-
-.footer-brand-subtagline {
-  display: block;
-  font-family: Georgia, 'Times New Roman', serif;
+.skyline-footer .footer-desc {
+  margin-top: 32px;
+  max-width: 16rem;
   font-size: 18px;
+  line-height: 1.6;
+  color: rgba(21, 27, 92, 0.8);
+}
+
+.skyline-footer .footer-tagline {
+  margin-top: auto;
+  padding-top: 32px;
+  font-family: var(--footer-display);
+  font-size: 14px;
   font-style: italic;
-  font-weight: 400;
-  color: rgba(17, 26, 92, 0.75);
-  margin-top: 4px;
+  color: var(--footer-text-2);
 }
 
-/* Links Panel (Right) */
-.footer-links-panel {
-  border-radius: 24px;
-  border: 1px solid rgba(17, 26, 92, 0.08);
-  background-color: #FFFFFF;
-  padding: 32px 28px;
-  box-shadow: 0 15px 35px -10px rgba(17, 26, 92, 0.04);
+/* Nav Panel */
+.skyline-footer .footer-nav {
+  background: var(--footer-card);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
 }
 
-@media (min-width: 640px) {
-  .footer-links-panel {
+@media (min-width: 768px) {
+  .skyline-footer .footer-nav {
     padding: 36px;
   }
 }
 
-.footer-columns-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 36px;
-}
-
-@media (min-width: 640px) {
-  .footer-columns-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
-  }
-}
-
-.footer-col-title {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: #6b6b80;
-  margin: 0 0 20px 0;
-}
-
-.footer-links-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.skyline-footer .footer-nav-col {
   display: flex;
   flex-direction: column;
-  gap: 14px;
 }
 
-.footer-link-item {
+.skyline-footer .footer-nav ul {
+  list-style: none;
+  margin-top: 20px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skyline-footer .footer-nav a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #111A5C;
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(21, 27, 92, 0.85);
   text-decoration: none;
-  transition: color 0.15s ease;
-  cursor: pointer;
+  border-radius: 2px;
+  transition: color 0.2s;
   background: none;
   border: none;
   padding: 0;
+  cursor: pointer;
   font-family: inherit;
   text-align: left;
 }
 
-.footer-link-item:hover {
-  color: #19b954;
-}
-
-.footer-link-arrow {
+.skyline-footer .footer-nav a svg {
   width: 14px;
   height: 14px;
-  color: #111A5C;
-  opacity: 0.6;
-  transition: transform 0.2s ease, opacity 0.15s ease, color 0.15s ease;
+  color: rgba(98, 103, 122, 0.7);
+  transition: transform 0.2s, color 0.2s;
 }
 
-.footer-link-item:hover .footer-link-arrow {
-  color: #19b954;
-  opacity: 1;
+.skyline-footer .footer-nav a:hover {
+  color: var(--footer-navy-outline);
+}
+
+.skyline-footer .footer-nav a:hover svg {
   transform: translate(2px, -2px);
+  color: var(--footer-navy-outline);
 }
 
-/* Bottom Copyright Bar */
-.footer-bottom-bar {
-  margin-top: 40px;
-  border-top: 1px solid rgba(17, 26, 92, 0.08);
-  padding: 28px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.skyline-footer a:focus-visible,
+.skyline-footer button:focus-visible {
+  outline: 2px solid var(--footer-navy-outline);
+  outline-offset: 4px;
 }
 
-@media (min-width: 640px) {
-  .footer-bottom-bar {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+/* Copyright Bar */
+.skyline-footer .footer-copy {
+  margin-top: 56px;
+  border-top: 1px solid var(--footer-divider);
+  padding-top: 24px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--footer-text-2);
+}
+
+@media (min-width: 768px) {
+  .skyline-footer .footer-copy {
+    margin-top: 80px;
   }
 }
 
-.footer-copyright {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #6b6b80;
-  margin: 0;
-}
-
-/* Giant Outlined Skyline Watermark */
-.footer-giant-wordmark-wrap {
+/* Signature & Animated Wordmark */
+.skyline-footer .footer-signature {
   position: relative;
-  margin-top: 16px;
-  user-select: none;
-  -webkit-user-select: none;
-  overflow: hidden;
-  padding: 0 16px;
-  display: flex;
-  justify-content: center;
-  transform: translateY(22%);
-  pointer-events: none;
+  max-width: 80rem;
+  margin: 48px auto 0;
+  padding: 0 12px;
 }
 
-.footer-giant-wordmark {
-  font-size: clamp(6rem, 23vw, 24rem);
-  line-height: 0.75;
-  font-weight: 900;
+@media (min-width: 768px) {
+  .skyline-footer .footer-signature {
+    margin-top: 64px;
+  }
+}
+
+.skyline-footer .footer-replay {
+  position: absolute;
+  right: 16px;
+  top: 0;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--footer-border);
+  background: var(--footer-surface);
+  color: var(--footer-text-2);
+  cursor: pointer;
+  transition: color 0.2s, background-color 0.2s, transform 0.2s;
+}
+
+@media (min-width: 768px) {
+  .skyline-footer .footer-replay {
+    right: 32px;
+  }
+}
+
+.skyline-footer .footer-replay:hover {
+  color: var(--footer-navy);
+  background: var(--footer-card);
+  transform: rotate(30deg);
+}
+
+.skyline-footer svg.footer-big {
+  display: block;
+  width: 100%;
+  margin-bottom: -3%;
+}
+
+.skyline-footer .footer-big text {
+  font-family: var(--footer-display);
+  font-size: 232px;
+  font-weight: 800;
   letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: rgba(21, 36, 130, 0.04);
-  -webkit-text-stroke: 2.2px #16247E;
-  white-space: nowrap;
-  margin: 0;
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  fill: var(--footer-surface-muted);
+  stroke: var(--footer-navy-outline);
+  stroke-width: 1.4;
+  stroke-dasharray: 1800;
+  stroke-dashoffset: 0;
+}
+
+.skyline-footer .footer-big text.draw {
+  animation: footerDraw 2.4s cubic-bezier(0.6, 0.1, 0.2, 1) both;
+}
+
+@keyframes footerDraw {
+  from {
+    stroke-dashoffset: 1800;
+    fill-opacity: 0;
+  }
+  75% {
+    fill-opacity: 0;
+  }
+  to {
+    stroke-dashoffset: 0;
+    fill-opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skyline-footer .footer-big text.draw {
+    animation: none;
+  }
+  .skyline-footer .footer-nav a,
+  .skyline-footer .footer-nav a svg,
+  .skyline-footer .footer-replay {
+    transition: none;
+  }
+  .skyline-footer .footer-nav a:hover svg {
+    transform: none;
+  }
 }
