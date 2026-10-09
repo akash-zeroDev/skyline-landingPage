@@ -185,15 +185,11 @@ export default function ContactPage({ onNavigateHome, isInline = false }) {
             </ul>
 
             <div className="contact-availability-badge">
-              <div className="availability-icon-wrap" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L14.6 9.4L22 12L14.6 14.6L12 22L9.4 14.6L2 12L9.4 9.4L12 2Z" />
-                </svg>
-              </div>
-              <div>
+              <div className="availability-header">
+                <span className="availability-status-dot" aria-hidden="true" />
                 <p className="availability-title">CURRENTLY TAKING NEW WORK</p>
-                <p className="availability-sub">Two project slots left for Q4</p>
               </div>
+              <p className="availability-sub">Two project slots left for Q4</p>
             </div>
           </div>
 
