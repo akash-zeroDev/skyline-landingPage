@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import HeroSection from './components/hero/HeroSection';
 import WhatWeDo from './components/whatWeDo/WhatWeDo';
 import WorkSection from './components/sections/WorkSection';
+import WorkflowDialSection from './components/workflow/WorkflowDialSection';
 import ContactPage from './components/contact/ContactPage';
 import Footer from './components/footer/Footer';
 import './App.css';
@@ -79,8 +80,10 @@ function App() {
 
           {/* Target sections for anchor navigation */}
           <main className="skyline-content">
-            <section id="about" className="skyline-section" aria-label="About Section" />
             <section id="services" className="skyline-section" aria-label="Services Section" />
+
+            {/* How We Work — Studio Workflow Scrolling Dial Section */}
+            <WorkflowDialSection />
 
             {/* Selected Projects Work Section */}
             <WorkSection />

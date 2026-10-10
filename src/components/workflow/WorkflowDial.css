@@ -1,0 +1,112 @@
+/* WorkflowDial Styles */
+
+.workflow-dial-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.workflow-dial-wheel {
+  position: absolute;
+  top: 50%;
+  left: -800px;
+  width: 1200px;
+  height: 1200px;
+  margin-top: -600px;
+  border-radius: 50%;
+  will-change: transform;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+}
+
+.dial-arc-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: rgba(21, 27, 92, 0.12);
+  pointer-events: none;
+}
+
+.dial-arc-circle {
+  transition: stroke 0.4s ease;
+}
+
+.dial-number-btn {
+  position: absolute;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  touch-action: manipulation;
+  z-index: 5;
+}
+
+.dial-number-text {
+  font-family: var(--display, 'Sora', 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: clamp(3.2rem, 5.5vw, 4.6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: rgba(21, 27, 92, 0.22);
+  transition: color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              text-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+}
+
+.dial-number-btn:hover .dial-number-text {
+  color: rgba(21, 27, 92, 0.65);
+  transform: scale(1.05);
+}
+
+.dial-number-btn.is-active .dial-number-text {
+  color: #10B981; /* Luminous Mint / Emerald */
+  text-shadow: 0 4px 28px rgba(16, 185, 129, 0.35);
+  transform: scale(1.12);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .workflow-dial-wheel {
+    left: -840px;
+  }
+}
+
+@media (max-width: 768px) {
+  .workflow-dial-wrapper {
+    height: 120px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .workflow-dial-wheel {
+    top: -460px;
+    left: 50%;
+    margin-left: -600px;
+    margin-top: 0;
+  }
+
+  .dial-number-text {
+    font-size: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workflow-dial-wheel {
+    transition: none;
+  }
+  .dial-indicator-ring {
+    animation: none;
+  }
+}
