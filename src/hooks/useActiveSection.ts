@@ -45,6 +45,8 @@ export function useActiveSection(
           if (highestId) {
             setActiveId(highestId);
           }
+        } else {
+          setActiveId(null);
         }
       },
       {

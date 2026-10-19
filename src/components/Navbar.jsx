@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useActiveSection } from '../hooks/useActiveSection';
 import './Navbar.css';
 
@@ -6,6 +6,7 @@ const DEFAULT_NAV_ITEMS = [
   { label: 'About', href: '#about' },
   { label: 'Services', href: '#services' },
   { label: 'Work', href: '#work' },
+  { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -22,7 +23,10 @@ export default function Navbar({
   const navContainerRef = useRef(null);
 
   // Track active section using IntersectionObserver hook
-  const sectionIds = items.map((item) => item.href.replace(/^#/, ''));
+  const sectionIds = useMemo(
+    () => items.map((item) => item.href.replace(/^[#/]/, '')),
+    [items]
+  );
   const detectedActive = useActiveSection(sectionIds);
   const activeSection = currentRoute === '/contact' ? 'contact' : detectedActive;
 
@@ -116,7 +120,7 @@ export default function Navbar({
       >
         <ul className="skyline-links-list">
           {items.map((item) => {
-            const itemId = item.href.replace(/^#/, '');
+            const itemId = item.href.replace(/^[#/]/, '');
             const isActive = activeSection === itemId;
 
             return (
@@ -170,7 +174,7 @@ export default function Navbar({
         <div className="skyline-mobile-inner">
           <ul className="skyline-mobile-list">
             {items.map((item) => {
-              const itemId = item.href.replace(/^#/, '');
+              const itemId = item.href.replace(/^[#/]/, '');
               const isActive = activeSection === itemId;
 
               return (

@@ -1,12 +1,12 @@
 /* ==========================================================================
-   Skyline Digital Media - Work Section Styling
+   Skyline Digital Media - Selected Work (Project Deck)
    ========================================================================== */
 
 .work-section {
   position: relative;
   width: 100%;
   background-color: var(--page-bg, #F3F3F3);
-  scroll-margin-top: 112px; /* scroll-mt-28 offset so floating pill nav never covers content */
+  scroll-margin-top: 112px; /* kept: floating pill nav must never cover content */
   box-sizing: border-box;
 }
 
@@ -103,104 +103,117 @@
   display: none;
 }
 
-/* --------------------------------------------------------------------------
-   PROJECT GRID
-   -------------------------------------------------------------------------- */
-.work-grid {
-  list-style: none;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
   padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 32px;
-}
-
-/* Entrance animation */
-.project-card-item {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.work-grid.is-visible .project-card-item {
-  animation: cardFadeUp 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes cardFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* --------------------------------------------------------------------------
-   PROJECT CARD
+   DECK LAYOUT
    -------------------------------------------------------------------------- */
-.project-card-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  outline: none;
-  height: 100%;
+.work-deck {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 48px;
+  align-items: center;
 }
 
-.project-card-article {
-  height: 100%;
+.work-deck-stage {
   display: flex;
   flex-direction: column;
-  transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 350ms ease;
-  border-radius: 28px;
-  background-color: transparent;
+  gap: 20px;
+  min-width: 0;
 }
 
-/* Desktop Hover Lift */
-@media (hover: hover) {
-  .project-card-link:hover .project-card-article {
-    transform: translateY(-4px);
-  }
-
-  .project-card-link:hover .project-image-wrapper {
-    box-shadow: 0 16px 36px -8px rgba(17, 26, 92, 0.1);
-  }
-
-  .project-card-link:hover .project-image {
-    transform: scale(1.04);
-  }
-
-  .project-card-link:hover .case-study-badge {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.work-deck-side {
+  min-width: 0;
 }
 
-.project-card-link:focus-visible .project-card-article {
-  outline: 2px solid var(--navy-primary, #111A5C);
-  outline-offset: 6px;
-  border-radius: 28px;
+/* Entrance choreography */
+.work-focus-wrap {
+  opacity: 0;
+  transform: translateY(28px) scale(0.96);
+  transition: opacity 850ms linear, transform 850ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Image Wrapper (4:3 aspect ratio with rounded corners) */
-.project-image-wrapper {
+.work-deck.is-visible .work-focus-wrap {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   FOCUS CARD
+   -------------------------------------------------------------------------- */
+.work-focus-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.work-focus-media {
   position: relative;
+  display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
+  padding: 0;
+  margin: 0;
+  border: 1px solid rgba(17, 26, 92, 0.08);
   border-radius: 24px;
   overflow: hidden;
-  background-color: #e5e8ef; /* Soft fallback background preventing layout shift */
-  border: 1px solid rgba(17, 26, 92, 0.08);
-  box-shadow: 0 4px 16px -2px rgba(17, 26, 92, 0.04);
-  transition: box-shadow 350ms ease;
+  background-color: #e5e8ef;
+  box-shadow: 0 1px 2px rgba(17, 26, 92, 0.04),
+    0 22px 44px -22px rgba(17, 26, 92, 0.22);
+  cursor: grab;
+  touch-action: pan-y;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.project-image {
+.work-focus-media:active {
+  cursor: grabbing;
+}
+
+.work-focus-media:focus-visible {
+  outline: 2px solid var(--navy-primary, #111A5C);
+  outline-offset: 6px;
+}
+
+.work-focus-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Masked wipe played on every project change */
+.work-focus-wipe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-origin: left center;
+  background: linear-gradient(120deg, #f3f3f3 0%, #ffffff 100%);
+  pointer-events: none;
+}
+
+/* Accent flash ring on commit */
+.work-focus-flash {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border: 2px solid var(--accent, #111A5C);
+  border-radius: 24px;
+  pointer-events: none;
 }
 
 /* "View case study →" Badge */
@@ -232,31 +245,72 @@
   transition: transform 180ms ease;
 }
 
-/* Card Content Area */
-.project-card-info {
+/* Cursor-following ring (fine pointers only) */
+.work-focus-ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(17, 26, 92, 0.92);
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.work-focus-ring-label {
+  line-height: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .work-focus-ring {
+    display: flex;
+  }
+
+  .work-focus-media:hover .work-focus-ring {
+    opacity: 1;
+  }
+
+  .work-focus-media:hover .case-study-badge {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* Focus card footer (title, description, tags) */
+.work-focus-footer {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 18px 4px 8px;
-  flex-grow: 1;
+  padding: 0 4px;
 }
 
-.project-card-header {
+.work-focus-heading {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.project-title {
-  font-size: 20px;
+.work-focus-title {
+  font-size: 22px;
   font-weight: 700;
   color: var(--navy-primary, #111A5C);
   letter-spacing: -0.02em;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
-.project-description {
-  font-size: 14.5px;
+.work-focus-description {
+  font-size: 15px;
   color: var(--navy-muted, #58617d);
   line-height: 1.45;
 }
@@ -286,7 +340,141 @@
 }
 
 /* --------------------------------------------------------------------------
-   RESPONSIVE BREAKPOINTS
+   DECK PROGRESS
+   -------------------------------------------------------------------------- */
+.work-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 4px;
+}
+
+.work-progress-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.work-progress-dot {
+  width: 26px;
+  height: 4px;
+  padding: 0;
+  border: none;
+  border-radius: 9999px;
+  background-color: rgba(17, 26, 92, 0.14);
+  cursor: pointer;
+  transition: background-color 260ms ease, width 260ms ease;
+}
+
+.work-progress-dot.is-active {
+  width: 44px;
+  background-color: var(--accent, #111A5C);
+}
+
+.work-progress-dot:focus-visible {
+  outline: 2px solid var(--navy-primary, #111A5C);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   INTERACTIVE INDEX
+   -------------------------------------------------------------------------- */
+.work-index {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(17, 26, 92, 0.08);
+}
+
+.work-index-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 20px 6px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(17, 26, 92, 0.08);
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  opacity: 0;
+  transform: translateX(24px);
+  transition: opacity 500ms ease, transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-deck.is-visible .work-index-row {
+  opacity: 1;
+  transform: none;
+}
+
+.work-index-row::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 0;
+  background-color: var(--accent, #111A5C);
+  transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-index-row.is-active::after {
+  width: 100%;
+}
+
+.work-index-row:focus-visible {
+  outline: 2px solid var(--navy-primary, #111A5C);
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+
+.work-index-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.work-index-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: rgba(17, 26, 92, 0.62);
+  transition: color 260ms ease, transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-index-row.is-active .work-index-title {
+  color: var(--navy-primary, #111A5C);
+  transform: translateX(2px);
+}
+
+.work-index-meta {
+  font-size: 13px;
+  color: var(--navy-muted, #58617d);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.work-index-dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(17, 26, 92, 0.16);
+  transition: background-color 260ms ease, transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-index-row.is-active .work-index-dot {
+  background-color: var(--accent, #111A5C);
+  transform: scale(1.25);
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE
    -------------------------------------------------------------------------- */
 
 /* Tablet (640px - 1023px) */
@@ -295,18 +483,55 @@
     padding: 80px 20px 100px;
   }
 
-  .work-grid {
-    gap: 24px;
+  .work-deck {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 
-  .project-image-wrapper {
+  .work-focus-media {
     border-radius: 20px;
+  }
+
+  .work-index {
+    flex-direction: row;
+    gap: 12px;
+    border-top: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .work-index-row {
+    flex: 0 0 auto;
+    width: 210px;
+    padding: 14px;
+    transform: translateY(20px);
+    border: 1px solid rgba(17, 26, 92, 0.08);
+    border-radius: 16px;
+    background-color: #ffffff;
+    scroll-snap-align: start;
+  }
+
+  .work-deck.is-visible .work-index-row {
+    transform: none;
+  }
+
+  .work-index-row::after {
+    left: 14px;
+    right: 14px;
+    bottom: 0;
+    width: 0;
+    border-radius: 9999px;
+  }
+
+  .work-index-row.is-active::after {
+    width: calc(100% - 28px);
   }
 }
 
 /* Mobile & Touch Devices (< 640px or hover: none) */
 @media (hover: none), (max-width: 639px) {
-  /* Badge is always visible on touch/mobile devices */
   .case-study-badge {
     opacity: 1;
     transform: translateY(0);
@@ -345,17 +570,16 @@
     box-shadow: 0 2px 6px rgba(17, 26, 92, 0.04);
   }
 
-  .work-grid {
-    grid-template-columns: 1fr;
-    gap: 28px;
+  .work-focus-title {
+    font-size: 20px;
   }
 
-  .project-title {
-    font-size: 19px;
-  }
-
-  .project-description {
+  .work-focus-description {
     font-size: 14px;
+  }
+
+  .work-index-row {
+    width: 186px;
   }
 }
 
@@ -363,22 +587,32 @@
    PREFERS-REDUCED-MOTION
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .work-grid.is-visible .project-card-item {
-    animation: none;
-    opacity: 1;
-    transform: none;
+  .work-focus-wrap,
+  .work-index-row {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 
-  .project-card-article,
-  .project-image,
+  .work-focus-media,
+  .work-focus-image,
+  .work-focus-wipe,
+  .work-focus-flash,
   .case-study-badge,
   .view-all-link,
-  .link-arrow {
+  .link-arrow,
+  .work-index-title,
+  .work-index-dot,
+  .work-progress-dot {
     transition: none !important;
-    transform: none !important;
+  }
+
+  .work-focus-ring {
+    display: none !important;
   }
 
   .case-study-badge {
     opacity: 1 !important;
+    transform: none !important;
   }
 }

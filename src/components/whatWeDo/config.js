@@ -6,7 +6,6 @@ import {
   DIST,
   CARD_ENTRANCE,
   CARD_DELAYS,
-  REPLAY,
   createCubicBezierSolver,
   createSpringSolver,
 } from '../../motion/tokens.js';
@@ -140,7 +139,11 @@ export const GEOMETRY = {
     gapToGrid: 34,
   },
   paddingTop: 45,
-  paddingBottom: 110,
+  // Trimmed from 110: the tilted revenue face bottoms out above the grid edge
+  // (faceHangover ~0), so a full 110 ref-px left a dead gap before the next
+  // section. 56 still leaves a large positive clearance for the QA
+  // PAGE_AFTER_BOTTOM_CLEARANCE check (net >= 20px).
+  paddingBottom: 56,
 };
 
 // 5. CHUNK 2: REVENUE CARD CONFIGURATION
@@ -526,12 +529,12 @@ export const MOTION = {
   DIST,
   CARD_ENTRANCE,
   CARD_DELAYS,
-  REPLAY,
+  REPLAY: 'once',
   cardDelay: CARD_DELAYS.multiColumn,
 
   // Global feature flags
   EXTRAS: {
-    hoverLift: false,
+    hoverLift: true,
     chartDraw: true,
     countUp: true,
   },

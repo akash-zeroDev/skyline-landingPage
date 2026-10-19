@@ -24,12 +24,6 @@ export const WORKFLOW_PHASES = [
         desc: 'Analyze category leaders to pinpoint unique positioning and design leverage.',
       },
     ],
-    deliverables: [
-      'Product Strategy Brief',
-      'Technical Feasibility Matrix',
-      'User Journey Blueprint',
-    ],
-    badge: 'Sprint 01 · Foundational Clarity',
     theme: {
       primary: '#10B981', // Emerald / Mint Accent
       orb1: 'rgba(110, 231, 183, 0.45)', // #6EE7B7 mint glow
@@ -62,12 +56,6 @@ export const WORKFLOW_PHASES = [
         desc: 'Map end-to-end user workflows with clickable low-fidelity wireframe skeletons.',
       },
     ],
-    deliverables: [
-      'System Architecture Blueprint',
-      'API Contract Specification',
-      'Clickable Wireframe Skeleton',
-    ],
-    badge: 'Sprint 02 · Structural Precision',
     theme: {
       primary: '#0284C7', // Sky Blue
       orb1: 'rgba(56, 189, 248, 0.42)', // sky blue
@@ -100,12 +88,6 @@ export const WORKFLOW_PHASES = [
         desc: 'Test real customer scenarios to eliminate friction and elevate perceived performance.',
       },
     ],
-    deliverables: [
-      'Production Figma System',
-      'Interactive Motion Prototypes',
-      'Design Token Specification',
-    ],
-    badge: 'Sprint 03 · Visual Excellence',
     theme: {
       primary: '#8B5CF6', // Purple / Violet
       orb1: 'rgba(196, 181, 253, 0.48)', // soft violet
@@ -138,12 +120,6 @@ export const WORKFLOW_PHASES = [
         desc: 'End-to-end regression testing with Playwright, zero layout shifts, and 95+ Lighthouse.',
       },
     ],
-    deliverables: [
-      'Clean Git Repository & CI/CD',
-      'Automated Test Suite',
-      'Performance & Security Audit',
-    ],
-    badge: 'Sprint 04 · Production Engineering',
     theme: {
       primary: '#0D9488', // Teal / Emerald
       orb1: 'rgba(94, 234, 212, 0.45)', // teal
@@ -176,12 +152,6 @@ export const WORKFLOW_PHASES = [
         desc: 'Post-launch feedback analysis, conversion optimization, and roadmap momentum.',
       },
     ],
-    deliverables: [
-      'Live Edge Deployment',
-      'Telemetry & Error Dashboard',
-      'Handover Documentation & Video Guides',
-    ],
-    badge: 'Sprint 05 · Launch & Growth',
     theme: {
       primary: '#10B981', // Launch Mint
       orb1: 'rgba(110, 231, 183, 0.52)', // mint

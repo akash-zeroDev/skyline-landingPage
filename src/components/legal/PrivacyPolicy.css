@@ -1,0 +1,328 @@
+/* Skyline Digital Media — Legal / Privacy Policy Page Styles */
+
+.legal-page-wrapper {
+  min-height: 100vh;
+  background-color: var(--page-bg, #F3F3F3);
+  color: #111A5C;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  padding-top: 110px;
+  padding-bottom: 96px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.legal-bg-glow {
+  position: absolute;
+  top: -120px;
+  right: -80px;
+  width: 620px;
+  height: 620px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(43, 127, 251, 0.06) 0%,
+    rgba(17, 26, 92, 0.03) 50%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.legal-container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Top back navigation pill */
+.legal-top-nav {
+  margin-bottom: 40px;
+}
+
+.legal-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid rgba(17, 26, 92, 0.1);
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111a5c;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(17, 26, 92, 0.04);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.legal-back-link:hover {
+  background: #111a5c;
+  color: #ffffff;
+  border-color: #111a5c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(17, 26, 92, 0.12);
+}
+
+.legal-back-link svg {
+  transition: transform 0.2s ease;
+}
+
+.legal-back-link:hover svg {
+  transform: translateX(-3px);
+}
+
+.legal-back-link:focus-visible {
+  outline: 2px solid #111a5c;
+  outline-offset: 3px;
+}
+
+/* Header ------------------------------------------------------------------ */
+.legal-header {
+  max-width: 720px;
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+.legal-eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #111a5c;
+  opacity: 0.85;
+  margin: 0 0 18px;
+}
+
+.legal-title {
+  margin: 0 0 16px;
+  font-size: clamp(38px, 6vw, 64px);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: #111a5c;
+}
+
+.legal-meta {
+  margin: 0 0 22px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #8790aa;
+}
+
+.legal-lede {
+  margin: 0;
+  font-size: clamp(16px, 1.3vw, 18px);
+  line-height: 1.65;
+  color: #58617d;
+}
+
+/* Layout ------------------------------------------------------------------ */
+.legal-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+@media (min-width: 960px) {
+  .legal-layout {
+    grid-template-columns: 230px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+}
+
+/* Table of contents ------------------------------------------------------- */
+.legal-toc {
+  border: 1px solid rgba(17, 26, 92, 0.08);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 22px;
+}
+
+@media (min-width: 960px) {
+  .legal-toc {
+    position: sticky;
+    top: 32px;
+  }
+}
+
+.legal-toc-title {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8790aa;
+}
+
+.legal-toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.legal-toc-list a {
+  display: block;
+  padding: 7px 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #58617d;
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.legal-toc-list a:hover,
+.legal-toc-list a:focus-visible {
+  color: #111a5c;
+}
+
+.legal-toc-list a:focus-visible {
+  outline: 2px solid #111a5c;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Article ----------------------------------------------------------------- */
+.legal-article {
+  max-width: 720px;
+}
+
+.legal-section {
+  scroll-margin-top: 32px;
+}
+
+.legal-section + .legal-section {
+  margin-top: clamp(34px, 4vw, 48px);
+  padding-top: clamp(34px, 4vw, 48px);
+  border-top: 1px solid rgba(17, 26, 92, 0.08);
+}
+
+.legal-section-title {
+  margin: 0 0 16px;
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111a5c;
+}
+
+.legal-paragraph {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: #4d5573;
+}
+
+.legal-paragraph + .legal-paragraph,
+.legal-paragraph + .legal-list,
+.legal-list + .legal-paragraph {
+  margin-top: 14px;
+}
+
+.legal-paragraph a {
+  color: #111a5c;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.legal-list {
+  margin: 0;
+  padding: 0 0 0 4px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.legal-list li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: #4d5573;
+}
+
+.legal-list li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #111a5c;
+  opacity: 0.55;
+}
+
+/* Callout ----------------------------------------------------------------- */
+.legal-callout {
+  margin-top: clamp(40px, 4.5vw, 56px);
+  padding: 28px 30px;
+  border-radius: 18px;
+  background: #111a5c;
+  color: #ffffff;
+}
+
+.legal-callout-title {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.legal-callout-text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.legal-callout-text a {
+  color: #6ee7b7;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Responsive -------------------------------------------------------------- */
+@media (max-width: 959px) {
+  .legal-page-wrapper {
+    padding-top: 96px;
+  }
+
+  .legal-header {
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 639px) {
+  .legal-container {
+    padding: 0 20px;
+  }
+
+  .legal-callout {
+    padding: 24px 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .legal-back-link,
+  .legal-back-link svg,
+  .legal-toc-list a {
+    transition: none;
+  }
+
+  .legal-back-link:hover {
+    transform: none;
+  }
+}

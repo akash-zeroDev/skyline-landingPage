@@ -546,6 +546,51 @@ export default function WhatWeDo() {
           transform: translateX(calc(var(--r) * 24)) scale(0.96);
         }
 
+        /* ------------------------------------------------------------------
+           Interactive hover states.
+           Scoped to [data-reveal-state="settled"] so the JS entrance
+           choreography (which writes transforms every frame) is never
+           disturbed. !important overrides the inline styles left behind by
+           the reveal (transform: none) and the inline border/box-shadow.
+           ------------------------------------------------------------------ */
+        @media (hover: hover) and (pointer: fine) {
+          .wwd-section[data-reveal-state="settled"] .wwd-card {
+            transition:
+              transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.32s ease,
+              border-color 0.32s ease !important;
+          }
+
+          .wwd-section[data-reveal-state="settled"] .wwd-card:hover {
+            transform: translateY(calc(var(--r) * -6)) !important;
+            border-color: rgba(21, 27, 92, 0.16) !important;
+            box-shadow:
+              0 calc(var(--r) * 18) calc(var(--r) * 40) calc(var(--r) * -18) rgba(21, 27, 92, 0.28),
+              0 calc(var(--r) * 2) calc(var(--r) * 8) rgba(21, 27, 92, 0.06) !important;
+          }
+
+          /* Tilted revenue card: the yellow back plate peeks a little further */
+          .wwd-section[data-reveal-state="settled"] .wwd-card-revenue [data-part="plate"] {
+            transition:
+              opacity 0.2s ease,
+              transform 0.32s cubic-bezier(0.22, 1, 0.36, 1) !important;
+            transform-origin: 50% 50%;
+          }
+
+          .wwd-section[data-reveal-state="settled"] .wwd-card-revenue:hover [data-part="plate"] {
+            transform: scale(1.035) rotate(-1.5deg);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .wwd-section[data-reveal-state="settled"] .wwd-card:hover {
+            transform: none !important;
+          }
+          .wwd-section[data-reveal-state="settled"] .wwd-card-revenue:hover [data-part="plate"] {
+            transform: none;
+          }
+        }
+
         .wwd-subtext {
           font-family: var(--font-primary);
           font-size: calc(var(--r) * ${GEOMETRY.header.subtext.fontSize});

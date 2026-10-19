@@ -215,6 +215,20 @@ export default function useReveal(sectionRef) {
       rafIdRef.current = null;
     }
 
+    // Mark every trigger as consumed so no in-view observer can restart the
+    // choreography after a forced settle (e.g. the safety timeout firing
+    // before the debounced/speed-guarded grid trigger ran).
+    headerTriggeredRef.current = true;
+    gridTriggeredRef.current = true;
+    singleCardTimesRef.current = {
+      revenue: 1,
+      content: 1,
+      'stat-a': 1,
+      'stat-b': 1,
+      file: 1,
+      ai: 1,
+    };
+
     node.setAttribute('data-reveal-state', 'settled');
     setRevealState('settled');
 
@@ -1013,9 +1027,11 @@ export default function useReveal(sectionRef) {
 
     sectionObserver.observe(node);
 
-    // 4-second safety timeout
+    // 4-second safety timeout: only settle a choreography that actually started.
+    // It must never fire while the section is still pending off-screen, otherwise
+    // the animation would complete before the user ever reaches the section.
     const safetyTimeout = setTimeout(() => {
-      if (node.getAttribute('data-reveal-state') !== 'settled') {
+      if (node.getAttribute('data-reveal-state') === 'animating') {
         jumpToSettledState();
       }
     }, 4000);
@@ -1026,9 +1042,10 @@ export default function useReveal(sectionRef) {
     };
     window.addEventListener('beforeprint', handleBeforePrint);
 
-    // Visibility change handler
+    // Visibility change handler: only recover a choreography that is mid-flight.
+    // A pending (never-triggered) section must stay pending until it is reached.
     const handleVisibilityChange = () => {
-      if (!document.hidden && node.getAttribute('data-reveal-state') !== 'settled') {
+      if (!document.hidden && node.getAttribute('data-reveal-state') === 'animating') {
         const r = node.getBoundingClientRect();
         const vh = window.innerHeight || 800;
         if (r.top < vh && r.bottom > 0) {

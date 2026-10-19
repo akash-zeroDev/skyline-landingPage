@@ -1,34 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/hero/HeroSection';
 import WhatWeDo from './components/whatWeDo/WhatWeDo';
+import OurServices from './components/services/OurServices';
 import WorkSection from './components/sections/WorkSection';
 import WorkflowDialSection from './components/workflow/WorkflowDialSection';
+import FaqSection from './components/faq/FaqSection';
 import ContactPage from './components/contact/ContactPage';
+import PrivacyPolicy from './components/legal/PrivacyPolicy';
 import Footer from './components/footer/Footer';
 import './App.css';
 
-function App() {
-  const getInitialRoute = () => {
-    if (typeof window === 'undefined') return '/';
-    const path = window.location.pathname.toLowerCase();
-    const hash = window.location.hash.toLowerCase();
-    if (path.includes('/contact') || hash === '#contact') return '/contact';
-    return '/';
-  };
+const getRouteFromLocation = () => {
+  if (typeof window === 'undefined') return '/';
+  const path = window.location.pathname.toLowerCase();
+  const hash = window.location.hash.toLowerCase();
+  if (path.includes('/contact')) return '/contact';
+  if (path.includes('/privacy')) return '/privacy';
+  if (hash === '#contact') return '/contact';
+  return '/';
+};
 
-  const [route, setRoute] = useState(getInitialRoute);
+function App() {
+  const [route, setRoute] = useState(getRouteFromLocation);
+  const routeRef = useRef(route);
 
   useEffect(() => {
     const handleLocationChange = () => {
-      const path = window.location.pathname.toLowerCase();
-      const hash = window.location.hash.toLowerCase();
-      if (path.includes('/contact') || hash === '#contact') {
-        setRoute('/contact');
+      const nextRoute = getRouteFromLocation();
+      if (
+        nextRoute !== routeRef.current &&
+        (nextRoute === '/contact' || nextRoute === '/privacy')
+      ) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        setRoute('/');
       }
+      routeRef.current = nextRoute;
+      setRoute(nextRoute);
     };
 
     window.addEventListener('popstate', handleLocationChange);
@@ -42,11 +49,18 @@ function App() {
   const navigateTo = (newRoute, targetHash = '') => {
     if (newRoute === '/contact') {
       window.history.pushState({}, '', '/contact');
+      routeRef.current = '/contact';
       setRoute('/contact');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (newRoute === '/privacy') {
+      window.history.pushState({}, '', '/privacy');
+      routeRef.current = '/privacy';
+      setRoute('/privacy');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       const url = targetHash ? `/${targetHash}` : '/';
       window.history.pushState({}, '', url);
+      routeRef.current = '/';
       setRoute('/');
       if (targetHash) {
         setTimeout(() => {
@@ -70,6 +84,8 @@ function App() {
 
       {route === '/contact' ? (
         <ContactPage onNavigateHome={() => navigateTo('/')} />
+      ) : route === '/privacy' ? (
+        <PrivacyPolicy onNavigateHome={() => navigateTo('/')} />
       ) : (
         <>
           {/* Animated Hero Section with Fanned-Out Wallet Stage */}
@@ -80,13 +96,17 @@ function App() {
 
           {/* Target sections for anchor navigation */}
           <main className="skyline-content">
-            <section id="services" className="skyline-section" aria-label="Services Section" />
+            {/* Our Services — capability grid */}
+            <OurServices />
 
             {/* How We Work — Studio Workflow Scrolling Dial Section */}
             <WorkflowDialSection />
 
             {/* Selected Projects Work Section */}
             <WorkSection />
+
+            {/* FAQ — accordion */}
+            <FaqSection />
 
             {/* Contact Section — also mounted on single page */}
             <section id="contact" className="skyline-section" aria-label="Contact Section">
@@ -99,6 +119,7 @@ function App() {
       {/* Skyline Studio Footer */}
       <Footer
         onNavigateContact={() => navigateTo('/contact')}
+        onNavigatePrivacy={() => navigateTo('/privacy')}
         onNavigateSection={(hash) => navigateTo('/', hash)}
       />
     </div>

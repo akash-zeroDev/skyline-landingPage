@@ -87,11 +87,6 @@ export function WorkflowDialSection() {
 
         {/* Top Header & Section Eyebrow */}
         <div className="workflow-top-bar">
-          <div className="workflow-badge-pill">
-            <span className="workflow-badge-dot" />
-            <span className="workflow-badge-text">STUDIO WORKFLOW</span>
-          </div>
-
           <div className="workflow-section-eyebrow">
             HOW WE WORK
           </div>
@@ -120,15 +115,12 @@ export function WorkflowDialSection() {
               aria-live="polite"
               aria-label={`${currentPhase.phase}: ${currentPhase.title}`}
             >
-              {/* Header: Phase number, Sprint pill, and Title */}
+              {/* Header: Phase number and Title */}
               <div className="workflow-card-header">
                 <div className="workflow-card-meta">
                   <span className="workflow-mobile-phase-num">{currentPhase.id}</span>
                   <span className="workflow-phase-eyebrow">
                     {currentPhase.phase}
-                  </span>
-                  <span className="workflow-sprint-badge">
-                    {currentPhase.badge}
                   </span>
                 </div>
 
@@ -153,36 +145,11 @@ export function WorkflowDialSection() {
                 <div className="workflow-activities-grid">
                   {currentPhase.activities.map((act) => (
                     <div key={act.title} className="workflow-activity-tile">
-                      <span className="activity-bullet" aria-hidden="true" />
                       <div className="activity-body">
                         <strong className="activity-title">{act.title}</strong>
                         <p className="activity-desc">{act.desc}</p>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Deliverables Bar */}
-              <div className="workflow-deliverables-bar">
-                <span className="deliverables-label">Key Deliverables:</span>
-                <div className="deliverables-chips">
-                  {currentPhase.deliverables.map((item) => (
-                    <span key={item} className="deliverable-chip">
-                      <svg
-                        className="chip-check"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
-                      >
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                      {item}
-                    </span>
                   ))}
                 </div>
               </div>

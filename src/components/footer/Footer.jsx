@@ -9,6 +9,7 @@ const columns = [
       { label: 'How we work', href: '#work' },
       { label: 'Services', href: '#services' },
       { label: 'Selected work', href: '#work' },
+      { label: 'FAQ', href: '#faq' },
       { label: 'Process', href: '#about' },
       { label: 'About', href: '#about' },
     ],
@@ -17,12 +18,12 @@ const columns = [
     title: 'Company',
     links: [
       { label: 'Contact', href: '/contact' },
-      { label: 'Privacy policy', href: '/contact' },
+      { label: 'Privacy policy', href: '/privacy' },
     ],
   },
 ];
 
-export function Footer({ onNavigateContact, onNavigateSection }) {
+export function Footer({ onNavigateContact, onNavigatePrivacy, onNavigateSection }) {
   const [animationKey, setAnimationKey] = useState(0);
 
   const handleLinkClick = (e, href) => {
@@ -31,7 +32,14 @@ export function Footer({ onNavigateContact, onNavigateSection }) {
       if (onNavigateContact) {
         onNavigateContact();
       } else {
-        window.location.href = '/contact';
+        window.location.assign('/contact');
+      }
+    } else if (href === '/privacy') {
+      e.preventDefault();
+      if (onNavigatePrivacy) {
+        onNavigatePrivacy();
+      } else {
+        window.location.assign('/privacy');
       }
     } else if (href.startsWith('#')) {
       e.preventDefault();
