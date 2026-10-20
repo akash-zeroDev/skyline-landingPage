@@ -30,6 +30,16 @@ export default function Navbar({
   const detectedActive = useActiveSection(sectionIds);
   const activeSection = currentRoute === '/contact' ? 'contact' : detectedActive;
 
+  // Lock background scrolling while the mobile drawer is open
+  useEffect(() => {
+    if (!mobileMenuOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileMenuOpen]);
+
   // Close mobile menu on Escape key press
   useEffect(() => {
     const handleKeyDown = (e) => {

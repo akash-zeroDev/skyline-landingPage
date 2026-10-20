@@ -8,7 +8,7 @@
   padding-top: 110px;
   padding-bottom: 80px;
   position: relative;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .contact-page-wrapper.is-inline-mode {

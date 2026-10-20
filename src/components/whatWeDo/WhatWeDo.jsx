@@ -466,15 +466,6 @@ export default function WhatWeDo() {
           padding: 0;
         }
 
-        .wwd-eyebrow-dot {
-          width: calc(var(--r) * ${GEOMETRY.header.eyebrow.dotSize});
-          height: calc(var(--r) * ${GEOMETRY.header.eyebrow.dotSize});
-          border-radius: 50%;
-          background-color: var(--eyebrow-dot);
-          display: inline-block;
-          flex-shrink: 0;
-        }
-
         @font-face {
           font-family: 'wwd-headline-fallback';
           src: local('Arial'), local('Helvetica Neue'), local('sans-serif');
@@ -511,9 +502,6 @@ export default function WhatWeDo() {
         }
 
         /* Initial frame 0 state while section reveal is pending */
-        .wwd-section[data-reveal-state="pending"] .wwd-eyebrow-dot {
-          transform: scale(0);
-        }
         .wwd-section[data-reveal-state="pending"] .wwd-eyebrow-text {
           opacity: 0;
           transform: translateX(calc(var(--r) * -6));
@@ -632,7 +620,6 @@ export default function WhatWeDo() {
         {/* Header Block */}
         <header className="wwd-header">
           <p data-slot="eyebrow" className="wwd-eyebrow">
-            <span className="wwd-eyebrow-dot" aria-hidden="true" />
             <span className="wwd-eyebrow-text">{CONTENT.eyebrow}</span>
           </p>
 
@@ -687,7 +674,10 @@ export default function WhatWeDo() {
       <button
         type="button"
         className="wwd-dev-replay-btn"
-        onClick={() => window.__wwdReplay?.()}
+        onClick={() => {
+          window.__wwdReplay?.();
+          window.dispatchEvent(new CustomEvent('skyline:replay'));
+        }}
         style={{
           position: 'fixed',
           bottom: '12px',
@@ -710,7 +700,8 @@ export default function WhatWeDo() {
         }}
         aria-label="Replay animation"
       >
-        Replay Animation ↺
+        <span className="wwd-dev-replay-label">Replay Animation</span>
+        <span className="wwd-dev-replay-icon" aria-hidden="true">↺</span>
       </button>
     )}
   </>

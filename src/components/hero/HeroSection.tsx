@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, MotionConfig } from 'framer-motion';
 import WalletSlot from './WalletSlot';
 import UiUxCard from './UiUxCard';
 import SeoCard from './SeoCard';
@@ -51,7 +51,25 @@ function computeHeadlineHash(fontSize: number, lines: readonly { text: string; x
   return (h >>> 0).toString(16);
 }
 
-const SUBTEXT_TOP = HEADLINE.lines[2].baseline + 52;
+// Desktop-only modest tightening (~15%): lines 2 and 3 are pulled up so the
+// headline reads as one block. The toggle and cursor are nudged in cardLayout
+// to keep their clearances. Baselines become 360 / 533 / 706 (pitch 173).
+const DESKTOP_LINE_DY = [0, -30, -60] as const;
+
+// Mobile-only artboard: the 1536x1024 stage becomes a portrait 3:5 canvas.
+// Each headline line is re-anchored with an SVG group transform so the same
+// glyph paths and Framer Motion tweens are reused (positions only change).
+const MOBILE_MEDIA_QUERY = '(max-width: 767.98px)';
+// Tight portrait artboard around the three glyphs, re-stacked on a 0.95
+// line-height (121.6u pitch) and centred on a 457.3u content width. The
+// horizontal breathing room (107.7u each side) makes 17vw ≈ 128u * 0.498 at
+// a 375px viewport, i.e. the clamp(3.25rem, 17vw, 5.5rem) mobile type scale.
+const MOBILE_HEADLINE_VIEWBOX = '-107.7 -4 672.7 377.45';
+const MOBILE_LINE_TRANSFORMS = [
+  { tx: -524, ty: -241.88 },
+  { tx: -955.445, ty: -331.4 },
+  { tx: -470.12, ty: -412.8 },
+] as const;
 
 const DEBUG_GUIDES = false;
 
@@ -60,6 +78,20 @@ export const HeroSection: React.FC = () => {
   const stageRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const [fontsReady, setFontsReady] = useState(false);
+  const [isMobileLayout, setIsMobileLayout] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia(MOBILE_MEDIA_QUERY).matches
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_MEDIA_QUERY);
+    const handleChange = (event: MediaQueryListEvent) => {
+      setIsMobileLayout(event.matches);
+    };
+    mq.addEventListener('change', handleChange);
+    return () => mq.removeEventListener('change', handleChange);
+  }, []);
 
   // URL params for dev inspection
   const [devConfig] = useState(() => {
@@ -95,6 +127,16 @@ export const HeroSection: React.FC = () => {
     setAnimationKey((prev) => prev + 1);
     setStrokesDone(devConfig.animOff || Boolean(reduceMotion));
   };
+
+  // The dev replay control (bottom-right) also replays the hero entrance.
+  useEffect(() => {
+    const onReplay = () => {
+      setAnimationKey((prev) => prev + 1);
+      setStrokesDone(devConfig.animOff || Boolean(reduceMotion));
+    };
+    window.addEventListener('skyline:replay', onReplay);
+    return () => window.removeEventListener('skyline:replay', onReplay);
+  }, [devConfig.animOff, reduceMotion]);
 
   // --u = stageWidth / 1536 (unitless), used by the subtext only.
   useEffect(() => {
@@ -146,8 +188,31 @@ export const HeroSection: React.FC = () => {
     : 22;
 
   return (
+    <MotionConfig reducedMotion="user">
     <section className="hero-section" id="hero" aria-label="Hero Section">
       <div className="hero-container">
+        {/* Eyebrow pill — sits in the empty band above the headline */}
+        <div className="hero-eyebrow">
+          <motion.div
+            key={`hero-eyebrow-${animationKey}`}
+            className="hero-eyebrow-pill"
+            initial={{
+              opacity: devConfig.animOff ? 1 : 0,
+              y: devConfig.animOff || reduceMotion ? 0 : 12,
+            }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={
+              devConfig.animOff
+                ? { duration: 0 }
+                : reduceMotion
+                ? { duration: 0.3 }
+                : { delay: 0.15, duration: 0.55, ease: [0.16, 1, 0.3, 1] }
+            }
+          >
+            <span>Digital agency for ambitious brands</span>
+          </motion.div>
+        </div>
+
         {/* Wallet Container where the service cards fan out from inside the slot */}
         <div
           className="hero-wallet-stage"
@@ -161,9 +226,9 @@ export const HeroSection: React.FC = () => {
             style={{ position: 'absolute', inset: 0, margin: 0, zIndex: 0 }}
           >
             <svg
-              key={`headline-svg-${animationKey}`}
+              key={`headline-svg-${animationKey}-${isMobileLayout ? 'mobile' : 'desktop'}`}
               aria-hidden="true"
-              viewBox="0 0 1536 1024"
+              viewBox={isMobileLayout ? MOBILE_HEADLINE_VIEWBOX : '0 0 1536 1024'}
               preserveAspectRatio="xMidYMid meet"
               style={{
                 position: 'absolute',
@@ -180,6 +245,11 @@ export const HeroSection: React.FC = () => {
                 HEADLINE.lines.map((line, i) => (
                   <motion.g
                     key={line.text}
+                    transform={
+                      isMobileLayout
+                        ? `translate(${MOBILE_LINE_TRANSFORMS[i].tx} ${MOBILE_LINE_TRANSFORMS[i].ty})`
+                        : `translate(0 ${DESKTOP_LINE_DY[i] ?? 0})`
+                    }
                     initial={{ opacity: devConfig.animOff ? 1 : 0 }}
                     animate={{ opacity: 1 }}
                     transition={{
@@ -212,7 +282,15 @@ export const HeroSection: React.FC = () => {
                 headlinePathsData.lines.map((lineData, lineIdx) => {
                   const lineColor = HEADLINE.lines[lineIdx].color;
                   return (
-                    <g key={`headline-line-${lineIdx}`} data-headline-line={lineIdx}>
+                    <g
+                      key={`headline-line-${lineIdx}`}
+                      data-headline-line={lineIdx}
+                      transform={
+                        isMobileLayout
+                          ? `translate(${MOBILE_LINE_TRANSFORMS[lineIdx].tx} ${MOBILE_LINE_TRANSFORMS[lineIdx].ty})`
+                          : `translate(0 ${DESKTOP_LINE_DY[lineIdx] ?? 0})`
+                      }
+                    >
                       {lineData.glyphs.map((glyph, glyphIdx) => {
                         const glyphOrderIdx = runningGlyphIndex++;
                         const isLastContourOfLastGlyph = glyphOrderIdx === totalGlyphsCount - 1;
@@ -336,83 +414,139 @@ export const HeroSection: React.FC = () => {
             </svg>
           </h1>
 
-          {/* Subtext: same layering rule (behind everything else) */}
+          {/* Desktop: display:contents, so every layer keeps resolving against
+              the wallet stage. Mobile: a real full-bleed portrait scene. */}
+          <div className="hero-art">
+            {/* L0: Tray Drop Shadow (z-index: 2, unclipped, below cards) */}
+            <WalletSlot key={`slot-shadow-${animationKey}`} variant="shadow" />
+
+            {/* L1: Cards Layer Wrapper with clip-path at front lip middle */}
+            <div
+              className="hero-cards-layer"
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                pointerEvents: 'none',
+                clipPath: `inset(0 0 calc(100% - ${TRAY_CLIP_LINE_PCT}%) 0)`,
+              }}
+            >
+              {/* Back Tray Frame (z-index: 5, behind all cards) */}
+              <WalletSlot key={`slot-back-${animationKey}`} variant="back" />
+
+              {/* Fanned-out Service Cards */}
+              <UiUxCard key={`uiux-${animationKey}`} />
+              <SeoCard key={`seo-${animationKey}`} />
+              <BrandingCard key={`branding-${animationKey}`} />
+              <AppCard key={`app-${animationKey}`} />
+              <WebCard key={`web-${animationKey}`} />
+              <SocialMediaCard key={`social-${animationKey}`} />
+            </div>
+
+            {/* L2: Front Lip (z-index: 60, in front of cards layer) */}
+            <WalletSlot key={`slot-front-${animationKey}`} variant="front" />
+
+            {/* L3: Floating 3D Cursor (z-index: 100, above all cards & front lip) */}
+            <FloatingCursor key={`cursor-${animationKey}`} />
+
+            {/* L4: Floating 3D Green Toggle Switch (z-index: 65) */}
+            <ToggleAccent key={`toggle-${animationKey}`} />
+
+            {/* Floating 3D Accents Icon Cluster (Bolt, Fingerprint, Lock) */}
+            <HeroAccents animationKey={animationKey} />
+          </div>
+        </div>
+
+        {/* Bottom band: subtext, CTAs, proof strip — over the empty lower band */}
+        <div className="hero-bottom">
           <motion.p
             key={`subtext-${animationKey}`}
             className="hero-subtext"
-            initial={{ opacity: devConfig.animOff ? 1 : 0 }}
-            animate={{ opacity: 1 }}
+            initial={{
+              opacity: devConfig.animOff ? 1 : 0,
+              y: devConfig.animOff || reduceMotion ? 0 : 16,
+            }}
+            animate={{ opacity: 1, y: 0 }}
             transition={
               devConfig.animOff
                 ? { duration: 0 }
                 : reduceMotion
                 ? { duration: 0.3 }
-                : {
-                    delay: HEADLINE_ANIM.subtextDelay * devConfig.animScale,
-                    duration: HEADLINE_ANIM.subtextDuration * devConfig.animScale,
-                    ease: 'easeOut',
-                  }
+                : { delay: 0.95, duration: 0.55, ease: [0.16, 1, 0.3, 1] }
             }
-            style={{
-              position: 'absolute',
-              left: '50%',
-              top: `${(SUBTEXT_TOP / 1024) * 100}%`,
-              transform: 'translateX(-50%)',
-              width: '30.6%',
-              margin: 0,
-              padding: 0,
-              textAlign: 'center',
-              fontFamily: 'var(--font-primary)',
-              fontWeight: 400,
-              fontSize: 'calc(var(--u) * 19px)',
-              lineHeight: 'calc(var(--u) * 30px)',
-              color: '#555',
-              textWrap: 'balance',
-              zIndex: 0,
-              pointerEvents: 'none',
-              userSelect: 'none',
-            }}
           >
             Designed for modern experiences that feel seamless from the first
             click to final confirmation.
           </motion.p>
 
-          {/* L0: Tray Drop Shadow (z-index: 2, unclipped, below cards) */}
-          <WalletSlot key={`slot-shadow-${animationKey}`} variant="shadow" />
-
-          {/* L1: Cards Layer Wrapper with clip-path at front lip middle */}
-          <div
-            className="hero-cards-layer"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              pointerEvents: 'none',
-              clipPath: `inset(0 0 calc(100% - ${TRAY_CLIP_LINE_PCT}%) 0)`,
+          <motion.div
+            key={`hero-cta-${animationKey}`}
+            className="hero-cta-row"
+            initial={{
+              opacity: devConfig.animOff ? 1 : 0,
+              y: devConfig.animOff || reduceMotion ? 0 : 16,
             }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={
+              devConfig.animOff
+                ? { duration: 0 }
+                : reduceMotion
+                ? { duration: 0.3 }
+                : { delay: 1.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }
+            }
           >
-            {/* Back Tray Frame (z-index: 5, behind all cards) */}
-            <WalletSlot key={`slot-back-${animationKey}`} variant="back" />
+            <a className="hero-cta hero-cta--primary" href="#contact">
+              <span>Start your project</span>
+              <svg
+                className="hero-cta-arrow"
+                viewBox="0 0 20 20"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 10h11M10.5 5l5 5-5 5"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
+            <a className="hero-cta hero-cta--ghost" href="#work">
+              View our work
+            </a>
+          </motion.div>
 
-            {/* Fanned-out Service Cards */}
-            <UiUxCard key={`uiux-${animationKey}`} />
-            <SeoCard key={`seo-${animationKey}`} />
-            <BrandingCard key={`branding-${animationKey}`} />
-            <AppCard key={`app-${animationKey}`} />
-            <WebCard key={`web-${animationKey}`} />
-            <SocialMediaCard key={`social-${animationKey}`} />
-          </div>
-
-          {/* L2: Front Lip (z-index: 60, in front of cards layer) */}
-          <WalletSlot key={`slot-front-${animationKey}`} variant="front" />
-
-          {/* L3: Floating 3D Cursor (z-index: 100, above all cards & front lip) */}
-          <FloatingCursor key={`cursor-${animationKey}`} />
-
-          {/* L4: Floating 3D Green Toggle Switch (z-index: 65) */}
-          <ToggleAccent key={`toggle-${animationKey}`} />
-
-          {/* Floating 3D Accents Icon Cluster (Bolt, Fingerprint, Lock) */}
-          <HeroAccents animationKey={animationKey} />
+          <motion.ul
+            key={`hero-proof-${animationKey}`}
+            className="hero-proof"
+            aria-label="Studio results"
+            initial={{
+              opacity: devConfig.animOff ? 1 : 0,
+              y: devConfig.animOff || reduceMotion ? 0 : 14,
+            }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={
+              devConfig.animOff
+                ? { duration: 0 }
+                : reduceMotion
+                ? { duration: 0.3 }
+                : { delay: 1.25, duration: 0.55, ease: [0.16, 1, 0.3, 1] }
+            }
+          >
+            <li className="hero-proof-item">
+              <strong>10+</strong>
+              <span>projects delivered</span>
+            </li>
+            <li className="hero-proof-item">
+              <strong>4.6★</strong>
+              <span>client rating</span>
+            </li>
+            <li className="hero-proof-item">
+              <strong>3x</strong>
+              <span>average growth</span>
+            </li>
+          </motion.ul>
         </div>
 
         {/* Interactive controller to re-trigger the animation */}
@@ -429,6 +563,7 @@ export const HeroSection: React.FC = () => {
         </div>
       </div>
     </section>
+    </MotionConfig>
   );
 };
 

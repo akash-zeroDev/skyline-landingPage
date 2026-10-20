@@ -2,28 +2,31 @@ export const WORKFLOW_PHASES = [
   {
     id: '01',
     phase: 'PHASE 01',
+    label: 'Discover',
     title: 'DISCOVER & AUDIT',
-    tagline: 'Deconstruct the problem before writing a single line of code.',
+    tagline: 'Understand the problem before we design a single screen.',
     description:
-      'We dive deep into your product vision, user behaviors, technical architecture constraints, and market opportunities to define clear benchmarks and remove uncertainty.',
+      'We start by understanding your business, your audience and what success looks like. We audit what you already have, agree on clear goals, and map out the work before anything gets built.',
     activities: [
       {
-        title: 'Stakeholder Alignment',
-        desc: 'Uncover core business KPIs, non-negotiable constraints, and launch timelines.',
+        title: 'Goals & KPIs',
+        desc: "What we're trying to achieve, and how we'll know it's working.",
       },
       {
-        title: 'User Friction Audit',
-        desc: 'Identify conversion drop-offs, user bottlenecks, and workflow friction.',
+        title: 'Audience & Competitors',
+        desc: "Who you're for, and what everyone else in your space is doing.",
       },
       {
-        title: 'Technical Feasibility',
-        desc: 'Review API boundaries, data pipelines, hosting requirements, and scalability limits.',
+        title: 'Site & SEO Audit',
+        desc: "A review of what you have now, what's working and what's holding you back.",
       },
       {
-        title: 'Competitive Differentiation',
-        desc: 'Analyze category leaders to pinpoint unique positioning and design leverage.',
+        title: 'Scope & Timeline',
+        desc: "A clear plan of what's included, what's not, and when it ships.",
       },
     ],
+    deliverable: 'Audit summary, project brief and roadmap',
+    needFromYou: 'Analytics access, brand assets and one decision-maker',
     theme: {
       primary: '#10B981', // Emerald / Mint Accent
       orb1: 'rgba(110, 231, 183, 0.45)', // #6EE7B7 mint glow
@@ -34,28 +37,31 @@ export const WORKFLOW_PHASES = [
   {
     id: '02',
     phase: 'PHASE 02',
-    title: 'ARCHITECTURE & STRATEGY',
-    tagline: 'Bulletproof system foundations and interaction blueprints.',
+    label: 'Strategy',
+    title: 'STRATEGY & STRUCTURE',
+    tagline: 'A blueprint everyone agrees on before the build.',
     description:
-      'We architect the technical backbone, database schemas, edge network contracts, and end-to-end information flow before opening Figma or spinning up repositories.',
+      'We turn the findings into a plan: what we need to say, who we are saying it to, and how the product fits together. You see the sitemap, the main journeys and the key pages mapped out before design begins.',
     activities: [
       {
-        title: 'System Architecture',
-        desc: 'Define database schema, caching policies, state stores, and external integrations.',
+        title: 'Positioning & Messaging',
+        desc: 'A simple story that explains what you do and why it matters.',
       },
       {
-        title: 'Information Architecture',
-        desc: 'Structure navigation hierarchies, user mental models, and content relationships.',
+        title: 'Sitemap & User Flows',
+        desc: 'Every page and path mapped out before a single screen is designed.',
       },
       {
-        title: 'API & Contract Design',
-        desc: 'Establish type-safe schemas, mutation contracts, and payload optimization.',
+        title: 'SEO & Content Plan',
+        desc: 'The pages and topics that will bring the right people to you.',
       },
       {
-        title: 'Low-Fi Structural Validation',
-        desc: 'Map end-to-end user workflows with clickable low-fidelity wireframe skeletons.',
+        title: 'Wireframes',
+        desc: 'Low-fidelity layouts that lock the structure without the distraction.',
       },
     ],
+    deliverable: 'Strategy document, sitemap and wireframes',
+    needFromYou: 'Sign-off on the plan',
     theme: {
       primary: '#0284C7', // Sky Blue
       orb1: 'rgba(56, 189, 248, 0.42)', // sky blue
@@ -66,28 +72,31 @@ export const WORKFLOW_PHASES = [
   {
     id: '03',
     phase: 'PHASE 03',
-    title: 'BESPOKE DESIGN & MOTION',
-    tagline: 'Tactile, high-conversion interfaces that captivate and delight.',
+    label: 'Design',
+    title: 'DESIGN & MOTION',
+    tagline: 'Interfaces that look sharp and feel effortless.',
     description:
-      'We craft an iconic visual language tailored to your brand, pairing high-contrast typography and custom design tokens with fluid, 60fps micro-interactions.',
+      'We design the look, the feel and the flow, from the brand details to every screen. You review real designs in weekly demos and give feedback while changes are still quick and easy.',
     activities: [
       {
-        title: 'Design System & Tokens',
-        desc: 'Define bespoke typography, accessible color ramps, spacing scales, and states.',
+        title: 'Brand & Visual Identity',
+        desc: 'Colours, type and details that make you look like you.',
+      },
+      {
+        title: 'Design System',
+        desc: 'Reusable styles and components so everything stays consistent.',
       },
       {
         title: 'Interactive Prototypes',
-        desc: 'Build high-fidelity prototypes modeling micro-motion, hover states, and transitions.',
+        desc: 'Clickable designs you can actually try before we build.',
       },
       {
-        title: 'Responsive Stress Testing',
-        desc: 'Exhaustive responsive adaptation across mobile, tablet, desktop, and ultrawide.',
-      },
-      {
-        title: 'Usability Walkthroughs',
-        desc: 'Test real customer scenarios to eliminate friction and elevate perceived performance.',
+        title: 'Responsive & Usability Checks',
+        desc: 'Designs refined to work on every screen and feel easy to use.',
       },
     ],
+    deliverable: 'Final designs, prototype and brand guidelines',
+    needFromYou: 'Quick feedback on weekly demos',
     theme: {
       primary: '#8B5CF6', // Purple / Violet
       orb1: 'rgba(196, 181, 253, 0.48)', // soft violet
@@ -98,28 +107,31 @@ export const WORKFLOW_PHASES = [
   {
     id: '04',
     phase: 'PHASE 04',
-    title: 'ENGINEERING & RIGOROUS QA',
-    tagline: 'High-velocity, production-grade code engineered to ship.',
+    label: 'Build',
+    title: 'BUILD & TEST',
+    tagline: 'Fast, accessible and ready to scale.',
     description:
-      'We write clean, modular, accessible code backed by automated testing suites, sub-second load times, and buttery 60fps frame rates across every target device.',
+      "We build your site or app, connect the tools you already use and test everything across devices. Nothing goes live until it's quick, accessible and working the way it should.",
     activities: [
       {
-        title: 'Modern Frontend Engineering',
-        desc: 'Component architecture with React 19, Framer Motion, and zero bundle bloat.',
+        title: 'Web & App Development',
+        desc: 'We build the pages and features exactly as designed.',
       },
       {
-        title: 'Edge APIs & Data Integration',
-        desc: 'Resilient backend persistence, email SMTP delivery, and optimized endpoints.',
+        title: 'CMS & Integrations',
+        desc: 'Connect the tools you use so your team can update things easily.',
       },
       {
-        title: 'Accessibility & Cross-Browser',
-        desc: 'WCAG 2.1 AA compliance, keyboard navigation, and Safari/Chrome parity.',
+        title: 'Accessibility & Speed',
+        desc: 'Built to be usable by everyone and quick to load.',
       },
       {
-        title: 'Automated QA Testing',
-        desc: 'End-to-end regression testing with Playwright, zero layout shifts, and 95+ Lighthouse.',
+        title: 'QA Testing',
+        desc: 'We test across devices and browsers and fix issues before launch.',
       },
     ],
+    deliverable: 'A fully tested build on a private preview link',
+    needFromYou: 'Final content, approvals and domain/hosting access',
     theme: {
       primary: '#0D9488', // Teal / Emerald
       orb1: 'rgba(94, 234, 212, 0.45)', // teal
@@ -130,28 +142,31 @@ export const WORKFLOW_PHASES = [
   {
     id: '05',
     phase: 'PHASE 05',
-    title: 'SHIP, SCALE & ITERATE',
-    tagline: 'Frictionless launch, telemetry instrumentation, and sustained velocity.',
+    label: 'Grow',
+    title: 'LAUNCH & GROW',
+    tagline: 'Launch is the starting line, not the finish.',
     description:
-      'We deploy your product to global edge infrastructure, instrument real-time telemetry, and remain by your side to iterate based on real customer feedback.',
+      "We launch, then keep improving. We set up clear reporting so you can see what's working, keep your content and SEO moving, and hand everything over cleanly so you're never stuck.",
     activities: [
       {
-        title: 'Zero-Downtime Deployment',
-        desc: 'Global CDN edge distribution, DNS verification, and asset compression.',
+        title: 'Smooth Launch',
+        desc: 'We handle the switch-over and publish everything live.',
       },
       {
-        title: 'Telemetry & Monitoring',
-        desc: 'Real-time error tracking, user session telemetry, and Core Web Vitals monitoring.',
+        title: 'Tracking & Reporting',
+        desc: 'Clear reporting so you can see what is working.',
       },
       {
-        title: 'Handover & Documentation',
-        desc: 'Comprehensive engineering walkthroughs, architecture docs, and developer guides.',
+        title: 'SEO, Social & Content',
+        desc: 'Ongoing content and SEO so you keep growing after launch.',
       },
       {
-        title: 'Growth & Iteration Sprint',
-        desc: 'Post-launch feedback analysis, conversion optimization, and roadmap momentum.',
+        title: 'Handover & Support',
+        desc: "Docs, a walkthrough and ongoing support so you're never stuck.",
       },
     ],
+    deliverable: 'Live product, reporting dashboard and handover docs',
+    needFromYou: 'A monthly check-in',
     theme: {
       primary: '#10B981', // Launch Mint
       orb1: 'rgba(110, 231, 183, 0.52)', // mint

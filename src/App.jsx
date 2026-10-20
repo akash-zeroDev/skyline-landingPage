@@ -5,6 +5,7 @@ import WhatWeDo from './components/whatWeDo/WhatWeDo';
 import OurServices from './components/services/OurServices';
 import WorkSection from './components/sections/WorkSection';
 import WorkflowDialSection from './components/workflow/WorkflowDialSection';
+import Testimonials from './components/testimonials/Testimonials';
 import FaqSection from './components/faq/FaqSection';
 import ContactPage from './components/contact/ContactPage';
 import PrivacyPolicy from './components/legal/PrivacyPolicy';
@@ -104,6 +105,9 @@ function App() {
 
             {/* Selected Projects Work Section */}
             <WorkSection />
+
+            {/* Client Testimonials — bento grid / mobile carousel */}
+            <Testimonials />
 
             {/* FAQ — accordion */}
             <FaqSection />

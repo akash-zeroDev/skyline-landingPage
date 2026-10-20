@@ -42,6 +42,7 @@ export const FloatingCursor: React.FC<FloatingCursorProps> = ({
   return (
     <div
       className={`floating-cursor-positioner ${className}`}
+      aria-hidden="true"
       style={{
         position: 'absolute',
         left: `${config.leftPct}%`,

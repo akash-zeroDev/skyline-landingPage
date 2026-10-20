@@ -37,14 +37,6 @@
   margin: 0 0 14px;
 }
 
-.faq-eyebrow-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: #111a5c;
-  flex-shrink: 0;
-}
-
 .faq-eyebrow-text {
   font-size: 12px;
   font-weight: 800;

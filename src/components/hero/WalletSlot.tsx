@@ -53,6 +53,7 @@ export const WalletSlot: React.FC<WalletSlotProps> = ({
   return (
     <div
       className={`wallet-tray-positioner wallet-tray-${variant} ${className}`}
+      aria-hidden="true"
       style={{
         position: 'absolute',
         left: `${config.leftPct}%`,

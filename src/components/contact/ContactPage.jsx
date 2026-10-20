@@ -241,6 +241,7 @@ export default function ContactPage({ onNavigateHome, isInline = false }) {
                       type="text"
                       className="form-input"
                       placeholder="Your name"
+                      autoComplete="name"
                       value={formData.name}
                       onChange={(e) => {
                         setFormData((prev) => ({ ...prev, name: e.target.value }));
@@ -260,6 +261,10 @@ export default function ContactPage({ onNavigateHome, isInline = false }) {
                       type="email"
                       className="form-input"
                       placeholder="you@company.com"
+                      autoComplete="email"
+                      inputMode="email"
+                      autoCapitalize="none"
+                      spellCheck={false}
                       value={formData.email}
                       onChange={(e) => {
                         setFormData((prev) => ({ ...prev, email: e.target.value }));
@@ -281,6 +286,7 @@ export default function ContactPage({ onNavigateHome, isInline = false }) {
                     type="text"
                     className="form-input"
                     placeholder="Acme Inc."
+                    autoComplete="organization"
                     value={formData.company}
                     onChange={(e) =>
                       setFormData((prev) => ({ ...prev, company: e.target.value }))
@@ -364,6 +370,7 @@ export default function ContactPage({ onNavigateHome, isInline = false }) {
                     rows="5"
                     className="form-textarea"
                     placeholder="What are you building, who is it for, and what does success look like?"
+                    autoComplete="off"
                     value={formData.message}
                     onChange={(e) => {
                       setFormData((prev) => ({ ...prev, message: e.target.value }));

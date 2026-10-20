@@ -246,7 +246,8 @@ export default CARD_LAYOUT;
  * Cursor Layout Configuration for Skyline Digital Media Hero Section
  * 
  * Target Measurements from Reference Image B:
- * - Tip Position: (473.0, 548.0) on 1536x1024
+ * - Tip Position: (430.0, 548.0) on 1536x1024 (shifted left to clear the tightened
+ *   third headline line; still on the tray lip)
  * - Unrotated container size: 90x133.8
  * - Rotation: -15.0 deg
  */
@@ -254,13 +255,13 @@ export const CURSOR_LAYOUT = {
   id: 'cursor',
   artboardWidth: 1536,
   artboardHeight: 1024,
-  tipX: 473.0,
+  tipX: 430.0,
   tipY: 548.0,
   width: 90.0,
   height: 133.8,
   rotation: -15.0,
   zIndex: 100, // Above L2 tray lip (z:60)
-  leftPct: ((473.0 - 7.2) / 1536) * 100,
+  leftPct: ((430.0 - 7.2) / 1536) * 100,
   topPct: ((548.0 - 7.2) / 1024) * 100,
   widthPct: (90.0 / 1536) * 100,
   heightPct: (133.8 / 1024) * 100,
@@ -292,13 +293,13 @@ export const TOGGLE_LAYOUT = {
   artboardWidth: 1536,
   artboardHeight: 1024,
   centerX: 1167.9,
-  centerY: 368.2,
+  centerY: 278.2, // raised 90u to clear the tightened second headline line
   width: 311.0,
   height: 207.33,
   rotation: 17.82, // +17.82 deg clockwise (left end higher)
   zIndex: 65, // above tray lip 60, below cursor 100
   leftPct: (1167.9 / 1536) * 100, // 76.0352%
-  topPct: (368.2 / 1024) * 100,   // 35.9570%
+  topPct: (278.2 / 1024) * 100,   // 27.1680%
   widthPct: (311.0 / 1536) * 100, // 20.2474%
   heightPct: (207.33 / 1024) * 100, // 20.2471%
   aspectRatio: '1536 / 1024',

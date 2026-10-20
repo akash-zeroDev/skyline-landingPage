@@ -25,6 +25,7 @@ export const HeroAccents: React.FC<HeroAccentsProps> = ({
   return (
     <div
       className={`hero-accents-group ${className}`}
+      aria-hidden="true"
       style={{
         position: 'absolute',
         inset: 0,

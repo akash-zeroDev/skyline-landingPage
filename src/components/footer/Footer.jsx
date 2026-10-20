@@ -6,11 +6,11 @@ const columns = [
   {
     title: 'Studio',
     links: [
-      { label: 'How we work', href: '#work' },
+      { label: 'How we work', href: '#process' },
       { label: 'Services', href: '#services' },
       { label: 'Selected work', href: '#work' },
       { label: 'FAQ', href: '#faq' },
-      { label: 'Process', href: '#about' },
+      { label: 'Process', href: '#process' },
       { label: 'About', href: '#about' },
     ],
   },

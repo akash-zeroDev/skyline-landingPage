@@ -1,0 +1,977 @@
+/* ==========================================================================
+   MOBILE OPTIMISATION — phones only
+   --------------------------------------------------------------------------
+   Single mobile-only block. Everything is scoped to max-width: 767.98px so
+   desktop / tablet (>= 768px) rendering is byte-for-byte unchanged.
+
+   Breakpoint rationale: the project's existing desktop layouts start at
+   min-width: 768px (Footer, Work, Workflow). 767.98px avoids the inclusive
+   768px boundary used by those rules.
+   ========================================================================== */
+
+@media (max-width: 767.98px) {
+  :root {
+    --m-gutter: 20px;
+    --m-section-y: clamp(56px, 14vw, 80px);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  .skyline-app {
+    overflow-x: clip;
+  }
+
+  /* ------------------------------------------------------------------------
+     A. DEV "REPLAY ANIMATION" PILL — icon only, safe-area aware
+     ---------------------------------------------------------------------- */
+  .wwd-dev-replay-btn {
+    width: 44px !important;
+    height: 44px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    right: 12px !important;
+    bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    opacity: 0.72;
+  }
+
+  .wwd-dev-replay-btn .wwd-dev-replay-label {
+    display: none !important;
+  }
+
+  .wwd-dev-replay-btn .wwd-dev-replay-icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  /* ------------------------------------------------------------------------
+     B. HEADER / NAVIGATION — 44px targets, dvh sheet, safe-area
+     ---------------------------------------------------------------------- */
+  .skyline-header {
+    top: max(12px, env(safe-area-inset-top)) !important;
+    height: 52px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  .skyline-brand-external {
+    left: max(16px, env(safe-area-inset-left));
+  }
+
+  .skyline-brand-primary {
+    font-size: 19px;
+  }
+
+  .skyline-brand-sub {
+    font-size: 9px;
+  }
+
+  .skyline-hamburger-btn {
+    display: flex;
+    right: max(16px, env(safe-area-inset-right));
+    width: 44px;
+    height: 44px;
+  }
+
+  .skyline-mobile-menu {
+    position: fixed;
+    top: calc(max(12px, env(safe-area-inset-top)) + 64px);
+    left: 12px;
+    right: 12px;
+    margin: 0;
+    max-width: none;
+    max-height: calc(100dvh - 96px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .skyline-mobile-inner {
+    padding: 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    border-radius: 22px;
+  }
+
+  .skyline-mobile-list {
+    gap: 2px;
+  }
+
+  .skyline-mobile-link {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 14px;
+    font-size: 16px;
+    border-radius: 14px;
+  }
+
+  .skyline-mobile-cta-wrap {
+    padding-top: 12px;
+  }
+
+  .skyline-mobile-cta-wrap .mobile-cta {
+    min-height: 48px;
+    font-size: 15px;
+  }
+
+  /* ------------------------------------------------------------------------
+     C. HERO — stacked portrait composition
+     ---------------------------------------------------------------------- */
+  .hero-section {
+    min-height: 100vh;
+    min-height: 100svh;
+    /* Fixed navbar bottom (12px + 52px) + 24px, then clear the fixed replay
+       control (44px + 12px inset) below the proof strip. */
+    padding: calc(max(12px, env(safe-area-inset-top)) + 76px) 0
+      calc(88px + env(safe-area-inset-bottom));
+    justify-content: flex-start;
+    overflow: clip;
+  }
+
+  .hero-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 var(--m-gutter);
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  /* 24px under the navbar, 16px above the headline. */
+  .hero-eyebrow {
+    position: static;
+    order: 1;
+    transform: none;
+    margin: 0 0 16px;
+  }
+
+  .hero-eyebrow-pill {
+    font-size: 12.5px;
+    line-height: 1.2;
+    padding: 6px 12px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  /* Antron glyph outlines re-stacked at 0.95 leading. 17vw, capped at 88px. */
+  .hero-headline {
+    position: relative !important;
+    inset: auto !important;
+    order: 2;
+    width: 100% !important;
+    max-width: 462.5px;
+    height: auto !important;
+    aspect-ratio: 672.7 / 377.45;
+    margin: 0 auto !important;
+    z-index: 1 !important;
+  }
+
+  .hero-subtext {
+    order: 3;
+    width: 100% !important;
+    max-width: 32ch !important;
+    margin: 16px auto 0 !important;
+    font-size: 16.5px !important;
+    line-height: 1.5 !important;
+    color: #2a3350 !important;
+    text-wrap: balance;
+  }
+
+  .hero-cta-row {
+    order: 4;
+    flex-direction: column;
+    width: 100%;
+    max-width: 430px;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .hero-cta {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .hero-cta--primary {
+    min-height: 52px;
+  }
+
+  .hero-cta--ghost {
+    min-height: 48px;
+  }
+
+  /* The two absolute desktop wrappers become layout-transparent on phones. */
+  .hero-wallet-stage,
+  .hero-bottom {
+    display: contents;
+  }
+
+  /* Full-bleed portrait scene, 1 / 0.9. */
+  .hero-art {
+    order: 5;
+    position: relative;
+    display: block;
+    width: calc(100% + (2 * var(--m-gutter)));
+    max-width: none;
+    aspect-ratio: 1 / 0.9;
+    margin: 16px calc(-1 * var(--m-gutter)) 0;
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  /* Tray at 74% of scene width, centreline 70% down. */
+  .wallet-tray-positioner {
+    left: 50% !important;
+    top: 70% !important;
+    width: 74% !important;
+    height: auto !important;
+    aspect-ratio: 1903 / 463;
+  }
+
+  /* Cut card bottoms exactly at the front-lip top (76% of scene). */
+  .hero-cards-layer {
+    clip-path: inset(0 0 24% 0) !important;
+  }
+
+  /* Card deck spans ~75-80% of the scene and keeps labels readable. */
+  .ui-ux-card-positioner {
+    left: 29% !important;
+    top: 47% !important;
+    width: 32% !important;
+    height: auto !important;
+    aspect-ratio: 144.2 / 199;
+  }
+
+  .seo-card-positioner {
+    left: 36% !important;
+    top: 50% !important;
+    width: 37% !important;
+    height: auto !important;
+    aspect-ratio: 172 / 230.5;
+  }
+
+  .branding-card-positioner {
+    left: 43% !important;
+    top: 52% !important;
+    width: 42% !important;
+    height: auto !important;
+    aspect-ratio: 214.5 / 288.5;
+  }
+
+  .app-card-positioner {
+    left: 49% !important;
+    top: 55% !important;
+    width: 39% !important;
+    height: auto !important;
+    aspect-ratio: 186.5 / 254.1;
+  }
+
+  .web-card-positioner {
+    left: 56% !important;
+    top: 54% !important;
+    width: 41% !important;
+    height: auto !important;
+    aspect-ratio: 208.5 / 289;
+  }
+
+  .social-media-service-card-positioner {
+    left: 62% !important;
+    top: 56% !important;
+    width: 37.5% !important;
+    height: auto !important;
+    aspect-ratio: 176.8 / 230.5;
+  }
+
+  /* Cursor bottom-left, tip overlapping the deck. */
+  .floating-cursor-positioner {
+    left: 24% !important;
+    top: 68% !important;
+    width: 8% !important;
+    height: auto !important;
+    aspect-ratio: 90 / 133.8;
+  }
+
+  /* Toggle upper-right, 30% of scene width. */
+  .hero-accent-toggle-positioner {
+    left: 67% !important;
+    top: 14% !important;
+    width: 29% !important;
+    height: auto !important;
+    aspect-ratio: 1536 / 1024;
+  }
+
+  /* Icon cluster lower-right, ~34% of scene width. */
+  .hero-accent-bolt-positioner {
+    left: 72% !important;
+    top: 63% !important;
+    width: 20% !important;
+    height: auto !important;
+    aspect-ratio: 1;
+  }
+
+  .hero-accent-fingerprint-positioner {
+    left: 79% !important;
+    top: 69% !important;
+    width: 19% !important;
+    height: auto !important;
+    aspect-ratio: 153.2 / 151.3;
+  }
+
+  .hero-accent-blue-tile-positioner {
+    left: 86.5% !important;
+    top: 75% !important;
+    width: 19.5% !important;
+    height: auto !important;
+    aspect-ratio: 1;
+  }
+
+  .hero-accent-padlock-positioner {
+    left: 87.5% !important;
+    top: 69% !important;
+    width: 12% !important;
+    height: auto !important;
+    aspect-ratio: 123.8 / 144.8;
+  }
+
+  /* Proof strip: 24px under the scene, three equal columns. */
+  .hero-proof {
+    order: 6;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    margin: 24px 0 0;
+    padding: 0;
+  }
+
+  .hero-proof-item {
+    min-width: 0;
+    padding: 0 8px;
+    border-left: 1px solid rgba(17, 26, 92, 0.14);
+  }
+
+  .hero-proof-item:first-child {
+    border-left: 0;
+  }
+
+  .hero-proof-item strong {
+    font-size: 20px;
+    line-height: 1.1;
+  }
+
+  .hero-proof-item span {
+    max-width: 11ch;
+    font-size: 11.5px;
+    line-height: 1.25;
+    white-space: normal;
+  }
+
+  /* WhatWeDo globally suppresses the in-flow control; keep it explicit. */
+  .hero-animation-controls {
+    display: none !important;
+  }
+
+  /* ------------------------------------------------------------------------
+     D. WHAT WE DO — bento grid
+     ---------------------------------------------------------------------- */
+  .wwd-section .wwd-container {
+    width: calc(100% - (2 * var(--m-gutter)));
+  }
+
+  .wwd-card-revenue {
+    width: 100% !important;
+  }
+
+  .wwd-section .wwd-headline {
+    line-height: 1.16;
+    margin-bottom: 10px;
+  }
+
+  .wwd-section .wwd-subtext {
+    line-height: 1.55;
+  }
+
+  .wwd-section .wwd-grid {
+    gap: 13px;
+  }
+
+  .wwd-section .wwd-stat-row {
+    gap: 10px;
+  }
+
+  /* ------------------------------------------------------------------------
+     E. OUR SERVICES
+     ---------------------------------------------------------------------- */
+  .services-section {
+    padding: var(--m-section-y) var(--m-gutter)
+      calc(var(--m-section-y) + 8px);
+    scroll-margin-top: 80px;
+  }
+
+  .services-header {
+    max-width: none;
+  }
+
+  .services-headline {
+    font-size: clamp(30px, 8.6vw, 36px);
+  }
+
+  .services-subtext {
+    margin-top: 16px;
+    font-size: 15px;
+  }
+
+  .services-grid {
+    margin-top: 32px;
+    gap: 12px;
+  }
+
+  .service-card {
+    gap: 12px;
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .service-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+
+  .service-title {
+    font-size: 19px;
+  }
+
+  .service-description {
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+
+  .service-capabilities {
+    gap: 8px;
+    padding-top: 6px;
+  }
+
+  .service-capability {
+    font-size: 12px;
+    line-height: 1.2;
+    padding: 8px 12px;
+  }
+
+  .services-footer {
+    margin-top: 28px;
+    padding-top: 20px;
+    gap: 14px;
+  }
+
+  .services-footer-text {
+    font-size: 14.5px;
+  }
+
+  .services-footer-link {
+    min-height: 44px;
+    align-items: center;
+  }
+
+  /* ------------------------------------------------------------------------
+     F. HOW WE WORK — svh pin, compact card, scrollable phase pills
+     ---------------------------------------------------------------------- */
+  .workflow-section-outer {
+    height: 420svh;
+  }
+
+  .workflow-sticky-stage {
+    height: 100svh;
+    min-height: 0;
+    padding: max(66px, calc(env(safe-area-inset-top) + 56px)) 16px 0;
+    justify-content: flex-start;
+    gap: 2px;
+  }
+
+  .workflow-top-bar {
+    flex: 0 0 auto;
+  }
+
+  .workflow-section-eyebrow {
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+  }
+
+  .workflow-stage-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    /* Reserve space for the absolutely placed stepper bar below */
+    padding: 0 0 58px;
+    gap: 0;
+  }
+
+  .workflow-content-column {
+    width: 100%;
+    min-height: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  /* Card is sized by its content (no inner scrollbar) and only falls back to
+     scrolling, with the scrollbar hidden, if a short viewport cannot fit it. */
+  .workflow-content-card {
+    padding: 13px;
+    border-radius: 20px;
+    height: auto;
+    max-height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+
+  .workflow-content-card::-webkit-scrollbar {
+    display: none;
+  }
+
+  .workflow-card-meta {
+    margin-bottom: 6px;
+    gap: 8px;
+  }
+
+  .workflow-mobile-phase-num {
+    font-size: 1.65rem;
+    margin-right: 2px;
+  }
+
+  .workflow-phase-title {
+    font-size: 1.4rem;
+    line-height: 1.1;
+    margin-bottom: 5px;
+  }
+
+  .workflow-phase-tagline {
+    font-size: 13.5px;
+    line-height: 1.32;
+    margin-bottom: 6px;
+  }
+
+  .workflow-phase-desc {
+    font-size: 13.5px;
+    line-height: 1.45;
+    margin-bottom: 8px;
+  }
+
+  .workflow-activities-section {
+    padding-top: 10px;
+  }
+
+  .workflow-activities-title {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    margin-bottom: 6px;
+  }
+
+  .workflow-activities-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+  }
+
+  .workflow-activity-tile {
+    padding: 8px 9px;
+    border-radius: 11px;
+  }
+
+  .activity-title {
+    font-size: 12px;
+    line-height: 1.28;
+  }
+
+  .activity-desc {
+    font-size: 11px;
+    line-height: 1.34;
+  }
+
+  .workflow-bottom-bar {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: max(8px, env(safe-area-inset-bottom));
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 0;
+  }
+
+  .workflow-stepper-pills {
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 2px 0 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .workflow-stepper-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stepper-pill {
+    flex: 0 0 auto;
+    min-height: 40px;
+    padding: 0 12px;
+    font-size: 11.5px;
+    scroll-snap-align: center;
+  }
+
+  .workflow-scroll-hint {
+    flex: 0 0 auto;
+    gap: 8px;
+  }
+
+  .scroll-hint-text {
+    display: none;
+  }
+
+  .scroll-hint-bar {
+    width: 48px;
+  }
+
+  /* ------------------------------------------------------------------------
+     G. SELECTED WORK — full-bleed snap thumbnails
+     ---------------------------------------------------------------------- */
+  .work-section {
+    scroll-margin-top: 80px;
+  }
+
+  .work-container {
+    padding: 56px var(--m-gutter) 72px;
+  }
+
+  .work-header {
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .work-title {
+    font-size: clamp(30px, 9vw, 36px);
+  }
+
+  .work-subtitle {
+    font-size: 15px;
+  }
+
+  .work-deck {
+    gap: 24px;
+  }
+
+  .work-deck-stage {
+    gap: 16px;
+  }
+
+  .work-focus-media {
+    border-radius: 18px;
+  }
+
+  .work-focus-footer {
+    padding: 0;
+    gap: 10px;
+  }
+
+  .work-focus-title {
+    font-size: 20px;
+  }
+
+  .work-focus-description {
+    font-size: 14.5px;
+  }
+
+  .work-progress {
+    padding: 0;
+  }
+
+  .work-progress-dot {
+    width: 22px;
+    height: 6px;
+  }
+
+  .work-progress-dot.is-active {
+    width: 38px;
+  }
+
+  .work-index {
+    margin-inline: calc(var(--m-gutter) * -1);
+    padding-inline: var(--m-gutter);
+    padding-bottom: 4px;
+    gap: 10px;
+    scroll-padding-inline: var(--m-gutter);
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 14px,
+      #000 calc(100% - 14px),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 14px,
+      #000 calc(100% - 14px),
+      transparent 100%
+    );
+  }
+
+  .work-index-row {
+    width: 180px;
+    padding: 12px;
+    gap: 10px;
+    border-radius: 14px;
+  }
+
+  .work-index-title {
+    font-size: 16px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .work-index-meta {
+    font-size: 12.5px;
+  }
+
+  .work-index-row::after {
+    left: 12px;
+    right: 12px;
+  }
+
+  .work-index-row.is-active::after {
+    width: calc(100% - 24px);
+  }
+
+  /* ------------------------------------------------------------------------
+     H. FAQ
+     ---------------------------------------------------------------------- */
+  .faq-section {
+    padding: var(--m-section-y) var(--m-gutter);
+    scroll-margin-top: 80px;
+  }
+
+  .faq-header {
+    gap: 12px;
+    padding-bottom: 16px;
+  }
+
+  .faq-headline {
+    font-size: clamp(30px, 9vw, 36px);
+  }
+
+  .faq-header-aside {
+    gap: 12px;
+  }
+
+  .faq-subtext {
+    font-size: 15px;
+  }
+
+  .faq-list {
+    margin-top: 16px;
+    gap: 8px;
+  }
+
+  .faq-trigger {
+    min-height: 56px;
+    padding: 14px 16px;
+    font-size: 15.5px;
+    gap: 12px;
+  }
+
+  .faq-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .faq-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .faq-answer {
+    padding: 0 16px 16px;
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+
+  /* ------------------------------------------------------------------------
+     I. START A PROJECT / CONTACT
+     ---------------------------------------------------------------------- */
+  .contact-page-wrapper {
+    padding-top: max(76px, calc(env(safe-area-inset-top) + 66px));
+    padding-bottom: calc(48px + env(safe-area-inset-bottom));
+  }
+
+  .contact-page-wrapper.is-inline-mode {
+    padding-top: var(--m-section-y);
+    padding-bottom: var(--m-section-y);
+  }
+
+  .contact-container {
+    padding: 0 var(--m-gutter);
+  }
+
+  .contact-bg-glow {
+    width: 340px;
+    height: 340px;
+    top: -80px;
+    right: -140px;
+  }
+
+  .contact-top-nav {
+    margin-bottom: 24px;
+  }
+
+  .contact-back-link {
+    min-height: 44px;
+    padding: 10px 18px;
+  }
+
+  .contact-layout-grid {
+    gap: 32px;
+  }
+
+  .contact-title {
+    font-size: clamp(44px, 13vw, 52px);
+    margin-bottom: 22px;
+  }
+
+  .contact-desc {
+    font-size: 15.5px;
+    margin-bottom: 24px;
+  }
+
+  .contact-checklist {
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .contact-form-card {
+    padding: 22px 16px;
+    border-radius: 22px;
+  }
+
+  .contact-form {
+    gap: 20px;
+  }
+
+  .form-row-2col {
+    gap: 16px;
+  }
+
+  .form-input,
+  .form-textarea,
+  .form-select {
+    min-height: 50px;
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .form-textarea {
+    min-height: 132px;
+  }
+
+  .custom-dropdown-trigger {
+    min-height: 50px;
+    font-size: 16px;
+  }
+
+  .custom-dropdown-item {
+    min-height: 44px;
+  }
+
+  .service-pills-wrap {
+    gap: 8px;
+  }
+
+  .service-pill-btn {
+    min-height: 40px;
+    padding: 9px 14px;
+    font-size: 13.5px;
+  }
+
+  .submit-btn {
+    min-height: 52px;
+    font-size: 13px;
+  }
+
+  /* Inline contact block on the home page */
+  .skyline-section {
+    min-height: auto;
+    padding: 0;
+  }
+
+  /* ------------------------------------------------------------------------
+     J. FOOTER
+     ---------------------------------------------------------------------- */
+  .skyline-footer {
+    padding-top: 56px;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .skyline-footer .footer-container {
+    padding: 0 var(--m-gutter);
+  }
+
+  .skyline-footer .footer-panels {
+    gap: 12px;
+  }
+
+  .skyline-footer .footer-panel {
+    padding: 22px;
+    border-radius: 20px;
+  }
+
+  .skyline-footer .footer-desc {
+    margin-top: 20px;
+    font-size: 17px;
+  }
+
+  .skyline-footer .footer-tagline {
+    padding-top: 20px;
+  }
+
+  .skyline-footer .footer-nav {
+    gap: 20px;
+  }
+
+  .skyline-footer .footer-nav ul {
+    margin-top: 12px;
+    gap: 2px;
+  }
+
+  .skyline-footer .footer-nav a {
+    min-height: 44px;
+  }
+
+  .skyline-footer .footer-copy {
+    margin-top: 32px;
+    padding-top: 18px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .skyline-footer .footer-signature {
+    margin-top: 24px;
+    padding: 0 6px;
+  }
+
+  .skyline-footer .footer-replay {
+    right: 8px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .skyline-footer svg.footer-big {
+    margin-bottom: -2%;
+  }
+}
+

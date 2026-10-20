@@ -43,7 +43,7 @@ body {
   min-height: 100vh;
   margin: 0;
   background-color: var(--page-bg);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 #root {

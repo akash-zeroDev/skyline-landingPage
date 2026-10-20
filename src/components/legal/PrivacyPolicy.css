@@ -8,7 +8,7 @@
   padding-top: 110px;
   padding-bottom: 96px;
   position: relative;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .legal-bg-glow {

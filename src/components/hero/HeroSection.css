@@ -31,12 +31,22 @@
 .hero-wallet-stage {
   position: relative;
   width: 100%;
+  /* Fit the artboard plus the subtext/CTA/proof band inside one viewport.
+     86svh leaves a proportional reserve below the artboard so the band never
+     crowds the fold. Falls back to width:100% where svh is unsupported. */
+  width: min(100%, calc(86svh * 1.5));
   max-width: 1536px;
   aspect-ratio: 1536 / 1024;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: visible;
+}
+
+/* Desktop wrapper is layout-inert: the 3D layers keep the wallet stage as
+   their containing block. Mobile turns it into the full-bleed scene. */
+.hero-art {
+  display: contents;
 }
 
 /* Floating 3D decorative accents container - unscaled inset:0 overlay */
@@ -46,6 +56,186 @@
   pointer-events: none;
 }
 
+
+/* --------------------------------------------------------------------------
+   Eyebrow pill
+   -------------------------------------------------------------------------- */
+.hero-eyebrow {
+  position: absolute;
+  top: 13.5%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 80;
+  pointer-events: none;
+}
+
+.hero-eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(17, 26, 92, 0.1);
+  box-shadow: 0 1px 2px rgba(17, 26, 92, 0.04);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  font-family: var(--font-primary);
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--navy-primary, #111A5C);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Bottom band: subtext + CTAs + proof strip
+   -------------------------------------------------------------------------- */
+.hero-bottom {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 80;
+  width: min(92%, 640px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(16px, 2.4vh, 26px);
+  pointer-events: none;
+}
+
+.hero-subtext {
+  width: 100%;
+  max-width: 520px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: var(--font-primary);
+  font-size: clamp(16px, 1.5vw, 19px);
+  font-weight: 400;
+  line-height: 1.5;
+  color: #2a3350;
+  text-wrap: balance;
+}
+
+.hero-cta-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  pointer-events: auto;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 0 26px;
+  border-radius: 9999px;
+  font-family: var(--font-primary);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 180ms ease;
+}
+
+.hero-cta--primary {
+  background-color: var(--navy-primary, #111A5C);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(17, 26, 92, 0.18);
+}
+
+.hero-cta--primary:hover {
+  background-color: var(--navy-hover, #1a2779);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(17, 26, 92, 0.24);
+}
+
+.hero-cta--ghost {
+  background-color: transparent;
+  color: var(--navy-primary, #111A5C);
+  border: 1px solid rgba(17, 26, 92, 0.24);
+}
+
+.hero-cta--ghost:hover {
+  background-color: rgba(17, 26, 92, 0.06);
+  border-color: rgba(17, 26, 92, 0.4);
+  transform: translateY(-2px);
+}
+
+.hero-cta:active {
+  transform: translateY(0);
+}
+
+.hero-cta:focus-visible {
+  outline: 2px solid var(--navy-primary, #111A5C);
+  outline-offset: 3px;
+}
+
+.hero-cta-arrow {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  transition: transform 180ms ease;
+}
+
+.hero-cta--primary:hover .hero-cta-arrow {
+  transform: translateX(2px);
+}
+
+.hero-proof {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero-proof-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0 clamp(18px, 2.4vw, 30px);
+  border-left: 1px solid rgba(17, 26, 92, 0.14);
+}
+
+.hero-proof-item:first-child {
+  border-left: 0;
+}
+
+.hero-proof-item strong {
+  font-family: var(--font-primary);
+  font-size: 18px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--navy-primary, #111A5C);
+}
+
+.hero-proof-item span {
+  font-family: var(--font-primary);
+  font-size: 11.5px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  color: var(--navy-muted, #58617d);
+  white-space: nowrap;
+}
 
 /* Interactive replay controls */
 .hero-animation-controls {

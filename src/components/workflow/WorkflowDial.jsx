@@ -15,7 +15,7 @@ export function WorkflowDial({
   angleStep = 24,
 }) {
   return (
-    <div className="workflow-dial-wrapper" aria-label="Workflow Phase Dial">
+    <div className="workflow-dial-wrapper" aria-hidden="true">
       <div
         className="workflow-dial-wheel"
         style={{
@@ -52,6 +52,7 @@ export function WorkflowDial({
             <button
               key={phase.id}
               type="button"
+              tabIndex={-1}
               className={`dial-number-btn ${isActive ? 'is-active' : ''}`}
               style={{
                 left: `${(x / 1200) * 100}%`,
@@ -59,8 +60,6 @@ export function WorkflowDial({
                 transform: `translate(-50%, -50%) rotate(${itemAngle}deg)`,
               }}
               onClick={() => onSelectPhase?.(index)}
-              aria-label={`Go to ${phase.phase}: ${phase.title}`}
-              aria-current={isActive ? 'step' : undefined}
             >
               <span className="dial-number-text">{phase.id}</span>
             </button>

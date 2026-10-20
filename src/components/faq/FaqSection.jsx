@@ -51,7 +51,6 @@ export default function FaqSection() {
         <header className="faq-header">
           <div className="faq-header-main">
             <p className="faq-eyebrow">
-              <span className="faq-eyebrow-dot" aria-hidden="true" />
               <span className="faq-eyebrow-text">FAQ</span>
             </p>
 

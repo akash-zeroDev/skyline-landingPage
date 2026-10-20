@@ -1,76 +1,120 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import ProjectCard, { Project } from './ProjectCard';
-import WorkIndex from './WorkIndex';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import type { CSSProperties, FocusEvent, MouseEvent } from 'react';
+import ProjectDialog from './ProjectDialog';
+import ProjectSelector from './ProjectSelector';
+import ProjectVisual from './ProjectVisual';
+import { PROJECTS, WORK_PROOF } from './workData';
 import { useProjectDeck } from './useProjectDeck';
 import './WorkSection.css';
 
-/**
- * Curated projects array.
- * Update image URLs or copy here to effortlessly swap case studies.
- */
-export const projects: Project[] = [
-  {
-    slug: 'classly',
-    title: 'Classly',
-    description: 'Attendance and fee management for coaching institutes',
-    tags: ['Web App', 'Dashboard', 'SaaS'],
-    image: 'https://picsum.photos/seed/skyline-work-1/1200/900',
-    imageAlt: 'Classly coaching institute attendance and fee management dashboard interface',
-    year: '2025',
-    accent: '#2b7ffb',
-  },
-  {
-    slug: 'hazz',
-    title: 'Hazz',
-    description: 'Role-based workspace for super admins, admins and employees',
-    tags: ['Web App', 'UI/UX'],
-    image: 'https://picsum.photos/seed/skyline-work-2/1200/900',
-    imageAlt: 'Hazz role-based internal workspace and permissions admin portal',
-    year: '2024',
-    accent: '#19b954',
-  },
-  {
-    slug: 'aura-fintech',
-    title: 'Aura Fintech',
-    description: 'Conversion-focused landing page for a fintech startup',
-    tags: ['Landing Page', 'SEO'],
-    image: 'https://picsum.photos/seed/skyline-work-3/1200/900',
-    imageAlt: 'Aura Fintech modern conversion-optimized financial platform landing page',
-    year: '2024',
-    accent: '#fb6b07',
-  },
-  {
-    slug: 'haven-hospitality',
-    title: 'Haven Hospitality',
-    description: 'Brand refresh and website for a hospitality business',
-    tags: ['Branding', 'Website'],
-    image: 'https://picsum.photos/seed/skyline-work-4/1200/900',
-    imageAlt: 'Haven Hospitality bespoke branding and boutique hotel reservation website',
-    year: '2023',
-    accent: '#fcc80c',
-  },
-];
+const AUTOPLAY_DURATION_MS = 6000;
 
-const IDLE_INTERVAL_MS = 6000;
-
-export const WorkSection: React.FC = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [hasEntered, setHasEntered] = useState(false);
-  const [userInteracted, setUserInteracted] = useState(false);
-  const [commitPulse, setCommitPulse] = useState(0);
-
-  const { activeIndex, goTo, next, prev, prefersReducedMotion } = useProjectDeck(
-    projects.length
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia(query).matches : false
   );
 
-  const activeProject = projects[activeIndex];
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
 
-  // Trigger viewport entrance animation
+    const mediaQuery = window.matchMedia(query);
+    const onChange = () => setMatches(mediaQuery.matches);
+
+    onChange();
+    mediaQuery.addEventListener?.('change', onChange);
+
+    return () => mediaQuery.removeEventListener?.('change', onChange);
+  }, [query]);
+
+  return matches;
+}
+
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+      <path
+        d="M3.5 8.2 6.4 11l6.1-6.2"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ChevronIcon({ direction }: { direction: 'left' | 'right' }) {
+  return (
+    <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+      <path
+        d={direction === 'left' ? 'm12 5-5 5 5 5' : 'm8 5 5 5-5 5'}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function PlayPauseIcon({ playing }: { playing: boolean }) {
+  if (playing) {
+    return (
+      <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+        <rect x="6" y="5" width="3" height="10" rx="1" fill="currentColor" />
+        <rect x="11" y="5" width="3" height="10" rx="1" fill="currentColor" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+      <path d="M7 5.4v9.2L15 10Z" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function WorkSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const dialogTriggerRef = useRef<HTMLElement | null>(null);
+
+  const [hasEntered, setHasEntered] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+  const [isPaused, setIsPaused] = useState(false);
+  const [autoStopped, setAutoStopped] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isFocusWithin, setIsFocusWithin] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const { activeIndex, goTo, next, prev, prefersReducedMotion } = useProjectDeck(
+    PROJECTS.length
+  );
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+
+  const activeProject = PROJECTS[activeIndex];
+  const autoplayEnabled = isDesktop && !prefersReducedMotion;
+  const autoplayRunning =
+    autoplayEnabled &&
+    hasEntered &&
+    !isPaused &&
+    !autoStopped &&
+    !isHovering &&
+    !isFocusWithin &&
+    !isDialogOpen;
+
   useEffect(() => {
     if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
       setHasEntered(true);
-      return;
+      return undefined;
     }
+
+    const node = sectionRef.current;
+    if (!node) return undefined;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -79,140 +123,301 @@ export const WorkSection: React.FC = () => {
           observer.disconnect();
         }
       },
-      {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px',
-      }
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
+    observer.observe(node);
     return () => observer.disconnect();
   }, []);
 
-  // Idle auto-advance: only while visible, allowed, and never interacted.
-  useEffect(() => {
-    if (!hasEntered || prefersReducedMotion || userInteracted) return;
-    const timer = window.setInterval(() => next(), IDLE_INTERVAL_MS);
-    return () => window.clearInterval(timer);
-  }, [hasEntered, prefersReducedMotion, userInteracted, next]);
-
-  const handlePreview = useCallback(
+  const handleTabSelect = useCallback(
     (index: number) => {
-      setUserInteracted(true);
+      setAutoStopped(true);
+      setIsPaused(false);
       goTo(index);
-    },
-    [goTo]
-  );
-
-  const handleCommit = useCallback(
-    (index: number) => {
-      setUserInteracted(true);
-      goTo(index);
-      setCommitPulse((value) => value + 1);
       if (typeof window !== 'undefined') {
-        window.history.replaceState({}, '', `#work-${projects[index].slug}`);
+        window.history.replaceState({}, '', `#work-${PROJECTS[index].slug}`);
       }
     },
     [goTo]
   );
+
+  const handleStep = useCallback(
+    (direction: 1 | -1) => {
+      setAutoStopped(true);
+      setIsPaused(false);
+      if (direction === 1) next();
+      else prev();
+    },
+    [next, prev]
+  );
+
+  const toggleAutoplay = useCallback(() => {
+    if (autoStopped) {
+      setAutoStopped(false);
+      setIsPaused(false);
+      return;
+    }
+    setIsPaused((value) => !value);
+  }, [autoStopped]);
+
+  const handleAutoplayComplete = useCallback(() => {
+    next();
+  }, [next]);
+
+  const openCaseStudy = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    dialogTriggerRef.current = event.currentTarget;
+    setIsDialogOpen(true);
+  }, []);
+
+  const closeCaseStudy = useCallback(() => {
+    setIsDialogOpen(false);
+  }, []);
+
+  const handleBlur = (event: FocusEvent<HTMLElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+      setIsFocusWithin(false);
+    }
+  };
+
+  const counterCurrent = String(activeIndex + 1).padStart(2, '0');
+  const counterTotal = String(PROJECTS.length).padStart(2, '0');
+  const showPlay = autoStopped || isPaused;
+  const autoplayLabel = autoStopped
+    ? 'Start automatic project rotation'
+    : isPaused
+      ? 'Resume automatic project rotation'
+      : 'Pause automatic project rotation';
 
   return (
     <section
       id="work"
       ref={sectionRef}
-      className="work-section scroll-mt-28"
+      className={`sw-section${hasEntered ? ' is-visible' : ''}`}
       aria-labelledby="work-heading"
+      onFocusCapture={(event) => {
+        const target = event.target as HTMLElement;
+        setIsFocusWithin(!target.closest('.sw-control-btn--play'));
+      }}
+      onBlurCapture={handleBlur}
     >
-      <div className="work-container">
-        {/* Section Header */}
-        <header className="work-header">
-          <div className="work-header-copy">
-            <span className="work-eyebrow">Selected Work</span>
-            <h2 id="work-heading" className="work-title">
+      <div className="sw-shell">
+        <header className="sw-header">
+          <div className="sw-header-copy">
+            <span className="sw-eyebrow">
+              <span className="sw-eyebrow-dot" aria-hidden="true" />
+              Selected work
+            </span>
+            <h2 id="work-heading" className="sw-title">
               Projects we&apos;re proud of
             </h2>
-            <p className="work-subtitle">
-              Carefully engineered web applications, digital products, and brand experiences.
+            <p className="sw-subtitle">
+              A look at the products, brands and websites we&apos;ve designed and built,
+              and the difference they made for the teams behind them.
             </p>
           </div>
 
-          {/* Desktop Right-Aligned Action Link */}
-          <div className="work-header-action desktop-action">
-            <a href="#work" className="view-all-link">
-              <span>View all work</span>
-              <span className="link-arrow" aria-hidden="true">→</span>
-            </a>
+          <div className="sw-controls">
+            <span className="sw-counter" aria-hidden="true">
+              <span className="sw-counter-current">{counterCurrent}</span>
+              <span className="sw-counter-sep">/</span>
+              <span>{counterTotal}</span>
+            </span>
+
+            <div className="sw-control-buttons">
+              <button
+                type="button"
+                className="sw-control-btn"
+                onClick={() => handleStep(-1)}
+                aria-label="Previous project"
+              >
+                <ChevronIcon direction="left" />
+              </button>
+              <button
+                type="button"
+                className="sw-control-btn"
+                onClick={() => handleStep(1)}
+                aria-label="Next project"
+              >
+                <ChevronIcon direction="right" />
+              </button>
+              {autoplayEnabled && (
+                <button
+                  type="button"
+                  className="sw-control-btn sw-control-btn--play"
+                  onClick={toggleAutoplay}
+                  aria-label={autoplayLabel}
+                >
+                  <PlayPauseIcon playing={!showPlay} />
+                </button>
+              )}
+            </div>
           </div>
         </header>
 
-        {/* Interactive Project Deck */}
         <div
-          className={`work-deck ${hasEntered ? 'is-visible' : ''}`}
-          style={{ ['--accent' as string]: activeProject.accent }}
+          className="sw-panels"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
         >
-          <div className="work-deck-stage">
-            <ProjectCard
-              project={activeProject}
-              mediaId="work-focus"
-              onNext={next}
-              onPrev={prev}
-              onCommit={() => handleCommit(activeIndex)}
-              prefersReducedMotion={prefersReducedMotion}
-              commitPulse={commitPulse}
-            />
+          {PROJECTS.map((project, index) => {
+            const isActive = index === activeIndex;
 
-            {/* Deck progress */}
-            <div className="work-progress">
+            return (
               <div
-                className="work-progress-dots"
-                role="group"
-                aria-label="Project deck position"
+                key={project.slug}
+                id={`sw-panel-${project.slug}`}
+                role="tabpanel"
+                aria-labelledby={`sw-tab-${project.slug}`}
+                className={`sw-panel${isActive ? ' is-active' : ''}`}
+                inert={!isActive}
+                aria-hidden={isActive ? undefined : true}
               >
-                {projects.map((project, index) => (
-                  <button
-                    key={project.slug}
-                    type="button"
-                    aria-current={index === activeIndex ? 'true' : undefined}
-                    aria-label={`Show ${project.title}`}
-                    tabIndex={-1}
-                    className={`work-progress-dot${index === activeIndex ? ' is-active' : ''}`}
-                    style={{ ['--accent' as string]: project.accent }}
-                    onClick={() => handleCommit(index)}
+                <div
+                  className="sw-feature"
+                  style={{ '--sw-accent': project.accent } as CSSProperties}
+                >
+                  <ProjectVisual
+                    project={project}
+                    onOpen={openCaseStudy}
+                    prefersReducedMotion={prefersReducedMotion}
                   />
-                ))}
-              </div>
-            </div>
 
-            <p className="sr-only" aria-live="polite">
-              Now showing {activeProject.title}: {activeProject.description}
+                  <div className="sw-feature-copy">
+                    <div className="sw-meta-row">
+                      <span className="sw-sector">{project.sector}</span>
+                      <span className="sw-year">{project.year}</span>
+                    </div>
+
+                    <h3 className="sw-project-name">{project.name}</h3>
+                    <p className="sw-project-summary">{project.summary}</p>
+
+                    <div className="sw-story">
+                      <div className="sw-story-block">
+                        <h4>The challenge</h4>
+                        <p>{project.challenge}</p>
+                      </div>
+                      <div className="sw-story-block">
+                        <h4>What we did</h4>
+                        <p>{project.approach}</p>
+                      </div>
+                    </div>
+
+                    <div className="sw-outcomes">
+                      <h4>Key outcomes</h4>
+                      <ul>
+                        {project.outcomes.map((outcome) => (
+                          <li key={outcome}>
+                            <span className="sw-check" aria-hidden="true"><CheckIcon /></span>
+                            <span>{outcome}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <dl className="sw-facts">
+                      <div className="sw-fact">
+                        <dt>Timeline</dt>
+                        <dd>{project.timeline}</dd>
+                      </div>
+                      <div className="sw-fact">
+                        <dt>Services</dt>
+                        <dd>
+                          <span className="sw-service-pills">
+                            {project.services.map((service) => (
+                              <span key={service} className="sw-service-pill">{service}</span>
+                            ))}
+                          </span>
+                        </dd>
+                      </div>
+                    </dl>
+
+                    {project.metrics.length > 0 && (
+                      <dl className="sw-metrics">
+                        {project.metrics.map((metric) => (
+                          <div key={`${metric.value}-${metric.label}`}>
+                            <dt>{metric.label}</dt>
+                            <dd>{metric.value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    )}
+
+                    <div className="sw-actions">
+                      <button
+                        type="button"
+                        className="sw-btn sw-btn--primary"
+                        onClick={openCaseStudy}
+                        aria-haspopup="dialog"
+                      >
+                        Read the case study
+                        <span className="sw-btn-arrow" aria-hidden="true">→</span>
+                      </button>
+                      <a href="#contact" className="sw-text-link">
+                        Start a project like this
+                        <span className="sw-text-link-arrow" aria-hidden="true">→</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div
+          className="sw-selector-wrap"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          <ProjectSelector
+            projects={PROJECTS}
+            activeIndex={activeIndex}
+            onSelect={handleTabSelect}
+            autoplayEnabled={autoplayEnabled}
+            autoplayRunning={autoplayRunning}
+            autoplayDuration={AUTOPLAY_DURATION_MS}
+            onAutoplayComplete={handleAutoplayComplete}
+          />
+        </div>
+
+        <footer className="sw-closing">
+          <ul className="sw-proof" aria-label="Studio results">
+            {WORK_PROOF.map((item) => (
+              <li key={item.label} className="sw-proof-item">
+                <strong>{item.value}</strong>
+                <span>{item.label}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="sw-closing-copy">
+            <h3 className="sw-closing-title">Have a project like these in mind?</h3>
+            <p className="sw-closing-text">
+              Tell us what you&apos;re building and we&apos;ll suggest the right mix of
+              design, development and growth work. Free 30-minute call.
             </p>
           </div>
 
-          <div className="work-deck-side">
-            <WorkIndex
-              projects={projects}
-              activeIndex={activeIndex}
-              onPreview={handlePreview}
-              onCommit={handleCommit}
-              prefersReducedMotion={prefersReducedMotion}
-              controlsId="work-focus"
-            />
-          </div>
-        </div>
-
-        {/* Mobile View All Work Link (rendered below grid on screens < 640px) */}
-        <div className="work-footer-action mobile-action">
-          <a href="#work" className="view-all-link mobile-btn">
-            <span>View all work</span>
-            <span className="link-arrow" aria-hidden="true">→</span>
+          <a href="#contact" className="sw-btn sw-btn--primary sw-btn--lg">
+            Start your project
+            <span className="sw-btn-arrow" aria-hidden="true">→</span>
           </a>
-        </div>
+        </footer>
+
+        <p className="sw-sr-only" aria-live="polite" aria-atomic="true">
+          Project {activeIndex + 1} of {PROJECTS.length}: {activeProject.name}.
+        </p>
       </div>
+
+      <ProjectDialog
+        project={activeProject}
+        open={isDialogOpen}
+        onClose={closeCaseStudy}
+        returnFocusRef={dialogTriggerRef}
+      />
     </section>
   );
-};
+}
 
 export default WorkSection;
