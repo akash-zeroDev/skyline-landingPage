@@ -107,7 +107,7 @@ export default function ProjectDialog({
 
         <div className="sw-dialog-body">
           <p className="sw-dialog-kicker">
-            {project.year} · Case study
+            {project.year} · {project.projectType}
           </p>
           <h2 className="sw-dialog-title" id={titleId}>{project.name}</h2>
           <p className="sw-dialog-summary" id={summaryId}>{project.summary}</p>

@@ -1,3 +1,5 @@
+import { CLIENT_RATING, STUDIO_PROOF } from '../../data/studioProof';
+
 // Optional: add `avatar: '/path/to/photo.jpg'` to any entry to replace the
 // generated initials avatar with a real image (alt text stays empty because
 // the client's name is already rendered next to it).
@@ -27,7 +29,7 @@ export const TESTIMONIALS = [
     company: 'Fitloop',
     quote:
       'Our app launched on time and the feedback has been incredible. Clean design, zero drama.',
-    result: '4.8★ app rating',
+    result: `${CLIENT_RATING}★ app rating`,
     accent: 'orange',
   },
   {
@@ -60,7 +62,7 @@ export const TESTIMONIALS = [
 ];
 
 export const RATING_SUMMARY = [
-  { value: '4.9★', label: 'average rating' },
-  { value: '50+', label: 'projects delivered' },
+  { value: `${CLIENT_RATING}★`, label: 'average rating' },
+  STUDIO_PROOF[0],
   { value: '98%', label: 'clients return' },
 ];

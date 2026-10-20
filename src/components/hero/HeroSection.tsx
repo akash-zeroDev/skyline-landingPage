@@ -11,6 +11,7 @@ import FloatingCursor from './FloatingCursor';
 import ToggleAccent from './ToggleAccent';
 import HeroAccents from './HeroAccents';
 import headlinePathsData from '../../data/headlinePaths.json';
+import { STUDIO_PROOF } from '../../data/studioProof';
 import { TRAY_CLIP_LINE_PCT } from './cardLayout';
 import './HeroSection.css';
 
@@ -475,8 +476,8 @@ export const HeroSection: React.FC = () => {
                 : { delay: 0.95, duration: 0.55, ease: [0.16, 1, 0.3, 1] }
             }
           >
-            Designed for modern experiences that feel seamless from the first
-            click to final confirmation.
+            Websites, apps and brands for education, fintech, hospitality and
+            B2B teams — designed to turn attention into customers.
           </motion.p>
 
           <motion.div
@@ -534,18 +535,12 @@ export const HeroSection: React.FC = () => {
                 : { delay: 1.25, duration: 0.55, ease: [0.16, 1, 0.3, 1] }
             }
           >
-            <li className="hero-proof-item">
-              <strong>10+</strong>
-              <span>projects delivered</span>
-            </li>
-            <li className="hero-proof-item">
-              <strong>4.6★</strong>
-              <span>client rating</span>
-            </li>
-            <li className="hero-proof-item">
-              <strong>3x</strong>
-              <span>average growth</span>
-            </li>
+            {STUDIO_PROOF.map((item) => (
+              <li key={item.label} className="hero-proof-item">
+                <strong>{item.value}</strong>
+                <span>{item.label}</span>
+              </li>
+            ))}
           </motion.ul>
         </div>
 

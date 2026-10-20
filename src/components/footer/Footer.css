@@ -1,5 +1,13 @@
 /* Skyline Digital Media — Design & Engineering Studio Footer */
 
+@font-face {
+  font-family: "SkylineWordmark";
+  src: url("/fonts/SkylineWordmark-Clean.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+}
+
 .skyline-footer {
   --footer-bg: #F4F4F2;
   --footer-navy: #151B5C;
@@ -270,7 +278,7 @@
 }
 
 .skyline-footer .footer-big text {
-  font-family: var(--footer-display);
+  font-family: "SkylineWordmark", var(--footer-display);
   font-size: 232px;
   font-weight: 800;
   letter-spacing: -0.02em;

@@ -178,8 +178,7 @@ export default function ProjectSelector({
             <span className="sw-tab-body">
               <span className="sw-tab-name">{project.name}</span>
               <span className="sw-tab-meta">
-                {project.year} · {project.services[0]}
-                {project.services.length > 1 ? ` +${project.services.length - 1}` : ''}
+                {project.projectType} · {project.year}
               </span>
               <span className="sw-tab-sector">{project.sector}</span>
             </span>

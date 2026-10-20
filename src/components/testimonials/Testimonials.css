@@ -137,6 +137,16 @@
   color: var(--navy-muted, #58617d);
 }
 
+.testimonials-disclosure {
+  max-width: 620px;
+  margin: 10px auto 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--navy-muted, #58617d);
+  text-wrap: pretty;
+}
+
 /* --------------------------------------------------------------------------
    Bento grid
    -------------------------------------------------------------------------- */
@@ -237,6 +247,10 @@
   height: 15px;
   flex: 0 0 auto;
   fill: currentColor;
+}
+
+.testimonial-stars svg.is-partial {
+  fill-opacity: 0.6;
 }
 
 .testimonial-card--featured .testimonial-stars {

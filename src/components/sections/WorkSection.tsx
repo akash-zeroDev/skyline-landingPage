@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { CSSProperties, FocusEvent, MouseEvent } from 'react';
+import type { CSSProperties, MouseEvent } from 'react';
 import ProjectDialog from './ProjectDialog';
 import ProjectSelector from './ProjectSelector';
 import ProjectVisual from './ProjectVisual';
-import { PROJECTS, WORK_PROOF } from './workData';
+import { PROJECTS } from './workData';
+import { RESULTS_DISCLOSURE, STUDIO_PROOF } from '../../data/studioProof';
 import { useProjectDeck } from './useProjectDeck';
 import './WorkSection.css';
 
@@ -86,9 +87,6 @@ export function WorkSection() {
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
   );
   const [isPaused, setIsPaused] = useState(false);
-  const [autoStopped, setAutoStopped] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
-  const [isFocusWithin, setIsFocusWithin] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { activeIndex, goTo, next, prev, prefersReducedMotion } = useProjectDeck(
@@ -99,13 +97,7 @@ export function WorkSection() {
   const activeProject = PROJECTS[activeIndex];
   const autoplayEnabled = isDesktop && !prefersReducedMotion;
   const autoplayRunning =
-    autoplayEnabled &&
-    hasEntered &&
-    !isPaused &&
-    !autoStopped &&
-    !isHovering &&
-    !isFocusWithin &&
-    !isDialogOpen;
+    autoplayEnabled && hasEntered && !isPaused && !isDialogOpen;
 
   useEffect(() => {
     if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
@@ -132,7 +124,6 @@ export function WorkSection() {
 
   const handleTabSelect = useCallback(
     (index: number) => {
-      setAutoStopped(true);
       setIsPaused(false);
       goTo(index);
       if (typeof window !== 'undefined') {
@@ -144,7 +135,6 @@ export function WorkSection() {
 
   const handleStep = useCallback(
     (direction: 1 | -1) => {
-      setAutoStopped(true);
       setIsPaused(false);
       if (direction === 1) next();
       else prev();
@@ -153,13 +143,8 @@ export function WorkSection() {
   );
 
   const toggleAutoplay = useCallback(() => {
-    if (autoStopped) {
-      setAutoStopped(false);
-      setIsPaused(false);
-      return;
-    }
     setIsPaused((value) => !value);
-  }, [autoStopped]);
+  }, []);
 
   const handleAutoplayComplete = useCallback(() => {
     next();
@@ -174,20 +159,12 @@ export function WorkSection() {
     setIsDialogOpen(false);
   }, []);
 
-  const handleBlur = (event: FocusEvent<HTMLElement>) => {
-    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-      setIsFocusWithin(false);
-    }
-  };
-
   const counterCurrent = String(activeIndex + 1).padStart(2, '0');
   const counterTotal = String(PROJECTS.length).padStart(2, '0');
-  const showPlay = autoStopped || isPaused;
-  const autoplayLabel = autoStopped
-    ? 'Start automatic project rotation'
-    : isPaused
-      ? 'Resume automatic project rotation'
-      : 'Pause automatic project rotation';
+  const showPlay = isPaused;
+  const autoplayLabel = isPaused
+    ? 'Resume automatic project rotation'
+    : 'Pause automatic project rotation';
 
   return (
     <section
@@ -195,11 +172,6 @@ export function WorkSection() {
       ref={sectionRef}
       className={`sw-section${hasEntered ? ' is-visible' : ''}`}
       aria-labelledby="work-heading"
-      onFocusCapture={(event) => {
-        const target = event.target as HTMLElement;
-        setIsFocusWithin(!target.closest('.sw-control-btn--play'));
-      }}
-      onBlurCapture={handleBlur}
     >
       <div className="sw-shell">
         <header className="sw-header">
@@ -212,8 +184,9 @@ export function WorkSection() {
               Projects we&apos;re proud of
             </h2>
             <p className="sw-subtitle">
-              A look at the products, brands and websites we&apos;ve designed and built,
-              and the difference they made for the teams behind them.
+              A look at the products, brands and websites we&apos;ve designed and
+              built — and the outcomes behind them. Concept projects are clearly
+              labelled.
             </p>
           </div>
 
@@ -255,11 +228,7 @@ export function WorkSection() {
           </div>
         </header>
 
-        <div
-          className="sw-panels"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
+        <div className="sw-panels">
           {PROJECTS.map((project, index) => {
             const isActive = index === activeIndex;
 
@@ -286,6 +255,13 @@ export function WorkSection() {
                   <div className="sw-feature-copy">
                     <div className="sw-meta-row">
                       <span className="sw-sector">{project.sector}</span>
+                      <span
+                        className={`sw-project-type${
+                          project.projectType === 'Concept project' ? ' is-concept' : ''
+                        }`}
+                      >
+                        {project.projectType}
+                      </span>
                       <span className="sw-year">{project.year}</span>
                     </div>
 
@@ -350,7 +326,9 @@ export function WorkSection() {
                         onClick={openCaseStudy}
                         aria-haspopup="dialog"
                       >
-                        Read the case study
+                        {project.projectType === 'Concept project'
+                          ? 'View concept project'
+                          : 'Read the case study'}
                         <span className="sw-btn-arrow" aria-hidden="true">→</span>
                       </button>
                       <a href="#contact" className="sw-text-link">
@@ -365,11 +343,7 @@ export function WorkSection() {
           })}
         </div>
 
-        <div
-          className="sw-selector-wrap"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
+        <div className="sw-selector-wrap">
           <ProjectSelector
             projects={PROJECTS}
             activeIndex={activeIndex}
@@ -383,13 +357,15 @@ export function WorkSection() {
 
         <footer className="sw-closing">
           <ul className="sw-proof" aria-label="Studio results">
-            {WORK_PROOF.map((item) => (
+            {STUDIO_PROOF.map((item) => (
               <li key={item.label} className="sw-proof-item">
                 <strong>{item.value}</strong>
                 <span>{item.label}</span>
               </li>
             ))}
           </ul>
+
+          <p className="sw-proof-note">{RESULTS_DISCLOSURE}</p>
 
           <div className="sw-closing-copy">
             <h3 className="sw-closing-title">Have a project like these in mind?</h3>

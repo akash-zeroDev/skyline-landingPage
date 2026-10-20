@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { RESULTS_DISCLOSURE } from '../../data/studioProof';
 import { RATING_SUMMARY, TESTIMONIALS } from './testimonialsData';
 import TestimonialCard from './TestimonialCard';
 import './Testimonials.css';
@@ -135,6 +136,8 @@ export default function Testimonials() {
             </li>
           ))}
         </ul>
+
+        <p className="testimonials-disclosure">{RESULTS_DISCLOSURE}</p>
 
         <ul
           ref={trackRef}

@@ -11,6 +11,8 @@ export type ServiceName = (typeof SERVICE_NAMES)[number];
 
 export type MockupKind = 'dashboard' | 'workspace' | 'landing' | 'brand';
 
+export type ProjectType = 'Concept project' | 'Client project';
+
 export interface ProjectMetric {
   value: string;
   label: string;
@@ -20,6 +22,7 @@ export interface Project {
   slug: string;
   name: string;
   year: string;
+  projectType: ProjectType;
   sector: string;
   services: ServiceName[];
   summary: string;
@@ -47,6 +50,7 @@ export const MOCKUP_LABELS: Record<MockupKind, string> = {
 export const PROJECTS: Project[] = [
   {
     slug: 'classly',
+    projectType: 'Concept project',
     name: 'Classly',
     year: '2025',
     sector: 'Education SaaS',
@@ -71,6 +75,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'hazz',
+    projectType: 'Concept project',
     name: 'Hazz',
     year: '2024',
     sector: 'Workspace platform',
@@ -95,6 +100,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'aura-fintech',
+    projectType: 'Client project',
     name: 'Aura Fintech',
     year: '2024',
     sector: 'Fintech',
@@ -119,6 +125,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'haven-hospitality',
+    projectType: 'Concept project',
     name: 'Haven Hospitality',
     year: '2023',
     sector: 'Hospitality',
@@ -141,10 +148,4 @@ export const PROJECTS: Project[] = [
     ],
     metrics: [],
   },
-];
-
-export const WORK_PROOF = [
-  { value: '50+', label: 'projects delivered' },
-  { value: '4.9★', label: 'client rating' },
-  { value: '3x', label: 'average growth' },
 ];

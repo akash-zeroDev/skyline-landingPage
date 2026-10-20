@@ -1,3 +1,5 @@
+import { CLIENT_RATING } from '../../data/studioProof';
+
 const ACCENTS = new Set(['blue', 'green', 'orange', 'yellow']);
 
 function getInitials(name) {
@@ -9,12 +11,19 @@ function getInitials(name) {
     .join('');
 }
 
-function Stars() {
+function Stars({ rating = CLIENT_RATING }) {
+  const fullStars = Math.floor(rating);
+
   return (
-    <div className="testimonial-stars" role="img" aria-label="Rated 5 out of 5">
+    <div
+      className="testimonial-stars"
+      role="img"
+      aria-label={`Rated ${rating} out of 5`}
+    >
       {[0, 1, 2, 3, 4].map((index) => (
         <svg
           key={index}
+          className={index >= fullStars ? 'is-partial' : undefined}
           viewBox="0 0 20 20"
           aria-hidden="true"
           focusable="false"

@@ -46,10 +46,10 @@ export default function ProjectVisual({
     >
       <span className="sw-visual-stage" ref={stageRef}>
         <span className="sw-float-chip sw-float-chip--sector" aria-hidden="true">
-          <span className="sw-float-dot" />
           {project.sector}
         </span>
         <span className="sw-float-chip sw-float-chip--kind" aria-hidden="true">
+          {project.projectType === 'Concept project' ? 'Concept' : 'Client'} ·{' '}
           {MOCKUP_LABELS[project.mockup]}
         </span>
 
@@ -76,8 +76,9 @@ export default function ProjectVisual({
       )}
 
       <span id={labelId} className="sw-sr-only">
-        View the {project.name} case study. Illustrative preview of the {project.name}{' '}
-        {MOCKUP_LABELS[project.mockup]}.
+        View the {project.name}{' '}
+        {project.projectType === 'Concept project' ? 'concept project' : 'case study'}.
+        Illustrative preview of the {project.name} {MOCKUP_LABELS[project.mockup]}.
       </span>
     </button>
   );

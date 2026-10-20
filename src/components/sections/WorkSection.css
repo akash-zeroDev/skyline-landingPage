@@ -270,6 +270,26 @@
   font-weight: 600;
 }
 
+.sw-project-type {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 9999px;
+  border: 1px solid rgba(17, 26, 92, 0.14);
+  background-color: rgba(17, 26, 92, 0.05);
+  color: var(--sw-navy);
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.sw-project-type.is-concept {
+  border-color: rgba(176, 118, 0, 0.24);
+  background-color: rgba(252, 200, 12, 0.16);
+  color: #6b4b00;
+}
+
 .sw-project-name {
   margin: 12px 0 0;
   font-family: var(--font-primary);
@@ -635,14 +655,6 @@
   right: 3%;
   transform: rotate(2deg);
   text-transform: capitalize;
-}
-
-.sw-float-dot {
-  width: 6px;
-  height: 6px;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background-color: var(--sw-accent);
 }
 
 .sw-featured-outcome {
@@ -1614,6 +1626,16 @@
   letter-spacing: 0.02em;
   color: var(--sw-muted);
   white-space: nowrap;
+}
+
+.sw-proof-note {
+  max-width: 660px;
+  margin: -6px 0 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--sw-muted);
+  text-wrap: pretty;
 }
 
 .sw-closing-copy {
